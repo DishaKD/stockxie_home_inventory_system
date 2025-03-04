@@ -4,7 +4,13 @@
   "description": "stockie home inventory management system",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js",
+    "start": "node dist/server.js",
+    "build": "echo 'No build step needed for JS'",
+    "create-db": "node scripts/createDatabase.js",
+    "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all",
+    "reset-db": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
   },
   "author": "",
   "license": "ISC",
@@ -25,11 +31,8 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "@types/node": "^22.13.9",
     "eslint": "^9.21.0",
     "nodemon": "^3.1.9",
-    "prettier": "^3.5.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "prettier": "^3.5.3"
   }
 }
