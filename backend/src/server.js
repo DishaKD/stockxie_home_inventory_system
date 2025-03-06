@@ -20,7 +20,7 @@ app.use(express.json());
 
 // Test Route
 app.get("/", (req, res) => {
-  res.send("Home  Management System API is running...");
+  res.send("Home Inventory Management System API is running...");
 });
 
 // Connect to MySQL Database
