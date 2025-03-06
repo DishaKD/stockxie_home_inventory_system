@@ -8,7 +8,7 @@ dotenv.config(); // Load environment variables
 // Ensure required environment variables are loaded
 const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 if (!DB_HOST || !DB_USER || !DB_PASSWORD || !DB_NAME) {
-  console.error("❌ Missing  configuration in environment variables.");
+  console.error("❌ Missing database configuration in environment variables.");
   process.exit(1);
 }
 
