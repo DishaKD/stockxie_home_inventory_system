@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB, sequelize } = require("./config/db.js"); // Correct path
+const authRoutes = require("./routes/user.route.js");
 
 dotenv.config(); // Load environment variables
 
@@ -23,6 +24,8 @@ app.get("/", (req, res) => {
   res.send("Home Inventory Management System API is running...");
 });
 
+app.use("/api/auth", authRoutes);
+
 // Connect to MySQL Database
 connectDB();
 
@@ -32,7 +35,7 @@ connectDB();
 //   .catch((err) => console.error("❌ Error syncing database:", err));
 
 // Start Server
-const serverPort = PORT || 5000;
+const serverPort = PORT || 8000;
 app.listen(serverPort, () => {
   console.log(`🚀 Server is running on port ${serverPort}`);
 });
