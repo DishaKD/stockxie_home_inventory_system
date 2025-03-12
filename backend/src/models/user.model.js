@@ -18,7 +18,7 @@ const User = sequelize.define("User", {
     allowNull: false,
     unique: true,
     validate: {
-      isEmail: true, // Ensure email format is correct
+      isEmail: true,
     },
   },
   password: {
