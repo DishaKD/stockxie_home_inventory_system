@@ -1,6 +1,6 @@
-import type {UserType} from './UserType';
-import type {ReviewType} from './ReviewType';
-import type {ProductType} from './ProductType';
+import type { UserType } from "./UserType";
+import type { ReviewType } from "./ReviewType";
+import type { ProductType } from "./ProductType";
 
 export type RootStackParamList = {
   Search: undefined;
@@ -12,7 +12,7 @@ export type RootStackParamList = {
     discount: number;
     delivery: number;
   };
-  Menulist: {category: string};
+  Menulist: { category: string };
   MyAddress: undefined;
   Onboarding: undefined;
   EditProfile: undefined;
@@ -28,7 +28,7 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
   TrackYourOrder: undefined;
   AddANewAddress: undefined;
-  Product: {item: ProductType};
+  Product: { item: ProductType };
   OrderSuccessful: undefined;
   Promocodes: undefined;
   NewPassword: undefined;
@@ -39,14 +39,15 @@ export type RootStackParamList = {
   Wallet: undefined;
   Reviews: undefined;
   ShippingDetails: undefined;
-  Description: {description: string};
+  Description: { description: string };
   ForgotPasswordSentEmail: undefined;
   Created: undefined;
   Forgot: undefined;
   SignIn: undefined;
   SignUp: undefined;
-  VerifyEmail: {email: string};
-  ResetPassword: {email: string};
-  EmailConfirm: {email: string};
+  VerifyEmail: { email: string };
+  ResetPassword: { email: string };
+  EmailConfirm: { email: string };
   ResetPasswordSuccess: undefined;
+  HealthQuestions: undefined;
 };
