@@ -125,6 +125,11 @@ const StackNavigator = () => {
         component={screens.AddANewCard}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="HealthQuestions"
+        component={screens.HealthQuestions}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
