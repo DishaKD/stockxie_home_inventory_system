@@ -22,7 +22,7 @@ import ConfirmationCode from "../screens/auth/ConfirmationCode";
 import SignUpaccountCreated from "../screens/auth/SignUpaccountCreated";
 import VerifyYourPhoneNumber from "../screens/auth/VerifyYourPhoneNumber";
 import ForgotPasswordSentEmail from "../screens/auth/ForgotPasswordSentEmail";
-
+import HealthQuestions from "../screens/HealthQuestions";
 // Tabs
 import Home from "../screens/tabs/Home";
 import Order from "../screens/tabs/Order";
@@ -58,4 +58,5 @@ export const screens = {
   SignUpaccountCreated,
   VerifyYourPhoneNumber,
   ForgotPasswordSentEmail,
+  HealthQuestions,
 };
