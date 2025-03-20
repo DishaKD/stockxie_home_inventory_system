@@ -5,7 +5,10 @@ import {
   ViewStyle,
   TextStyle,
   TouchableOpacity,
+  Alert,
 } from "react-native";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { text } from "../../text";
 import { svg } from "../../assets/svg";
@@ -13,6 +16,7 @@ import { theme } from "../../constants";
 import { components } from "../../components";
 import { useAppNavigation } from "../../hooks";
 import { homeIndicatorHeight } from "../../utils";
+import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
 
 const SignIn: React.FC = (): JSX.Element => {
   const navigation = useAppNavigation();
@@ -20,6 +24,9 @@ const SignIn: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
@@ -39,6 +46,57 @@ const SignIn: React.FC = (): JSX.Element => {
     );
   };
 
+  const validateInputs = () => {
+    let isValid = true;
+
+    // Email Validation
+    if (!email.trim()) {
+      setEmailError("Email is required.");
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Enter a valid email.");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
+
+    // Password Validation
+    if (!password.trim()) {
+      setPasswordError("Password is required.");
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters.");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    return isValid;
+  };
+
+  const handleSignIn = async () => {
+    if (!validateInputs()) return; // Prevent API call if validation fails
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `${BASE_URL}${ENDPOINTS.auth.login}`,
+        { email, password },
+        CONFIG
+      );
+
+      if (response.data.token) {
+        await AsyncStorage.setItem("userToken", response.data.token);
+        navigation.replace("TabNavigator");
+      } else {
+        Alert.alert("Error", "Login failed, please try again.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Invalid credentials or server issue.");
+    }
+    setLoading(false);
+  };
+
   const renderInputFields = () => {
     return (
       <React.Fragment>
@@ -50,6 +108,10 @@ const SignIn: React.FC = (): JSX.Element => {
           onChangeText={(text) => setEmail(text)}
           containerStyle={{ marginBottom: 14 }}
         />
+        {emailError ? (
+          <Text style={{ color: "red", fontSize: 12 }}>{emailError}</Text>
+        ) : null}
+
         <components.InputField
           type="password"
           value={password}
@@ -59,6 +121,9 @@ const SignIn: React.FC = (): JSX.Element => {
           onChangeText={(text) => setPassword(text)}
           containerStyle={{ marginBottom: 20 }}
         />
+        {passwordError ? (
+          <Text style={{ color: "red", fontSize: 12 }}>{passwordError}</Text>
+        ) : null}
       </React.Fragment>
     );
   };
@@ -155,11 +220,9 @@ const SignIn: React.FC = (): JSX.Element => {
   const renderButton = () => {
     return (
       <components.Button
-        title="Sign in"
+        title={loading ? "Signing in..." : "Sign in"}
         containerStyle={{ marginBottom: 20 }}
-        onPress={() => {
-          navigation.navigate("TabNavigator");
-        }}
+        onPress={handleSignIn}
       />
     );
   };
