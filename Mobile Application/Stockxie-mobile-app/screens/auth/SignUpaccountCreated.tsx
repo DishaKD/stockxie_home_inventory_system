@@ -1,12 +1,12 @@
-import React from 'react';
-import {ScrollView, ViewStyle} from 'react-native';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
+import React from "react";
+import { ScrollView, ViewStyle } from "react-native";
+import { responsiveWidth } from "react-native-responsive-dimensions";
 
-import {text} from '../../text';
-import {theme} from '../../constants';
-import {components} from '../../components';
-import {useAppNavigation} from '../../hooks';
-import {homeIndicatorHeight} from '../../utils';
+import { text } from "../../text";
+import { theme } from "../../constants";
+import { components } from "../../components";
+import { useAppNavigation } from "../../hooks";
+import { homeIndicatorHeight } from "../../utils";
 
 const SignUpaccountCreated: React.FC = (): JSX.Element => {
   const navigation = useAppNavigation();
@@ -25,25 +25,25 @@ const SignUpaccountCreated: React.FC = (): JSX.Element => {
       backgroundColor: theme.colors.white,
       marginHorizontal: 20,
       borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     };
 
-    const uri = 'https://george-fx.github.io/dine-hub/05.jpg';
+    const uri = "https://george-fx.github.io/dine-hub/05.jpg";
 
     return (
-      <ScrollView contentContainerStyle={{...contentContainerStyle}}>
+      <ScrollView contentContainerStyle={{ ...contentContainerStyle }}>
         <components.Image
-          source={{uri}}
+          source={{ uri }}
           style={{
             width: responsiveWidth(100) - 40 - 40 - 40,
             marginBottom: 20,
             aspectRatio: 1,
           }}
         />
-        <text.H2 style={{marginBottom: 14}}>Account Created!</text.H2>
-        <text.T16 style={{textAlign: 'center'}}>
-          Your account had been created{'\n'}successfully.
+        <text.H2 style={{ marginBottom: 14 }}>Account Created!</text.H2>
+        <text.T16 style={{ textAlign: "center" }}>
+          Your account had been created{"\n"}successfully.
         </text.T16>
       </ScrollView>
     );
@@ -52,13 +52,13 @@ const SignUpaccountCreated: React.FC = (): JSX.Element => {
   const renderButton = () => {
     return (
       <components.Button
-        title='Get started'
+        title="Get started"
         containerStyle={{
           marginBottom: homeIndicatorHeight() === 0 ? 20 : 10,
           marginHorizontal: 20,
           marginTop: 20,
         }}
-        onPress={() => navigation.replace('SignIn')}
+        onPress={() => navigation.replace("HealthQuestions")}
       />
     );
   };
