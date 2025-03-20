@@ -15,6 +15,9 @@ export const ENDPOINTS = {
   post: {
     order: "api/order/create",
   },
+  healthProfile: {
+    create: "/api/healthProfile",
+  },
   auth: {
     login: "api/auth/login",
     register: "api/auth/register",
