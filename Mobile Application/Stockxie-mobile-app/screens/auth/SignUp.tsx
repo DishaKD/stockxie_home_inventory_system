@@ -79,7 +79,7 @@ const SignUp: React.FC = (): JSX.Element => {
 
       if (response.data.message === "User registered successfully") {
         // Registration successful, navigate to verification screen
-        navigation.navigate("VerifyYourPhoneNumber");
+        navigation.navigate("SignUpaccountCreated");
       } else {
         setError("Registration failed. Please try again.");
       }
