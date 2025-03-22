@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const { connectDB, sequelize } = require("./config/db.js"); // Correct path
 const authRoutes = require("./routes/user.route.js");
 const adminUserRoutes = require("./routes/adminuser.route.js");
+const purchaseRoutes = require("./routes/purchaseHistory.route.js");
 
 dotenv.config(); // Load environment variables
 
@@ -29,6 +30,9 @@ app.use("/api/auth", authRoutes);
 
 // Use Admin Routes
 app.use("/api/adminusers", adminUserRoutes);
+
+// Purchase History Routes
+app.use("/api/purchase-history", purchaseRoutes);
 
 // Connect to MySQL Database
 connectDB();
