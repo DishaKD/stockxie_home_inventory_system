@@ -16,7 +16,6 @@ const TabNavigator: React.FC<TabNavigatorProps> = ({ route }): JSX.Element => {
       <React.Fragment>
         {currentTabScreen === "Home" && <screens.Home />}
         {currentTabScreen === "Order" && <screens.Order />}
-        {currentTabScreen === "Favorite" && <screens.Favorite />}
         {currentTabScreen === "Notification" && <screens.Notification />}
         {currentTabScreen === "Inventory" && (
           <screens.Inventory userId={userId} />

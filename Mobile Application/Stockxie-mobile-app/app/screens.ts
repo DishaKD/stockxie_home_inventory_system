@@ -27,7 +27,6 @@ import EditItems from "../screens/inventory/EditItems";
 // Tabs
 import Home from "../screens/tabs/Home";
 import Order from "../screens/tabs/Order";
-import Favorite from "../screens/tabs/Favorite";
 import Notification from "../screens/tabs/Notification";
 import Inventory from "../screens/tabs/Inventory";
 
@@ -39,7 +38,6 @@ export const screens = {
   Product,
   Reviews,
   Checkout,
-  Favorite,
   Menulist,
   Promocodes,
   Onboarding,
