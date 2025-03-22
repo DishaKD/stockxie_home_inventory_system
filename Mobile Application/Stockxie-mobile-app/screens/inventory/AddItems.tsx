@@ -15,18 +15,19 @@ import type { RootStackParamList } from "../../types";
 import { useAppNavigation } from "../../hooks";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { homeIndicatorHeight } from "../../utils";
-import { createHealthProfile } from "../../config/api/healthProfile";
+import { createItem } from "../../config/api/itemCreate";
 type Props = NativeStackScreenProps<RootStackParamList, "AddItems">;
 
-const AddItems: React.FC = (): JSX.Element => {
+const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
   const navigation = useAppNavigation();
+
+  const { userId } = route.params;
 
   // State for form fields
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
-  const [type, setType] = useState("");
 
   // Error state
   const [fieldErrors, setFieldErrors] = useState({
@@ -75,20 +76,38 @@ const AddItems: React.FC = (): JSX.Element => {
       isValid = false;
     }
 
-    if (!type) {
-      errors.type = "Type is required";
-      isValid = false;
-    }
-
     setFieldErrors(errors);
     return isValid;
   };
 
-  // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      Alert.alert("Form is valid", "You can proceed with the form submission!");
-      // Call the API or proceed with data handling here
+      try {
+        const itemData = {
+          name,
+          quantity: Number(quantity),
+          category,
+          expiryDate,
+          userId,
+        };
+
+        // Call the API to create the item
+        const response = await createItem(itemData);
+
+        // Handle success
+        Alert.alert("Success", "Item created successfully!");
+        console.log("Item created:", response);
+
+        // Reset form fields
+        setName("");
+        setQuantity("");
+        setCategory("");
+        setExpiryDate("");
+      } catch (error) {
+        // Handle error
+        Alert.alert("Error", "Failed to create item. Please try again.");
+        console.error("Error creating item:", error);
+      }
     } else {
       Alert.alert("Error", "Please fill all the required fields correctly.");
     }
