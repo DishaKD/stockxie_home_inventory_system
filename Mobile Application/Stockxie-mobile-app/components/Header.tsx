@@ -50,12 +50,10 @@ const Header: React.FC<Props> = ({
   bottomLine,
   skipOnPress,
 }) => {
-  const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
 
   const [showModal, setShowModal] = useState(false);
   const [notification, setNotification] = useState(true);
-  const [faceID, setFaceID] = useState(false);
 
   const route = useRoute();
 
