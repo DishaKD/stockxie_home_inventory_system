@@ -163,18 +163,6 @@ const AddItems: React.FC = (): JSX.Element => {
             {fieldErrors.expiryDate}
           </Text>
         )}
-
-        <components.InputField
-          type="text"
-          innerRef={typeRef}
-          value={type}
-          placeholder="Type"
-          containerStyle={{ marginBottom: 14 }}
-          onChangeText={(text) => setType(text)}
-        />
-        {fieldErrors.type && (
-          <Text style={{ color: "red", fontSize: 12 }}>{fieldErrors.type}</Text>
-        )}
       </ScrollView>
     );
   };
