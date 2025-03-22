@@ -59,27 +59,8 @@ const Header: React.FC<Props> = ({
 
   const route = useRoute();
 
-  const cart = useAppSelector((state) => state.cartSlice.list);
-  const total = useAppSelector((state) => state.cartSlice.total);
-
   const email = "test@gmail.com";
   const userAvatar = "https://george-fx.github.io/dine-hub/10.jpg";
-
-  const handleOnPress = () => {
-    if (cart.length > 0) {
-      dispatch(setScreen("Order"));
-      route.name === "Shop" && navigation.navigate("TabNavigator");
-      route.name === "Product" && navigation.navigate("TabNavigator");
-    }
-    if (cart.length === 0) {
-      Alert.alert("Your cart is empty", "Please add some items to your cart", [
-        {
-          text: "OK",
-          onPress: () => console.log("OK Pressed"),
-        },
-      ]);
-    }
-  };
 
   const renderUser = (): JSX.Element | null => {
     const touchableStyle: ViewStyle = {
@@ -352,48 +333,6 @@ const Header: React.FC<Props> = ({
     return null;
   };
 
-  const renderBasket = (): JSX.Element | null => {
-    if (basket) {
-      return (
-        <TouchableOpacity
-          onPress={handleOnPress}
-          style={{
-            right: 0,
-            position: "absolute",
-            flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 20,
-          }}
-        >
-          <View
-            style={{
-              height: 22,
-              borderRadius: 11,
-              paddingHorizontal: 4,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: theme.colors.mainTurquoise,
-            }}
-          >
-            <Text
-              style={{
-                color: theme.colors.white,
-                ...theme.fonts.DMSans_700Bold,
-                fontSize: 10,
-              }}
-            >
-              {cart.length > 0 ? `$${total}` : "$0"}
-            </Text>
-          </View>
-          <svg.CartSvg />
-        </TouchableOpacity>
-      );
-    }
-
-    return null;
-  };
-
   const containerStyle: ViewStyle = {
     flexDirection: "row",
     alignItems: "center",
@@ -412,7 +351,6 @@ const Header: React.FC<Props> = ({
       {renderSkipText()}
       {renderFilter()}
       {renderSearch()}
-      {renderBasket()}
       {renderBurgerProfile()}
     </View>
   );
