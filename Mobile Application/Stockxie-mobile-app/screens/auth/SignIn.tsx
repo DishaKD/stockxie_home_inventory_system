@@ -87,7 +87,10 @@ const SignIn: React.FC = (): JSX.Element => {
 
       if (response.data.token) {
         await AsyncStorage.setItem("userToken", response.data.token);
-        navigation.replace("TabNavigator");
+        console.log("User ID:", response.data.userId);
+        navigation.replace("TabNavigator", {
+          userId: response.data.userId,
+        });
       } else {
         Alert.alert("Error", "Login failed, please try again.");
       }
