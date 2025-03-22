@@ -130,6 +130,16 @@ const StackNavigator = () => {
         component={screens.HealthQuestions}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="AddItems"
+        component={screens.AddItems}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditItems"
+        component={screens.EditItems}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
