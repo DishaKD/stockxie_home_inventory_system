@@ -23,6 +23,8 @@ import SignUpaccountCreated from "../screens/auth/SignUpaccountCreated";
 import VerifyYourPhoneNumber from "../screens/auth/VerifyYourPhoneNumber";
 import ForgotPasswordSentEmail from "../screens/auth/ForgotPasswordSentEmail";
 import HealthQuestions from "../screens/HealthQuestions";
+import AddItems from "../screens/AddItems"
+import EditItems from "../screens/EditItems"
 // Tabs
 import Home from "../screens/tabs/Home";
 import Order from "../screens/tabs/Order";
@@ -59,4 +61,6 @@ export const screens = {
   VerifyYourPhoneNumber,
   ForgotPasswordSentEmail,
   HealthQuestions,
+  AddItems,
+  EditItems
 };
