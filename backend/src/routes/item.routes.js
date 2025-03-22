@@ -8,16 +8,16 @@ const itemRoutes = express.Router();
 itemRoutes.post("/create", itemController.createItem);
 
 // Get all items
-itemRoutes.get("/items", itemController.getAllItems);
+itemRoutes.get("/", itemController.getAllItems);
 
 // Get a single item by ID
-itemRoutes.get("/items/:id", itemController.getItemById);
+itemRoutes.get("/:id", itemController.getItemById);
 
 // Update an item by ID
-itemRoutes.put("/items/:id", itemController.updateItem);
+itemRoutes.put("/update/:id", itemController.updateItem);
 
 // Delete an item by ID
-itemRoutes.delete("/items/:id", itemController.deleteItem);
+itemRoutes.delete("/delete/:id", itemController.deleteItem);
 
 // Search for items by name
 itemRoutes.get("/items/search", itemController.searchItems);
