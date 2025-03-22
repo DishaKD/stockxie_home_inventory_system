@@ -1,10 +1,14 @@
 import React from "react";
-
-// import {tabs} from '../constants';
 import { screens } from "../app/screens";
 import { useAppSelector } from "../hooks";
 
-const TabNavigator: React.FC = (): JSX.Element => {
+interface TabNavigatorProps {
+  route?: any;
+}
+
+const TabNavigator: React.FC<TabNavigatorProps> = ({ route }): JSX.Element => {
+  const userId = route?.params?.userId;
+  console.log("User ID in TabNavigator:", userId);
   const currentTabScreen = useAppSelector((state) => state.tab.screen);
 
   const renderScreen = () => {
@@ -14,7 +18,9 @@ const TabNavigator: React.FC = (): JSX.Element => {
         {currentTabScreen === "Order" && <screens.Order />}
         {currentTabScreen === "Favorite" && <screens.Favorite />}
         {currentTabScreen === "Notification" && <screens.Notification />}
-        {currentTabScreen === "Inventory" && <screens.Inventory />}
+        {currentTabScreen === "Inventory" && (
+          <screens.Inventory userId={userId} />
+        )}
       </React.Fragment>
     );
   };
