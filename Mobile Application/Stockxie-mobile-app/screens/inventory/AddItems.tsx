@@ -8,14 +8,14 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { text } from "../text";
-import { theme } from "../constants";
-import { components } from "../components";
-import type { RootStackParamList } from "../types";
-import { useAppNavigation } from "../hooks";
+import { text } from "../../text";
+import { theme } from "../../constants";
+import { components } from "../../components";
+import type { RootStackParamList } from "../../types";
+import { useAppNavigation } from "../../hooks";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { homeIndicatorHeight } from "../utils";
-import { createHealthProfile } from "../config/api/healthProfile";
+import { homeIndicatorHeight } from "../../utils";
+import { createHealthProfile } from "../../config/api/healthProfile";
 type Props = NativeStackScreenProps<RootStackParamList, "AddItems">;
 
 const AddItems: React.FC = (): JSX.Element => {
@@ -131,7 +131,9 @@ const AddItems: React.FC = (): JSX.Element => {
           onChangeText={(text) => setQuantity(text)}
         />
         {fieldErrors.quantity && (
-          <Text style={{ color: "red", fontSize: 12 }}>{fieldErrors.quantity}</Text>
+          <Text style={{ color: "red", fontSize: 12 }}>
+            {fieldErrors.quantity}
+          </Text>
         )}
 
         <components.InputField
@@ -143,7 +145,9 @@ const AddItems: React.FC = (): JSX.Element => {
           onChangeText={(text) => setCategory(text)}
         />
         {fieldErrors.category && (
-          <Text style={{ color: "red", fontSize: 12 }}>{fieldErrors.category}</Text>
+          <Text style={{ color: "red", fontSize: 12 }}>
+            {fieldErrors.category}
+          </Text>
         )}
 
         <components.InputField
@@ -155,7 +159,9 @@ const AddItems: React.FC = (): JSX.Element => {
           onChangeText={(text) => setExpiryDate(text)}
         />
         {fieldErrors.expiryDate && (
-          <Text style={{ color: "red", fontSize: 12 }}>{fieldErrors.expiryDate}</Text>
+          <Text style={{ color: "red", fontSize: 12 }}>
+            {fieldErrors.expiryDate}
+          </Text>
         )}
 
         <components.InputField

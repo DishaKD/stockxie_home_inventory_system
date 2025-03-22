@@ -8,13 +8,13 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { text } from "../text";
-import { theme } from "../constants";
-import { components } from "../components";
-import type { RootStackParamList } from "../types";
-import { useAppNavigation } from "../hooks";
+import { text } from "../../text";
+import { theme } from "../../constants";
+import { components } from "../../components";
+import type { RootStackParamList } from "../../types";
+import { useAppNavigation } from "../../hooks";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { homeIndicatorHeight } from "../utils";
+import { homeIndicatorHeight } from "../../utils";
 
 type Props = NativeStackScreenProps<RootStackParamList, "EditItems">;
 
@@ -37,16 +37,12 @@ const EditItems: React.FC = (): JSX.Element => {
     return <components.Header goBack={true} />;
   };
 
-  
-
   const renderContent = () => {
     const contentContainerStyle: ViewStyle = {
       padding: 20,
     };
 
-    return (
-      <Text>Edit Items</Text>
-    );
+    return <Text>Edit Items</Text>;
   };
 
   const renderButton = () => {
