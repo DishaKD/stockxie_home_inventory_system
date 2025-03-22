@@ -102,7 +102,11 @@ let history = [
   },
 ];
 
-const Inventory: React.FC = (): JSX.Element => {
+interface InventoryProps {
+  userId?: string;
+}
+
+const Inventory: React.FC<InventoryProps> = ({ userId }) => {
   const navigation = useAppNavigation();
   const [activeSections, setActiveSections] = useState<number[]>([]);
 
@@ -185,8 +189,7 @@ const Inventory: React.FC = (): JSX.Element => {
             alignItems: "center",
           }}
           onPress={() => {
-            navigation.navigate("AddItems");
-            // Add your onPress logic here for the plus icon
+            navigation.navigate("AddItems", { userId: userId ?? "" });
             console.log("Plus icon pressed");
           }}
         >
