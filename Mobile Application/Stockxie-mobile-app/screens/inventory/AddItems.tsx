@@ -26,14 +26,12 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
   // State for form fields
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [category, setCategory] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
 
   // Error state
   const [fieldErrors, setFieldErrors] = useState({
     name: "",
     quantity: "",
-    category: "",
     expiryDate: "",
     type: "",
   });
@@ -41,9 +39,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
   // Refs for input fields
   const nameRef = useRef(null);
   const quantityRef = useRef(null);
-  const categoryRef = useRef(null);
   const expiryDateRef = useRef(null);
-  const typeRef = useRef(null);
 
   // Form validation
   const validateForm = () => {
@@ -51,7 +47,6 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
     const errors = {
       name: "",
       quantity: "",
-      category: "",
       expiryDate: "",
       type: "",
     };
@@ -63,11 +58,6 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
 
     if (!quantity || isNaN(Number(quantity))) {
       errors.quantity = "Quantity must be a number";
-      isValid = false;
-    }
-
-    if (!category) {
-      errors.category = "Category is required";
       isValid = false;
     }
 
@@ -86,7 +76,6 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         const itemData = {
           name,
           quantity: Number(quantity),
-          category,
           expiryDate,
           userId,
         };
@@ -101,7 +90,6 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         // Reset form fields
         setName("");
         setQuantity("");
-        setCategory("");
         setExpiryDate("");
       } catch (error) {
         // Handle error
@@ -152,20 +140,6 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         {fieldErrors.quantity && (
           <Text style={{ color: "red", fontSize: 12 }}>
             {fieldErrors.quantity}
-          </Text>
-        )}
-
-        <components.InputField
-          type="text"
-          innerRef={categoryRef}
-          value={category}
-          placeholder="Category"
-          containerStyle={{ marginBottom: 14 }}
-          onChangeText={(text) => setCategory(text)}
-        />
-        {fieldErrors.category && (
-          <Text style={{ color: "red", fontSize: 12 }}>
-            {fieldErrors.category}
           </Text>
         )}
 
