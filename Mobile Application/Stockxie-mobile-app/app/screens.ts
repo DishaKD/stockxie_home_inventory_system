@@ -23,18 +23,17 @@ import SignUpaccountCreated from "../screens/auth/SignUpaccountCreated";
 import VerifyYourPhoneNumber from "../screens/auth/VerifyYourPhoneNumber";
 import ForgotPasswordSentEmail from "../screens/auth/ForgotPasswordSentEmail";
 import HealthQuestions from "../screens/HealthQuestions";
-import AddItems from "../screens/AddItems"
-import EditItems from "../screens/EditItems"
+import AddItems from "../screens/AddItems";
+import EditItems from "../screens/EditItems";
 // Tabs
 import Home from "../screens/tabs/Home";
 import Order from "../screens/tabs/Order";
-import Menu from "../screens/tabs/Menu";
 import Favorite from "../screens/tabs/Favorite";
 import Notification from "../screens/tabs/Notification";
+import Inventory from "../screens/tabs/Inventory";
 
 export const screens = {
   Home,
-  Menu,
   Order,
   SignIn,
   Wallet,
@@ -62,5 +61,6 @@ export const screens = {
   ForgotPasswordSentEmail,
   HealthQuestions,
   AddItems,
-  EditItems
+  EditItems,
+  Inventory,
 };
