@@ -5,7 +5,6 @@ import { BASE_URL, ENDPOINTS } from "../index";
 export const createItem = async (data: {
   name: string;
   quantity: number;
-  category: string;
   expiryDate: string;
 }) => {
   try {
