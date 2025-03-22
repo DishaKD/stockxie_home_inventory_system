@@ -50,4 +50,6 @@ export type RootStackParamList = {
   EmailConfirm: { email: string };
   ResetPasswordSuccess: undefined;
   HealthQuestions: undefined;
+  AddItems: undefined;
+  EditItems: undefined;
 };
