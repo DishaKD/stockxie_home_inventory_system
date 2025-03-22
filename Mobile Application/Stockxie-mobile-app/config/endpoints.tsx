@@ -11,7 +11,7 @@ export const ENDPOINTS = {
     promocode: "api/promocode",
     promocodes: "api/promocodes",
     categories: "api/categories",
-    items: "api/items",
+    items: "api/items/",
   },
   post: {
     order: "api/order/create",
