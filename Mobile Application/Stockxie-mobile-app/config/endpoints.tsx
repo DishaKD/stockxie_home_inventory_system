@@ -11,9 +11,17 @@ export const ENDPOINTS = {
     promocode: "api/promocode",
     promocodes: "api/promocodes",
     categories: "api/categories",
+    items: "api/items",
   },
   post: {
     order: "api/order/create",
+    items: "api/items/create",
+  },
+  put: {
+    items: "api/items/update",
+  },
+  delete: {
+    items: "api/items/delete",
   },
   healthProfile: {
     create: "/api/healthProfile",
@@ -28,8 +36,7 @@ export const ENDPOINTS = {
     ifEmailExists: "api/auth/email/exists",
     emailConfirm: "api/auth/email/confirm",
   },
-
   items: {
-    add: "api/addItem"
-  }
+    search: "api/items/search",
+  },
 };
