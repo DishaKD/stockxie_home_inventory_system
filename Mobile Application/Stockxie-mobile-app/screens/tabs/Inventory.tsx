@@ -38,6 +38,7 @@ const Inventory: React.FC<InventoryProps> = ({ userId }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Move useState here
 
   const homeIndicatorHeight = getHomeIndicatorHeight();
   useEffect(() => {
@@ -61,6 +62,19 @@ const Inventory: React.FC<InventoryProps> = ({ userId }) => {
   if (error) {
     return <Text>Error: {error}</Text>;
   }
+
+  // Function to handle search
+  const handleSearch = async (query: string) => {
+    try {
+      const response = await axios.get(`${BASE_URL}${ENDPOINTS.items.search}`, {
+        params: { query },
+      });
+      setItems(response.data); // Update the items list with search results
+    } catch (error) {
+      console.error("Error searching items:", error);
+      Alert.alert("Error", "Failed to search items. Please try again.");
+    }
+  };
 
   const setSections = (sections: any) => {
     setActiveSections(sections.includes(undefined) ? [] : sections);
@@ -127,6 +141,11 @@ const Inventory: React.FC<InventoryProps> = ({ userId }) => {
               color: theme.colors.mainColor,
             }}
             placeholderTextColor={theme.colors.textColor}
+            value={searchQuery}
+            onChangeText={(text) => {
+              setSearchQuery(text);
+              handleSearch(text); // Trigger search on text change
+            }}
           />
         </View>
         <TouchableOpacity

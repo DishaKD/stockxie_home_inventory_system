@@ -20,6 +20,6 @@ itemRoutes.put("/update/:id", itemController.updateItem);
 itemRoutes.delete("/delete/:id", itemController.deleteItem);
 
 // Search for items by name
-itemRoutes.get("/items/search", itemController.searchItems);
+itemRoutes.get("/search", itemController.searchItems);
 
 module.exports = itemRoutes;
