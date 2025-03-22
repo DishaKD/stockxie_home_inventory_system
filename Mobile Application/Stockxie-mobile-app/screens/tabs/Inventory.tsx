@@ -112,21 +112,6 @@ const Inventory: React.FC = (): JSX.Element => {
     setActiveSections(sections.includes(undefined) ? [] : sections);
   };
 
-  const {
-    data: categoryData,
-    error: categoryError,
-    isLoading: categoryLoading,
-  } = useGetCategoriesQuery();
-
-  const {
-    data: productsData,
-    error: productsError,
-    isLoading: productsLoading,
-  } = useGetProductsQuery();
-
-  const categories = categoryData instanceof Array ? categoryData : [];
-  const dishes = productsData instanceof Array ? productsData : [];
-
   const renderStatusBar = () => {
     return <components.StatusBar />;
   };
@@ -199,8 +184,13 @@ const Inventory: React.FC = (): JSX.Element => {
             justifyContent: "center",
             alignItems: "center",
           }}
+          onPress={() => {
+            navigation.navigate("AddItems");
+            // Add your onPress logic here for the plus icon
+            console.log("Plus icon pressed");
+          }}
         >
-          <svg.FilterSvg />
+          <svg.PlusSvg />
         </TouchableOpacity>
       </View>
     );
