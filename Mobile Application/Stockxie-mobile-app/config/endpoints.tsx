@@ -28,4 +28,8 @@ export const ENDPOINTS = {
     ifEmailExists: "api/auth/email/exists",
     emailConfirm: "api/auth/email/confirm",
   },
+
+  items: {
+    add: "api/addItem"
+  }
 };
