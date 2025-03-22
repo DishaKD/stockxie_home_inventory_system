@@ -188,27 +188,7 @@ const Header: React.FC<Props> = ({
             navigation.navigate("EditProfile");
           }}
         />
-        <components.BurgerProfileItem
-          text={"My orders"}
-          onPress={() => {
-            setShowModal(false);
-            navigation.navigate("OrderHistory");
-          }}
-        />
-        <components.BurgerProfileItem
-          text={"Promocodes & gift cards"}
-          onPress={() => {
-            setShowModal(false);
-            navigation.navigate("Promocodes");
-          }}
-        />
-        <components.BurgerProfileItem
-          text={"Wallet"}
-          onPress={() => {
-            setShowModal(false);
-            navigation.navigate("Wallet");
-          }}
-        />
+
         <components.BurgerProfileItem
           text={"Notifications"}
           onPress={() => {
@@ -216,13 +196,7 @@ const Header: React.FC<Props> = ({
           }}
           disabled={notification}
         />
-        <components.BurgerProfileItem
-          text={"Face ID"}
-          onPress={() => {
-            setFaceID(!faceID);
-          }}
-          disabled={faceID}
-        />
+
         <components.BurgerProfileItem
           text={"Support center"}
           onPress={() => {}}
