@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB, sequelize } = require("./config/db.js"); // Correct path
 const authRoutes = require("./routes/user.route.js");
+const adminUserRoutes = require("./routes/adminuser.route.js");
 
 dotenv.config(); // Load environment variables
 
@@ -25,6 +26,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+// Use Admin Routes
+app.use("/api/adminusers", adminUserRoutes);
 
 // Connect to MySQL Database
 connectDB();
