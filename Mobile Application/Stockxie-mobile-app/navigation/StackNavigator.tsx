@@ -116,11 +116,6 @@ const StackNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Wallet"
-        component={screens.Wallet}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="AddANewCard"
         component={screens.AddANewCard}
         options={{ headerShown: false }}

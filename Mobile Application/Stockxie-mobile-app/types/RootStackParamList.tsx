@@ -36,7 +36,6 @@ export type RootStackParamList = {
   MyPromocodesEmpty: undefined;
   SignUpaccountCreated: undefined;
   VerifyYourPhoneNumber: undefined;
-  Wallet: undefined;
   Reviews: undefined;
   ShippingDetails: undefined;
   Description: { description: string };

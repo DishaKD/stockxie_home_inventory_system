@@ -1,6 +1,5 @@
 // screens.ts
 
-import Wallet from "../screens/Wallet";
 import Reviews from "../screens/Reviews";
 import Product from "../screens/Product";
 import Menulist from "../screens/Menulist";
@@ -36,7 +35,6 @@ export const screens = {
   Home,
   Order,
   SignIn,
-  Wallet,
   SignUp,
   Product,
   Reviews,
