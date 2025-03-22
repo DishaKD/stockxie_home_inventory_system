@@ -11,10 +11,10 @@ const TabNavigator: React.FC = (): JSX.Element => {
     return (
       <React.Fragment>
         {currentTabScreen === "Home" && <screens.Home />}
-        {currentTabScreen === "Menu" && <screens.Menu />}
         {currentTabScreen === "Order" && <screens.Order />}
         {currentTabScreen === "Favorite" && <screens.Favorite />}
         {currentTabScreen === "Notification" && <screens.Notification />}
+        {currentTabScreen === "Inventory" && <screens.Inventory />}
       </React.Fragment>
     );
   };
