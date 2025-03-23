@@ -1,45 +1,54 @@
-import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import React from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 
-import {svg} from '../../assets/svg';
-import {theme} from '../../constants';
-import {components} from '../../components';
-import BottomTabBar from '../../navigation/BottomTabBar';
+import { svg } from "../../assets/svg";
+import { theme } from "../../constants";
+import { components } from "../../components";
+import BottomTabBar from "../../navigation/BottomTabBar";
 
 const notifications = [
   {
     id: 1,
-    title: 'Order Out for Delivery',
+    title: "Low Stock Alert",
     description:
-      'Your order (#12345) is out for delivery. Keep an eye out for our friendly delivery partner.',
-    date: 'Feb 26 at 12:36 pm',
-    icon: svg.CheckSvg,
+      'Your stock of "Toilet Paper" is running low. Only 2 items left. Consider restocking soon.',
+    date: "Feb 26 at 12:36 pm",
+    icon: svg.CheckSvg, // Assuming an alert icon exists
+    status: "alert",
   },
   {
     id: 2,
-    title: 'Limited-Time Deal',
+    title: "Expiry Reminder",
     description:
-      'Hurry! Enjoy 20% off all main courses this weekend. Treat yourself to a delicious meal at a discounted price.',
-    status: 'alert',
-    date: 'Feb 26 at 12:36 pm',
-    icon: svg.GiftSvg,
+      'The item "Milk" in your inventory is expiring tomorrow. Use it soon or discard it.',
+    date: "Feb 26 at 12:36 pm",
+    icon: svg.CheckSvg, // Assuming a clock icon for expiry reminders
+    status: "warning",
   },
   {
     id: 3,
-    title: 'Reservation Confirmed',
+    title: "Item Added Successfully",
     description:
-      'Your reservation for 2 people on Aug 26 at 8:00 pm has been successfully confirmed.',
-    status: 'rejected',
-    date: 'Feb 26 at 12:36 pm',
+      'You have successfully added "Laundry Detergent" to your inventory.',
+    date: "Feb 26 at 12:36 pm",
     icon: svg.CheckSvg,
+    status: "success",
   },
   {
     id: 4,
-    title: 'Live Music Night',
+    title: "Restock Suggestion",
     description:
-      'Join us this Friday for a live music night featuring DJ Mega. Reserve your table for an evening of great food and entertainment',
-    date: 'Feb 26 at 12:36 pm',
-    icon: svg.MicSvg,
+      'It’s time to restock "Dish Soap". You last purchased it 30 days ago.',
+    date: "Feb 26 at 12:36 pm",
+    icon: svg.CartSvg, // Assuming a shopping cart icon
+  },
+  {
+    id: 5,
+    title: "Inventory Summary",
+    description:
+      "Your inventory summary for this month: 15 items added, 10 items used, and 5 items expired.",
+    date: "Feb 26 at 12:36 pm",
+    icon: svg.CheckSvg, // Assuming a report icon for summaries
   },
 ];
 
@@ -51,7 +60,7 @@ const Notification: React.FC = (): JSX.Element => {
   const renderHeader = () => {
     return (
       <components.Header
-        title='Notifications'
+        title="Notifications"
         basket={true}
         user={true}
         userImage={true}
@@ -76,7 +85,7 @@ const Notification: React.FC = (): JSX.Element => {
             <TouchableOpacity
               key={index}
               style={{
-                width: '100%',
+                width: "100%",
                 backgroundColor: theme.colors.white,
                 borderRadius: 10,
                 padding: 20,
@@ -85,12 +94,12 @@ const Notification: React.FC = (): JSX.Element => {
             >
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection: "row",
+                  alignItems: "center",
                   marginBottom: 14,
                 }}
               >
-                <View style={{marginRight: 8}}>
+                <View style={{ marginRight: 8 }}>
                   <item.icon />
                 </View>
                 <Text
@@ -99,7 +108,7 @@ const Notification: React.FC = (): JSX.Element => {
                     fontSize: 14,
                     lineHeight: 14 * 1.2,
                     color: theme.colors.mainColor,
-                    textTransform: 'capitalize',
+                    textTransform: "capitalize",
                   }}
                 >
                   {item.title}
