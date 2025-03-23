@@ -150,7 +150,7 @@ const BottomTabBar: React.FC = (): JSX.Element => {
     },
     {
       id: 3,
-      name: "Order",
+      name: "Purchase",
       icon: OrderSvg,
     },
 

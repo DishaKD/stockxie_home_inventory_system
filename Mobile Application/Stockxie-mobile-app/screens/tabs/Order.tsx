@@ -24,7 +24,7 @@ import BottomTabBar from "../../navigation/BottomTabBar";
 import { useAppSelector, useAppNavigation } from "../../hooks";
 import { BASE_URL, ENDPOINTS, AUTHORIZATION_TOKEN } from "../../config";
 
-const Order: React.FC = (): JSX.Element => {
+const Purchase: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   interface Purchase {
@@ -334,4 +334,4 @@ const Order: React.FC = (): JSX.Element => {
   );
 };
 
-export default Order;
+export default Purchase;
