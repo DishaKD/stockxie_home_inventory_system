@@ -39,4 +39,12 @@ export const ENDPOINTS = {
   items: {
     search: "api/items/search",
   },
+  purchaseHistory: {
+    // Separate purchase history endpoints
+    create: "api/purchase-history", // Create a purchase record
+    getAll: "api/purchase-history", // Get all purchase records
+    getById: "api/purchase-history", // Get a purchase record by ID
+    update: "api/purchase-history", // Update a purchase record
+    delete: "api/purchase-history", // Delete a purchase record
+  },
 };

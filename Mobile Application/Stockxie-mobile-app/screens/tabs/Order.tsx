@@ -1,4 +1,4 @@
-import axios from "react-native-axios";
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import {
   responsiveWidth,
@@ -26,325 +27,298 @@ import { BASE_URL, ENDPOINTS, AUTHORIZATION_TOKEN } from "../../config";
 const Order: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-  const cart = useAppSelector((state) => state.cartSlice.list);
-  const subtotal = useAppSelector((state) => state.cartSlice.subtotal);
-  const delivery = useAppSelector((state) => state.cartSlice.delivery);
+  interface Purchase {
+    itemName: string;
+    quantity: number;
+    purchaseDate: string;
+    pricePerUnit: number;
+    totalCost: number;
+  }
 
-  const totalFromCart = Number(
-    useAppSelector((state) => state.cartSlice.total)
-  );
-  const deliveryFromCart = Number(
-    useAppSelector((state) => state.cartSlice.delivery)
-  );
-
-  const [promocode, setPromocode] = useState("");
+  const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [purchaseLimit, setPurchaseLimit] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(
-    (
-      Number(useAppSelector((state) => state.cartSlice.total)) +
-      Number(useAppSelector((state) => state.cartSlice.delivery))
-    ).toFixed(2)
-  );
-  const [discount, setDiscount] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
 
+  const [itemName, setItemName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState("");
+  const [pricePerUnit, setPricePerUnit] = useState("");
+  const [totalCost, setTotalCost] = useState(0);
+
+  // Fetch purchase limit and history on component mount
   useEffect(() => {
-    setTotal((totalFromCart + deliveryFromCart - discount).toFixed(2));
-  }, [totalFromCart, deliveryFromCart, discount]);
+    // const fetchPurchaseLimit = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `${BASE_URL}${ENDPOINTS.purchaseLimit.}`
+    //     );
+    //     setPurchaseLimit(response.data.limit);
+    //   } catch (error) {
+    //     console.error("Error fetching purchase limit:", error);
+    //   }
+    // };
 
-  const applyPromoCode = async () => {
-    setLoading(true);
-    const url = BASE_URL + ENDPOINTS.get.discount;
+    const fetchPurchaseHistory = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}${ENDPOINTS.purchaseHistory.getAll}`
+        );
+        setPurchases(response.data);
+        calculateTotalSpent(response.data);
+      } catch (error) {
+        console.error("Error fetching purchase history:", error);
+      }
+    };
 
-    await axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + AUTHORIZATION_TOKEN,
-        },
-        params: {
-          promocode: promocode,
-        },
-      })
-      .then((res) => {
-        setLoading(false);
-        if (res.data.promocode.discount) {
-          const discount = (Number(total) * res.data.promocode.discount) / 100;
-          const newTotal = (Number(total) - discount).toFixed(2);
-          setTotal(newTotal);
-          setDiscount(discount);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-        setLoading(false);
-      });
+    // fetchPurchaseLimit();
+    fetchPurchaseHistory();
+  }, []);
+
+  // Calculate total spent
+  interface Purchase {
+    itemName: string;
+    quantity: number;
+    purchaseDate: string;
+    pricePerUnit: number;
+    totalCost: number;
+  }
+
+  const calculateTotalSpent = (purchases: Purchase[]): void => {
+    const total = purchases.reduce(
+      (sum, purchase) => sum + purchase.totalCost,
+      0
+    );
+    setTotalSpent(total);
   };
 
+  // Add a new purchase
+  const addPurchase = async () => {
+    if (!validateInputs()) {
+      Alert.alert("Error", "Please fill all fields correctly.");
+      return;
+    }
+
+    const newPurchase = {
+      itemName,
+      quantity: Number(quantity),
+      purchaseDate,
+      pricePerUnit: Number(pricePerUnit),
+      totalCost: Number(quantity) * Number(pricePerUnit),
+    };
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}${ENDPOINTS.purchaseHistory}`,
+        newPurchase
+      );
+      setPurchases([...purchases, response.data]);
+      calculateTotalSpent([...purchases, response.data]);
+      resetForm();
+    } catch (error) {
+      console.error("Error adding purchase:", error);
+      Alert.alert("Error", "Failed to add purchase. Please try again.");
+    }
+  };
+
+  // Validate inputs
+  const validateInputs = () => {
+    if (!itemName || itemName.length < 2 || itemName.length > 50) {
+      return false;
+    }
+    if (!quantity || isNaN(Number(quantity)) || Number(quantity) <= 0) {
+      return false;
+    }
+    if (!purchaseDate || isNaN(Date.parse(purchaseDate))) {
+      return false;
+    }
+    if (
+      !pricePerUnit ||
+      isNaN(Number(pricePerUnit)) ||
+      Number(pricePerUnit) <= 0
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  // Reset form fields
+  const resetForm = () => {
+    setItemName("");
+    setQuantity("");
+    setPurchaseDate("");
+    setPricePerUnit("");
+    setTotalCost(0);
+  };
+
+  // Render status bar
   const renderStatusBar = () => {
     return <components.StatusBar />;
   };
 
+  // Render header
   const renderHeader = () => {
-    return <components.Header basket={true} userImage={true} />;
+    return <components.Header goBack={true} />;
   };
 
-  const renderDishes = () => {
-    return (
-      <View>
-        {cart.map((item, index, array) => {
-          const last = index === array.length - 1;
-          return (
-            <components.OrderItem
-              item={item}
-              key={item.id}
-              containerStyle={{
-                marginBottom: last ? 20 : 14,
-              }}
-            />
-          );
-        })}
-      </View>
-    );
-  };
-
-  const renderPromoCodeApplied = () => {
-    if (discount > 0) {
-      return (
-        <View style={{ marginBottom: responsiveHeight(7) }}>
-          <svg.CodeAppliedSvg />
-        </View>
-      );
-    }
-
-    return null;
-  };
-
-  const renderPromoCodeInput = () => {
-    if (discount === 0) {
+  // Render purchase limit
+  const renderPurchaseLimit = () => {
+    if (purchaseLimit === null) {
       return (
         <View
           style={{
-            flexDirection: "row",
+            justifyContent: "center",
             alignItems: "center",
-            height: 50,
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: theme.colors.mainTurquoise,
-            marginBottom: 30,
+            padding: 20,
           }}
         >
-          <View style={{ flex: 1, paddingLeft: 14 }}>
-            <TextInput
-              placeholder="Enter your promocode"
-              value={promocode}
-              onChangeText={(text) => setPromocode(text)}
-              style={{
-                ...theme.fonts.DMSans_400Regular,
-                fontSize: 14,
-                color: theme.colors.mainColor,
-              }}
-            />
-          </View>
+          <Text style={{ ...theme.fonts.DMSans_500Medium, fontSize: 16 }}>
+            No purchase limit set.
+          </Text>
           <TouchableOpacity
             style={{
-              width: "30%",
-              height: "100%",
+              marginTop: 20,
               backgroundColor: theme.colors.mainTurquoise,
+              padding: 10,
               borderRadius: 10,
-              justifyContent: "center",
-              alignItems: "center",
             }}
-            onPress={() => applyPromoCode()}
+            // onPress={() => navigation.navigate("SetPurchaseLimit")}
           >
-            {loading && (
-              <ActivityIndicator size="small" color={theme.colors.white} />
-            )}
-            {!loading && (
-              <Text
-                style={{
-                  textTransform: "uppercase",
-                  ...theme.fonts.DMSans_500Medium,
-                  fontSize: 14,
-                  lineHeight: 14 * 1.2,
-                  color: theme.colors.white,
-                }}
-              >
-                apply
-              </Text>
-            )}
+            <Text style={{ color: theme.colors.white }}>
+              Set Purchase Limit
+            </Text>
           </TouchableOpacity>
         </View>
       );
     }
 
-    return null;
-  };
-
-  const renderOrderSummary = () => {
     return (
       <View
         style={{
           padding: 20,
-          borderWidth: 1,
-          borderRadius: 10,
-          borderColor: theme.colors.mainTurquoise,
-          marginBottom: 30,
+          borderBottomWidth: 1,
+          borderBottomColor: "#DBE9F5",
         }}
       >
+        <Text style={{ ...theme.fonts.DMSans_500Medium, fontSize: 16 }}>
+          Purchase Limit: ${purchaseLimit}
+        </Text>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderBottomWidth: 1,
-            borderBottomColor: "#DBE9F5",
-            paddingBottom: 10,
-            marginBottom: 20,
+            height: 10,
+            backgroundColor: totalSpent >= purchaseLimit ? "red" : "green",
+            width: `${(totalSpent / purchaseLimit) * 100}%`,
+            marginTop: 10,
           }}
-        >
-          <Text
-            style={{
-              ...theme.fonts.DMSans_500Medium,
-              fontSize: 14,
-              lineHeight: 14 * 1.2,
-              color: theme.colors.mainColor,
-            }}
-          >
-            Subtotal
-          </Text>
-          <text.T14 style={{ color: theme.colors.mainColor }}>
-            ${subtotal}
-          </text.T14>
-        </View>
-        {discount > 0 && (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: 10,
-            }}
-          >
-            <text.T14>Discount</text.T14>
-            <text.T14>- ${discount.toFixed(2)}</text.T14>
-          </View>
-        )}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 10,
-          }}
-        >
-          <text.T14>Delivery</text.T14>
-          <text.T14>${delivery}</text.T14>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <text.H4>Total</text.H4>
-          <text.H4>${total}</text.H4>
-        </View>
+        />
       </View>
     );
   };
 
-  const renderOrder = () => {
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 20,
-          paddingTop: 10,
-        }}
-      >
-        {renderDishes()}
-        {renderPromoCodeApplied()}
-        {renderPromoCodeInput()}
-        {renderOrderSummary()}
-      </ScrollView>
-    );
-  };
-
-  const renderEmptyCart = () => {
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          backgroundColor: theme.colors.white,
-          paddingHorizontal: 20,
-          marginHorizontal: 20,
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: 10,
-          marginTop: 5,
-          paddingVertical: 20,
-        }}
-      >
-        <components.Image
-          source={{ uri: "https://george-fx.github.io/dine-hub/14.jpg" }}
+  // Render purchase history
+  const renderPurchaseHistory = () => {
+    if (purchases.length === 0) {
+      return (
+        <View
           style={{
-            width: responsiveWidth(70),
-            aspectRatio: 1,
-            alignSelf: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20,
           }}
-        />
-        <text.H2 style={{ marginTop: 30, marginBottom: 14 }}>
-          Your cart is empty!
-        </text.H2>
-        <text.T16 style={{ textAlign: "center" }}>
-          Looks like you haven't made{"\n"}your order yet.
-        </text.T16>
+        >
+          <Text style={{ ...theme.fonts.DMSans_500Medium, fontSize: 16 }}>
+            No purchases yet.
+          </Text>
+        </View>
+      );
+    }
+
+    return (
+      <ScrollView>
+        {purchases &&
+          Array.isArray(purchases) &&
+          purchases.map((purchase, index) => (
+            <View
+              key={index}
+              style={{
+                padding: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "#DBE9F5",
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>{purchase.itemName}</Text>
+              <Text>Quantity: {purchase.quantity}</Text>
+              <Text>Price per Unit: ${purchase.pricePerUnit}</Text>
+              <Text>Total Cost: ${purchase.totalCost}</Text>
+              <Text>Purchase Date: {purchase.purchaseDate}</Text>
+            </View>
+          ))}
       </ScrollView>
     );
   };
 
+  // Render form to add a new purchase
+  const renderAddPurchaseForm = () => {
+    return (
+      <View style={{ padding: 20 }}>
+        <TextInput
+          placeholder="Item Name"
+          value={itemName}
+          onChangeText={setItemName}
+          style={{ ...theme.fonts.DMSans_400Regular, fontSize: 14 }}
+        />
+        <TextInput
+          placeholder="Quantity"
+          value={quantity}
+          onChangeText={setQuantity}
+          keyboardType="numeric"
+          style={{ ...theme.fonts.DMSans_400Regular, fontSize: 14 }}
+        />
+        <TextInput
+          placeholder="Purchase Date (YYYY-MM-DD)"
+          value={purchaseDate}
+          onChangeText={setPurchaseDate}
+          style={{ ...theme.fonts.DMSans_400Regular, fontSize: 14 }}
+        />
+        <TextInput
+          placeholder="Price per Unit"
+          value={pricePerUnit}
+          onChangeText={setPricePerUnit}
+          keyboardType="numeric"
+          style={{ ...theme.fonts.DMSans_400Regular, fontSize: 14 }}
+        />
+        <TouchableOpacity
+          style={{
+            backgroundColor: theme.colors.mainTurquoise,
+            padding: 10,
+            borderRadius: 10,
+            marginTop: 20,
+          }}
+          onPress={addPurchase}
+        >
+          <Text style={{ color: theme.colors.white }}>Add Purchase</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // Render content
   const renderContent = () => {
     return (
-      <React.Fragment>
-        {cart.length === 0 ? renderEmptyCart() : renderOrder()}
-      </React.Fragment>
+      <ScrollView>
+        {renderPurchaseLimit()}
+        {renderPurchaseHistory()}
+        {renderAddPurchaseForm()}
+      </ScrollView>
     );
   };
 
-  const renderButton = () => {
-    return (
-      <components.Button
-        title={cart.length === 0 ? "Shop now" : "Checkout"}
-        containerStyle={{
-          paddingHorizontal: 20,
-          paddingTop: 20,
-        }}
-        loading={loading}
-        onPress={() => {
-          if (cart.length === 0) {
-            dispatch(setScreen("Menu"));
-            return;
-          }
-
-          if (cart.length > 0) {
-            navigation.navigate("Checkout", {
-              total,
-              subtotal,
-              discount,
-              delivery,
-            });
-            return;
-          }
-        }}
-      />
-    );
-  };
-
+  // Render bottom tab bar
   const renderBottomTabBar = () => {
     return <BottomTabBar />;
   };
 
+  // Render home indicator
   const renderHomeIndicator = () => {
     return <components.HomeIndicator />;
   };
@@ -354,7 +328,6 @@ const Order: React.FC = (): JSX.Element => {
       {renderStatusBar()}
       {renderHeader()}
       {renderContent()}
-      {renderButton()}
       {renderBottomTabBar()}
       {renderHomeIndicator()}
     </components.SmartView>
