@@ -2,6 +2,7 @@ const Category = require("../models/category.model");
 const User = require("../models/user.model");
 
 // Create a new category
+
 exports.createCategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -11,12 +12,22 @@ exports.createCategory = async (req, res) => {
       return res.status(400).json({ error: "Category name is required" });
     }
 
+    // Check if category already exists for the same user
+    const existingCategory = await Category.findOne({ where: { name, userId } });
+
+    if (existingCategory) {
+      return res.status(400).json({ error: "Category already added to categories" });
+    }
+
+    // Create new category
     const category = await Category.create({ name, userId });
     res.status(201).json(category);
   } catch (error) {
+    console.error("Error creating category:", error);
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
 // Get all categories for a user
 exports.getCategories = async (req, res) => {
