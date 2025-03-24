@@ -6,6 +6,7 @@ const authRoutes = require("./routes/user.route.js");
 const adminUserRoutes = require("./routes/adminuser.route.js");
 const purchaseRoutes = require("./routes/purchaseHistory.route.js");
 const itemRoutes = require("./routes/item.routes.js");
+const categoryRoutes = require("./routes/category.routes.js");
 
 dotenv.config(); // Load environment variables
 
@@ -37,6 +38,10 @@ app.use("/api/purchase-history", purchaseRoutes);
 
 //Item Routes
 app.use("/api/items", itemRoutes);
+
+//Category Routes
+app.use("/api/categories", categoryRoutes);
+
 
 // Connect to MySQL Database
 connectDB();
