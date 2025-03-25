@@ -84,7 +84,7 @@ const BottomTabBar: React.FC = (): JSX.Element => {
       <Svg width={24} height={24} fill="none">
         <Path
           fill={
-            currentTabScreen === "Order"
+            currentTabScreen === "Purchase"
               ? theme.colors.mainTurquoise
               : theme.colors.textColor
           }
@@ -93,7 +93,7 @@ const BottomTabBar: React.FC = (): JSX.Element => {
         />
         <Path
           fill={
-            currentTabScreen === "Order"
+            currentTabScreen === "Purchase"
               ? theme.colors.mainTurquoise
               : theme.colors.textColor
           }
@@ -101,7 +101,7 @@ const BottomTabBar: React.FC = (): JSX.Element => {
         />
         <Path
           fill={
-            currentTabScreen === "Order"
+            currentTabScreen === "Purchase"
               ? theme.colors.mainTurquoise
               : theme.colors.textColor
           }
