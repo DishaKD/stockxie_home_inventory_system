@@ -1,53 +1,26 @@
-import React, {useState} from 'react';
-import {View, Text, FlatList, ScrollView, TouchableOpacity} from 'react-native';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
-
-import {useAppDispatch} from '../../hooks';
-import {components} from '../../components';
-import {useAppNavigation} from '../../hooks';
-import {theme, reviews} from '../../constants';
-import {setScreen} from '../../store/slices/tabSlice';
-import BottomTabBar from '../../navigation/BottomTabBar';
+import React, { useState } from "react";
 import {
-  useGetProductsQuery,
-  useGetCarouselQuery,
-  useGetCategoriesQuery,
-} from '../../store/slices/apiSlice';
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
+import { responsiveWidth } from "react-native-responsive-dimensions";
+import { Ionicons } from "@expo/vector-icons";
+
+import { useAppDispatch } from "../../hooks";
+import { components } from "../../components";
+import { useAppNavigation } from "../../hooks";
+import { theme, reviews } from "../../constants";
+import { setScreen } from "../../store/slices/tabSlice";
+import BottomTabBar from "../../navigation/BottomTabBar";
 
 const Home: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-
-  const {
-    data: carouselData,
-    error: carouselError,
-    isLoading: carouselLoading,
-  } = useGetCarouselQuery();
-
-  const {
-    data: categoriesData,
-    error: categoriesError,
-    isLoading: categoriesLoading,
-  } = useGetCategoriesQuery();
-
-  const {
-    data: productsData,
-    error: productsError,
-    isLoading: productsLoading,
-  } = useGetProductsQuery();
-
-  const dishes = productsData instanceof Array ? productsData : [];
-  const carousel = carouselData instanceof Array ? carouselData : [];
-  const categories = categoriesData instanceof Array ? categoriesData : [];
-  const recommended = dishes?.filter((e) => e.is_recommended) ?? [];
-
-  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
-
-  const updateCurrentSlideIndex = (e: any): void => {
-    const contentOffsetX = e.nativeEvent.contentOffset.x;
-    const currentIndex = Math.round(contentOffsetX / theme.sizes.width);
-    setCurrentSlideIndex(currentIndex);
-  };
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
@@ -64,203 +37,28 @@ const Home: React.FC = (): JSX.Element => {
     );
   };
 
-  const renderCarousel = () => {
-    const renderCarouselImages = () => {
-      return (
-        <FlatList
-          data={carousel}
-          onMomentumScrollEnd={(e) => updateCurrentSlideIndex(e)}
-          renderItem={({item}) => (
-            <components.Image
-              source={{uri: item.image}}
-              style={{width: theme.sizes.width, height: 250, aspectRatio: 1.5}}
-            />
-          )}
-          pagingEnabled={true}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={16}
-          decelerationRate={0}
-          bounces={false}
-          alwaysBounceHorizontal={false}
-        />
-      );
-    };
-
-    const renderIndicator = () => {
-      if (carousel.length > 1) {
-        return (
-          <View
-            style={{
-              height: 24,
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: 20,
-              flexDirection: 'row',
-              alignSelf: 'center',
-            }}
-          >
-            {carousel.map((image, index, array) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    width: 8,
-                    height: currentSlideIndex === index ? 20 : 8,
-                    borderRadius: 8 / 2,
-                    backgroundColor: theme.colors.white,
-                    opacity: currentSlideIndex === index ? 1 : 0.5,
-                    borderColor:
-                      currentSlideIndex === index
-                        ? theme.colors.mainColor
-                        : '#DBE9F5',
-                    marginHorizontal: 4,
-                  }}
-                />
-              );
-            })}
-          </View>
-        );
-      }
-      return null;
-    };
-
-    if (carousel.length > 0) {
-      return (
-        <View style={{marginBottom: 30}}>
-          {renderCarouselImages()}
-          {renderIndicator()}
-        </View>
-      );
-    }
-
-    if (carousel.length === 0) {
-      return null;
-    }
-  };
-
-  const renderCategories = () => {
-    if (categories.length > 0) {
-      return (
-        <View style={{marginBottom: 30}}>
-          <components.BlockHeading
-            title='We offer'
-            onPress={() => {
-              dispatch(setScreen('Menu'));
-            }}
-            containerStyle={{marginHorizontal: 20, marginBottom: 14}}
-          />
-          <FlatList
-            data={categories}
-            horizontal={true}
-            contentContainerStyle={{paddingLeft: 20}}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            pagingEnabled={true}
-            decelerationRate={0}
-            renderItem={({item}) => {
-              const lastItem = categories[categories.length - 1];
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Menulist', {
-                      category: item.name,
-                    });
-                  }}
-                >
-                  <components.ImageBackground
-                    source={{uri: item.image}}
-                    style={{
-                      width: 90,
-                      height: 90,
-                      paddingVertical: 10,
-                      paddingHorizontal: 15,
-                      marginRight: item.id === lastItem.id ? 20 : 10,
-                      justifyContent: 'flex-end',
-                    }}
-                    resizeMode='cover'
-                    imageStyle={{borderRadius: 10}}
-                  >
-                    <Text
-                      style={{
-                        ...theme.fonts.DMSans_400Regular,
-                        fontSize: 10,
-                        color: theme.colors.mainColor,
-                      }}
-                    >
-                      {item.name}
-                    </Text>
-                  </components.ImageBackground>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View>
-      );
-    }
-
-    return null;
-  };
-
-  const renderRecommended = () => {
-    const slice = recommended?.slice(0, 12);
-
-    if (recommended.length > 0) {
-      return (
-        <View style={{marginBottom: 30}}>
-          <components.BlockHeading
-            title='Recommended for you'
-            containerStyle={{marginHorizontal: 20, marginBottom: 14}}
-          />
-          <FlatList
-            data={slice}
-            horizontal={true}
-            contentContainerStyle={{paddingLeft: 20}}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            pagingEnabled={true}
-            snapToInterval={theme.sizes.width - responsiveWidth(44.2)}
-            decelerationRate={0}
-            renderItem={({item, index}) => {
-              const lastItem = index === slice.length - 1;
-              return (
-                <components.RecommendedItem item={item} lastItem={lastItem} />
-              );
-            }}
-          />
-        </View>
-      );
-    }
-
-    if (recommended.length === 0) {
-      return null;
-    }
-  };
-
   const renderReviews = () => {
     const slice = reviews?.slice(0, 12);
 
     return (
-      <View style={{marginBottom: 20}}>
+      <View style={{ marginBottom: 20 }}>
         <components.BlockHeading
-          title='Our Happy clients say'
+          title="Our Happy clients say"
           onPress={() => {
-            navigation.navigate('Reviews');
+            navigation.navigate("Reviews");
           }}
-          containerStyle={{marginHorizontal: 20, marginBottom: 14}}
+          containerStyle={{ marginHorizontal: 20, marginBottom: 14 }}
         />
         <FlatList
           data={slice}
           horizontal={true}
-          contentContainerStyle={{paddingLeft: 20}}
+          contentContainerStyle={{ paddingLeft: 20 }}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id.toString()}
           pagingEnabled={true}
           snapToInterval={theme.sizes.width - 54}
           decelerationRate={0}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             const last = index === reviews.length - 1;
             return <components.ReviewItem item={item} last={last} />;
           }}
@@ -270,19 +68,142 @@ const Home: React.FC = (): JSX.Element => {
   };
 
   const renderContent = () => {
-    if (carouselLoading || categoriesLoading || productsLoading) {
-      return <components.Loader />;
-    }
     return (
-      <ScrollView
-        contentContainerStyle={{flexGrow: 1, paddingTop: 6}}
-        showsVerticalScrollIndicator={false}
-      >
-        {renderCarousel()}
-        {renderCategories()}
-        {renderRecommended()}
-        {renderReviews()}
-      </ScrollView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8F9FC" }}>
+        <StatusBar />
+        <ScrollView contentContainerStyle={{ padding: 20 }}>
+          {/* Header */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 24, fontWeight: "bold", color: "#333" }}>
+              Welcome, Anthony!
+            </Text>
+            <Ionicons name="notifications-outline" size={24} color="#555" />
+          </View>
+          <Text style={{ color: "#888", marginTop: 4 }}>Wed, 13 Apr 23</Text>
+
+          {/* Inventory Summary */}
+          <View
+            style={{
+              backgroundColor: "#6F5EF6",
+              padding: 20,
+              borderRadius: 12,
+              marginTop: 20,
+            }}
+          >
+            <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "bold" }}>
+              Inventory Summary
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 10,
+              }}
+            >
+              <View>
+                <Text style={{ color: "#FFF", fontSize: 14 }}>
+                  Category Items
+                </Text>
+                <Text
+                  style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}
+                >
+                  24
+                </Text>
+              </View>
+              <View>
+                <Text style={{ color: "#FFF", fontSize: 14 }}>Folders</Text>
+                <Text
+                  style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}
+                >
+                  15
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 10,
+              }}
+            >
+              <View>
+                <Text style={{ color: "#FFF", fontSize: 14 }}>Total Qty</Text>
+                <Text
+                  style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}
+                >
+                  479 Items
+                </Text>
+              </View>
+              <View>
+                <Text style={{ color: "#FFF", fontSize: 14 }}>Total Value</Text>
+                <Text
+                  style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}
+                >
+                  $1,067.50
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Feature Cards */}
+          <View style={{ marginTop: 20 }}>
+            {[
+              {
+                title: "Low Stock",
+                desc: "All stock items that are low inventory",
+                value: "18 Items",
+              },
+              {
+                title: "Move Stock",
+                desc: "Track inventory that has moved locations",
+                value: "8 Orders",
+              },
+              {
+                title: "Upcoming Expiry",
+                desc: "Items in inventory are set to expire soon",
+                value: "4 Items",
+              },
+              {
+                title: "Qty Changes",
+                desc: "All inflows and outflows for an item",
+                value: "32 Items",
+              },
+            ].map((item, index) => (
+              <View
+                key={index}
+                style={{
+                  backgroundColor: "#FFF",
+                  padding: 15,
+                  borderRadius: 12,
+                  marginBottom: 10,
+                  shadowColor: "#000",
+                  shadowOpacity: 0.1,
+                  shadowRadius: 5,
+                  elevation: 3,
+                }}
+              >
+                <Text
+                  style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
+                >
+                  {item.title}
+                </Text>
+                <Text style={{ color: "#777", marginTop: 4 }}>{item.desc}</Text>
+                <Text
+                  style={{ color: "#6F5EF6", fontWeight: "bold", marginTop: 6 }}
+                >
+                  {item.value}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   };
 
