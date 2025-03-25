@@ -21,7 +21,7 @@ export type RootStackParamList = {
   OrderHistory: undefined;
   LeaveAReview: undefined;
   MyPromocodes: undefined;
-  TabNavigator: { userId: BigInteger };
+  TabNavigator: { userId: string; token: string };
   Notifications: undefined;
   LeaveAReviews: undefined;
   PaymentMethod: undefined;
@@ -51,4 +51,6 @@ export type RootStackParamList = {
   HealthQuestions: undefined;
   AddItems: { userId: string };
   EditItems: undefined;
+  CategorizeExpenses: { token: string };
+  Purchase: Purchase;
 };
