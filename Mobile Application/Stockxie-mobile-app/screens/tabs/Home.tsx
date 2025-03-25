@@ -90,7 +90,7 @@ const Home: React.FC = (): JSX.Element => {
           {/* Inventory Summary */}
           <View
             style={{
-              backgroundColor: "#6F5EF6",
+              backgroundColor: "#04b4bc",
               padding: 20,
               borderRadius: 12,
               marginTop: 20,
@@ -195,7 +195,7 @@ const Home: React.FC = (): JSX.Element => {
                 </Text>
                 <Text style={{ color: "#777", marginTop: 4 }}>{item.desc}</Text>
                 <Text
-                  style={{ color: "#6F5EF6", fontWeight: "bold", marginTop: 6 }}
+                  style={{ color: "#04b4bc", fontWeight: "bold", marginTop: 6 }}
                 >
                   {item.value}
                 </Text>
