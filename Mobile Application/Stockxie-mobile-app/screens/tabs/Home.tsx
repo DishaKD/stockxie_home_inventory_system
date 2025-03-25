@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   StatusBar,
 } from "react-native";
 import { responsiveWidth } from "react-native-responsive-dimensions";
+import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useAppDispatch } from "../../hooks";
@@ -21,6 +22,30 @@ import BottomTabBar from "../../navigation/BottomTabBar";
 const Home: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
+  const [userName, setUserName] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+
+  useEffect(() => {
+    // Fetch user's profile to get their name
+    axios
+      .get("/profile", { headers: { Authorization: `Bearer ${235253}` } })
+      .then((response) => {
+        setUserName(response.data.name); // Assuming the response has a 'name' property
+      })
+      .catch((error) => {
+        console.error("Error fetching profile:", error);
+      });
+
+    // Set current date
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+    setCurrentDate(formattedDate);
+  }, []);
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
@@ -81,11 +106,11 @@ const Home: React.FC = (): JSX.Element => {
             }}
           >
             <Text style={{ fontSize: 24, fontWeight: "bold", color: "#333" }}>
-              Welcome, Anthony!
+              Welcome, {userName || "Guest"}!
             </Text>
             <Ionicons name="notifications-outline" size={24} color="#555" />
           </View>
-          <Text style={{ color: "#888", marginTop: 4 }}>Wed, 13 Apr 23</Text>
+          <Text style={{ color: "#888", marginTop: 4 }}>{currentDate}</Text>
 
           {/* Inventory Summary */}
           <View
