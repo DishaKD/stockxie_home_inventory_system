@@ -24,15 +24,17 @@ import ForgotPasswordSentEmail from "../screens/auth/ForgotPasswordSentEmail";
 import HealthQuestions from "../screens/HealthQuestions";
 import AddItems from "../screens/inventory/AddItems";
 import EditItems from "../screens/inventory/EditItems";
+import CategorizeExpenses from "../screens/purchase/CategorizeExpenses";
+
 // Tabs
 import Home from "../screens/tabs/Home";
-import Order from "../screens/tabs/Order";
+import Purchase from "../screens/tabs/Purchase";
 import Notification from "../screens/tabs/Notification";
 import Inventory from "../screens/tabs/Inventory";
 
 export const screens = {
   Home,
-  Order,
+  Purchase,
   SignIn,
   SignUp,
   Product,
@@ -59,4 +61,5 @@ export const screens = {
   AddItems,
   EditItems,
   Inventory,
+  CategorizeExpenses
 };
