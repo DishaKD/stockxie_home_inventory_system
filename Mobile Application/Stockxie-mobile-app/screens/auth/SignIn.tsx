@@ -90,6 +90,7 @@ const SignIn: React.FC = (): JSX.Element => {
         console.log("User ID:", response.data.userId);
         navigation.replace("TabNavigator", {
           userId: response.data.userId,
+          token: response.data.token,
         });
       } else {
         Alert.alert("Error", "Login failed, please try again.");
