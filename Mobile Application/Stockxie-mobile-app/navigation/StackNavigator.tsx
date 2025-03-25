@@ -135,6 +135,11 @@ const StackNavigator = () => {
         component={screens.EditItems}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="CategorizeExpenses"
+        component={screens.CategorizeExpenses}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
