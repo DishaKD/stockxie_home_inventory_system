@@ -12,16 +12,19 @@ export const ENDPOINTS = {
     promocodes: "api/promocodes",
     categories: "api/categories",
     items: "api/items/",
+    expenses: "api/expenses",
   },
   post: {
     order: "api/order/create",
     items: "api/items/create",
+    categories: "api/categories",
   },
   put: {
     items: "api/items/update",
   },
   delete: {
     items: "api/items/delete",
+    categories: "api/categories",
   },
   healthProfile: {
     create: "/api/healthProfile",
