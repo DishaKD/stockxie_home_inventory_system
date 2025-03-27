@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Alert,
   ViewStyle,
 } from "react-native";
 
@@ -16,6 +15,8 @@ import { useAppNavigation } from "../../hooks";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { homeIndicatorHeight } from "../../utils";
 import { createItem } from "../../config/api/itemCreate";
+import { showToast } from "../../components/ToastProvider";
+
 type Props = NativeStackScreenProps<RootStackParamList, "AddItems">;
 
 const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
@@ -84,7 +85,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         const response = await createItem(itemData);
 
         // Handle success
-        Alert.alert("Success", "Item created successfully!");
+        showToast("success", "Item created successfully!");
         console.log("Item created:", response);
 
         // Reset form fields
@@ -93,11 +94,12 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         setExpiryDate("");
       } catch (error) {
         // Handle error
-        Alert.alert("Error", "Failed to create item. Please try again.");
+        showToast("danger", "Failed to create item. Please try again.");
+
         console.error("Error creating item:", error);
       }
     } else {
-      Alert.alert("Error", "Please fill all the required fields correctly.");
+      showToast("danger", "Please fill all the required fields correctly.");
     }
   };
 
