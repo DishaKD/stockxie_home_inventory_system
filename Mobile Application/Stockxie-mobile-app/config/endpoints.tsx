@@ -13,6 +13,7 @@ export const ENDPOINTS = {
     categories: "api/categories",
     items: "api/items/",
     expenses: "api/expenses",
+    profile: "api/auth/profile",
   },
   post: {
     order: "api/order/create",
