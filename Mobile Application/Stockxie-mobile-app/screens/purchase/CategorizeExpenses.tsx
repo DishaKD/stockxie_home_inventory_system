@@ -5,7 +5,6 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import axios from "axios";
 import Accordion from "react-native-collapsible/Accordion";
