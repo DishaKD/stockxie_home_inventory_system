@@ -18,8 +18,11 @@ import { useAppNavigation } from "../../hooks";
 import { theme, reviews } from "../../constants";
 import { setScreen } from "../../store/slices/tabSlice";
 import BottomTabBar from "../../navigation/BottomTabBar";
-
-const Home: React.FC = (): JSX.Element => {
+import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+interface HomeProps {
+  token: string;
+}
+const Home: React.FC<HomeProps> = ({ token }) => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const [userName, setUserName] = useState("");
@@ -28,9 +31,11 @@ const Home: React.FC = (): JSX.Element => {
   useEffect(() => {
     // Fetch user's profile to get their name
     axios
-      .get("/profile", { headers: { Authorization: `Bearer ${235253}` } })
+      .get(`${BASE_URL}${ENDPOINTS.get.profile}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
-        setUserName(response.data.name); // Assuming the response has a 'name' property
+        setUserName(response.data.user.username);
       })
       .catch((error) => {
         console.error("Error fetching profile:", error);
