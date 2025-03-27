@@ -9,6 +9,7 @@ import { components } from "../../components";
 import { useAppNavigation } from "../../hooks";
 import { homeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+import { showToast } from "../../components/ToastProvider";
 
 const SignUp: React.FC = (): JSX.Element => {
   const navigation = useAppNavigation();
@@ -79,14 +80,19 @@ const SignUp: React.FC = (): JSX.Element => {
 
       if (response.data.message === "User registered successfully") {
         // Registration successful, navigate to verification screen
+        showToast("success", "Sign up Successful");
+
         navigation.navigate("SignUpaccountCreated");
       } else {
-        setError("Registration failed. Please try again.");
+        showToast("danger", "Sign up Failed");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        showToast("danger", "Something went wrong.");
+
         setError(error.response?.data?.message || "Something went wrong.");
       } else {
+        showToast("danger", "Something went wrong.");
         setError("Something went wrong.");
       }
     }
