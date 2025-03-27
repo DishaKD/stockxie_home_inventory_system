@@ -16,6 +16,7 @@ import { useAppNavigation } from "../../hooks";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { homeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+import { showToast } from "../../components/ToastProvider";
 
 type Props = NativeStackScreenProps<RootStackParamList, "EditItems">;
 
@@ -45,7 +46,7 @@ const EditItems: React.FC<Props> = ({ route }): JSX.Element => {
         setQuantity(item.quantity.toString());
         setExpiryDate(item.expiryDate);
       } catch (error) {
-        Alert.alert("Error", "Failed to fetch item details. Please try again.");
+        showToast("danger", "Failed to fetch item details. Please try again.");
         console.error("Error fetching item details:", error);
       }
     };
@@ -69,13 +70,13 @@ const EditItems: React.FC<Props> = ({ route }): JSX.Element => {
       );
 
       // Handle success
-      Alert.alert("Success", "Item updated successfully!");
+      showToast("success", "Item updated successfully!");
       console.log("Item updated:", response.data);
 
       // Navigate back to the previous screen
       navigation.goBack();
     } catch (error) {
-      Alert.alert("Error", "Failed to update item. Please try again.");
+      showToast("danger", "Failed to update item. Please try again.");
       console.error("Error updating item:", error);
     }
   };
