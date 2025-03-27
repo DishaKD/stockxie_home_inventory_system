@@ -5,7 +5,6 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import axios from "axios";
 
@@ -19,6 +18,7 @@ import BottomTabBar from "../../navigation/BottomTabBar";
 import Accordion from "react-native-collapsible/Accordion";
 import { homeIndicatorHeight as getHomeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+import { showToast } from "../../components/ToastProvider";
 
 interface InventoryProps {
   userId?: string;
@@ -72,7 +72,7 @@ const Inventory: React.FC<InventoryProps> = ({ userId }) => {
       setItems(response.data); // Update the items list with search results
     } catch (error) {
       console.error("Error searching items:", error);
-      Alert.alert("Error", "Failed to search items. Please try again.");
+      showToast("danger", "Failed to search items. Please try again.");
     }
   };
 
@@ -413,10 +413,10 @@ const Inventory: React.FC<InventoryProps> = ({ userId }) => {
   const handleDeleteItem = async (itemId: number) => {
     try {
       await axios.delete(`${BASE_URL}${ENDPOINTS.delete.items}/${itemId}`);
-      setItems(items.filter((item) => item.id !== itemId)); // Remove the item from the list
-      Alert.alert("Success", "Item deleted successfully!");
+      setItems(items.filter((item) => item.id !== itemId));
+      showToast("success", "Item deleted successfully!");
     } catch (error) {
-      Alert.alert("Error", "Failed to delete item. Please try again.");
+      showToast("danger", "Failed to delete item. Please try again.");
       console.error("Error deleting item:", error);
     }
   };
