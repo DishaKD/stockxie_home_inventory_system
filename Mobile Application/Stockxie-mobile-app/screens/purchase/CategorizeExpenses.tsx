@@ -17,6 +17,7 @@ import { useAppNavigation } from "../../hooks";
 import BottomTabBar from "../../navigation/BottomTabBar";
 import { homeIndicatorHeight as getHomeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+import { showToast } from "../../components/ToastProvider";
 
 interface CategorizeExpensesProps {
   route?: any;
@@ -50,13 +51,13 @@ const CategorizeExpenses: React.FC<CategorizeExpensesProps> = ({ route }) => {
       );
       setCategories(response.data);
     } catch (error) {
+      showToast("danger", "Error fetching categories");
       console.error("Error fetching categories:", error);
     }
   };
 
   const handleAddCategory = async () => {
-    if (!newCategory.trim())
-      return Alert.alert("Error", "Enter a category name.");
+    if (!newCategory.trim()) showToast("danger", "Enter a category name.");
     try {
       const response = await axios.post(
         `${BASE_URL}${ENDPOINTS.post.categories}`,
@@ -69,7 +70,9 @@ const CategorizeExpenses: React.FC<CategorizeExpensesProps> = ({ route }) => {
       );
       setCategories([...categories, response.data]);
       setNewCategory("");
+      showToast("success", "Category added successfully!");
     } catch (error) {
+      showToast("danger", "Error adding category");
       console.error("Error adding category:", error);
     }
   };
@@ -82,7 +85,10 @@ const CategorizeExpenses: React.FC<CategorizeExpensesProps> = ({ route }) => {
         },
       });
       setCategories(categories.filter((cat) => cat.id !== id));
+      showToast("success", "Category deleted successfully!");
     } catch (error) {
+      showToast("danger", "Error deleting category");
+
       console.error("Error deleting category:", error);
     }
   };
