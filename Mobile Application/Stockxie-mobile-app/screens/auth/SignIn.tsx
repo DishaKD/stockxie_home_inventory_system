@@ -17,7 +17,7 @@ import { components } from "../../components";
 import { useAppNavigation } from "../../hooks";
 import { homeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
-
+import { showToast } from "../../components/ToastProvider";
 const SignIn: React.FC = (): JSX.Element => {
   const navigation = useAppNavigation();
 
@@ -87,16 +87,17 @@ const SignIn: React.FC = (): JSX.Element => {
 
       if (response.data.token) {
         await AsyncStorage.setItem("userToken", response.data.token);
+        showToast("success", "Login Successful");
         console.log("User ID:", response.data.userId);
         navigation.replace("TabNavigator", {
           userId: response.data.userId,
           token: response.data.token,
         });
       } else {
-        Alert.alert("Error", "Login failed, please try again.");
+        showToast("danger", "Login Failed");
       }
     } catch (error) {
-      Alert.alert("Error", "Invalid credentials or server issue.");
+      showToast("danger", "Error");
     }
     setLoading(false);
   };
