@@ -104,7 +104,7 @@ const Sidebar = () => {
                                 <li className="menu nav-item">
                                     <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
                                         <div className="flex items-center">
-                                            <IconMenuDashboard className="group-hover:!text-primary shrink-0" />
+                                            <IconMenuDashboard className="group-hover:!text-[#04b4bc] shrink-0" />{' '}
                                             <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
                                         </div>
 
@@ -123,7 +123,7 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <NavLink to="/datatables/column-chooser" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuUserListing className="group-hover:!text-primary shrink-0" />
+                                                <IconMenuUserListing className="group-hover:!text-[#04b4bc] shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Users Listing')}</span>
                                             </div>
                                         </NavLink>
@@ -131,7 +131,7 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <NavLink to="/apps/mailbox" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuUserManagement className="group-hover:!text-primary shrink-0" />
+                                                <IconMenuUserManagement className="group-hover:!text-[#04b4bc] shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Users Management')}</span>
                                             </div>
                                         </NavLink>
@@ -139,7 +139,7 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <NavLink to="/apps/todolist" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuUserRole className="group-hover:!text-primary shrink-0" />
+                                                <IconMenuUserRole className="group-hover:!text-[#04b4bc] shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Role Management')}</span>
                                             </div>
                                         </NavLink>
@@ -147,7 +147,7 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <NavLink to="/apps/notes" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuUserReports className="group-hover:!text-primary shrink-0" />
+                                                <IconMenuUserReports className="group-hover:!text-[#04b4bc] shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('User Reports')}</span>
                                             </div>
                                         </NavLink>
@@ -163,7 +163,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/charts" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuSupportTicket className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuSupportTicket className="group-hover:!text-[#04b4bc] shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('In-App Support Tickets')}</span>
                                     </div>
                                 </NavLink>
@@ -172,7 +172,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/widgets" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuTicketAssign className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuTicketAssign className="group-hover:!text-[#04b4bc] shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Ticket Assignment')}</span>
                                     </div>
                                 </NavLink>
@@ -185,7 +185,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/widgets" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuLogs className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuLogs className="group-hover:!text-[#04b4bc] shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('User Activity Logs')}</span>
                                     </div>
                                 </NavLink>
@@ -193,7 +193,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/widgets" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuSystemPerformance className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuSystemPerformance className="group-hover:!text-[#04b4bc] shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('System Performance')}</span>
                                     </div>
                                 </NavLink>
