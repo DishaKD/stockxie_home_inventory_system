@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { setPageTitle, toggleRTL } from '../../store/themeConfigSlice';
+import { setPageTitle } from '../../store/themeConfigSlice';
 import Dropdown from '../../components/Dropdown';
 import { IRootState } from '../../store';
 import i18next from 'i18next';
@@ -19,16 +19,8 @@ const LoginCover = () => {
         dispatch(setPageTitle('Login Cover'));
     });
     const navigate = useNavigate();
-    const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
-    const setLocale = (flag: string) => {
-        setFlag(flag);
-        if (flag.toLowerCase() === 'ae') {
-            dispatch(toggleRTL('rtl'));
-        } else {
-            dispatch(toggleRTL('ltr'));
-        }
-    };
+
     const [flag, setFlag] = useState(themeConfig.locale);
 
     const submitForm = () => {
@@ -65,7 +57,6 @@ const LoginCover = () => {
                             <div className="dropdown ms-auto w-max">
                                 <Dropdown
                                     offset={[0, 8]}
-                                    placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
                                     btnClassName="flex items-center gap-2.5 rounded-lg border border-white-dark/30 bg-white px-2 py-1.5 text-white-dark hover:border-primary hover:text-primary dark:bg-black"
                                     button={
                                         <>
@@ -89,7 +80,6 @@ const LoginCover = () => {
                                                         onClick={() => {
                                                             i18next.changeLanguage(item.code);
                                                             // setFlag(item.code);
-                                                            setLocale(item.code);
                                                         }}
                                                     >
                                                         <img src={`/assets/images/flags/${item.code.toUpperCase()}.svg`} alt="flag" className="w-5 h-5 object-cover rounded-full" />
