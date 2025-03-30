@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { IRootState } from '../../store';
-import { toggleRTL, toggleTheme, toggleSidebar } from '../../store/themeConfigSlice';
+import { toggleTheme, toggleSidebar } from '../../store/themeConfigSlice';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import Dropdown from '../Dropdown';
@@ -55,8 +55,6 @@ const Header = () => {
             }
         }
     }, [location]);
-
-    const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const dispatch = useDispatch();
@@ -126,14 +124,6 @@ const Header = () => {
 
     const [search, setSearch] = useState(false);
 
-    const setLocale = (flag: string) => {
-        setFlag(flag);
-        if (flag.toLowerCase() === 'ae') {
-            dispatch(toggleRTL('rtl'));
-        } else {
-            dispatch(toggleRTL('ltr'));
-        }
-    };
     const [flag, setFlag] = useState(themeConfig.locale);
 
     const { t } = useTranslation();
@@ -232,7 +222,6 @@ const Header = () => {
                         <div className="dropdown shrink-0 flex">
                             <Dropdown
                                 offset={[0, 8]}
-                                placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
                                 btnClassName="relative group block"
                                 button={<img className="w-9 h-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="/assets/images/user-profile.jpeg" alt="userProfile" />}
                             >
