@@ -35,6 +35,8 @@ import IconMenuUserListing from '../Icon/Menu/IconMenuUserListing';
 import IconMenuUserManagement from '../Icon/Menu/IconMenuUserManagement';
 import IconMenuUserRole from '../Icon/Menu/IconMenuUserRole';
 import IconMenuUserReports from '../Icon/Menu/IconMenuUserReports';
+import IconMenuSupportTicket from '../Icon/Menu/IconMenuSupportTicket';
+import IconMenuTicketAssign from '../Icon/Menu/IconMenuTicketAssign';
 
 const Sidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -159,7 +161,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/charts" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuCharts className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuSupportTicket className="group-hover:!text-primary shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('In-App Support Tickets')}</span>
                                     </div>
                                 </NavLink>
@@ -168,7 +170,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/widgets" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuWidgets className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuTicketAssign className="group-hover:!text-primary shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Ticket Assignment')}</span>
                                     </div>
                                 </NavLink>
