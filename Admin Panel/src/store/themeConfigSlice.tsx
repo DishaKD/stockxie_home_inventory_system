@@ -13,6 +13,23 @@ const defaultState = {
     locale: 'en',
     sidebar: false,
     pageTitle: '',
+    languageList: [
+        { code: 'zh', name: 'Chinese' },
+        { code: 'da', name: 'Danish' },
+        { code: 'en', name: 'English' },
+        { code: 'fr', name: 'French' },
+        { code: 'de', name: 'German' },
+        { code: 'el', name: 'Greek' },
+        { code: 'hu', name: 'Hungarian' },
+        { code: 'it', name: 'Italian' },
+        { code: 'ja', name: 'Japanese' },
+        { code: 'pl', name: 'Polish' },
+        { code: 'pt', name: 'Portuguese' },
+        { code: 'ru', name: 'Russian' },
+        { code: 'es', name: 'Spanish' },
+        { code: 'sv', name: 'Swedish' },
+        { code: 'tr', name: 'Turkish' },
+    ],
     semidark: false,
 };
 
@@ -26,6 +43,24 @@ const initialState = {
     isDarkMode: false,
     sidebar: localStorage.getItem('sidebar') || defaultState.sidebar,
     semidark: localStorage.getItem('semidark') || themeConfig.semidark,
+    languageList: [
+        { code: 'zh', name: 'Chinese' },
+        { code: 'da', name: 'Danish' },
+        { code: 'en', name: 'English' },
+        { code: 'fr', name: 'French' },
+        { code: 'de', name: 'German' },
+        { code: 'el', name: 'Greek' },
+        { code: 'hu', name: 'Hungarian' },
+        { code: 'it', name: 'Italian' },
+        { code: 'ja', name: 'Japanese' },
+        { code: 'pl', name: 'Polish' },
+        { code: 'pt', name: 'Portuguese' },
+        { code: 'ru', name: 'Russian' },
+        { code: 'es', name: 'Spanish' },
+        { code: 'sv', name: 'Swedish' },
+        { code: 'tr', name: 'Turkish' },
+        { code: 'ae', name: 'Arabic' },
+    ],
 };
 
 const themeConfigSlice = createSlice({
@@ -65,6 +100,7 @@ const themeConfigSlice = createSlice({
             localStorage.setItem('layout', payload);
             state.layout = payload;
         },
+
         toggleAnimation(state, { payload }) {
             payload = payload || state.animation; // animate__fadeIn, animate__fadeInDown, animate__fadeInUp, animate__fadeInLeft, animate__fadeInRight, animate__slideInDown, animate__slideInLeft, animate__slideInRight, animate__zoomIn
             payload = payload?.trim();
