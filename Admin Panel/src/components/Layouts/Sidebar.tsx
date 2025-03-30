@@ -37,6 +37,8 @@ import IconMenuUserRole from '../Icon/Menu/IconMenuUserRole';
 import IconMenuUserReports from '../Icon/Menu/IconMenuUserReports';
 import IconMenuSupportTicket from '../Icon/Menu/IconMenuSupportTicket';
 import IconMenuTicketAssign from '../Icon/Menu/IconMenuTicketAssign';
+import IconMenuLogs from '../Icon/Menu/IconMenuLogs';
+import IconMenuSystemPerformance from '../Icon/Menu/IconMenuSystemPerformance';
 
 const Sidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -183,7 +185,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/widgets" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuWidgets className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuLogs className="group-hover:!text-primary shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('User Activity Logs')}</span>
                                     </div>
                                 </NavLink>
@@ -191,38 +193,8 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <NavLink to="/widgets" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuWidgets className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuSystemPerformance className="group-hover:!text-primary shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('System Performance')}</span>
-                                    </div>
-                                </NavLink>
-                            </li>
-
-                            <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
-                                <IconMinus className="w-4 h-5 flex-none hidden" />
-                                <span>{t('Settings')}</span>
-                            </h2>
-                            <li className="menu nav-item">
-                                <NavLink to="/widgets" className="group">
-                                    <div className="flex items-center">
-                                        <IconMenuWidgets className="group-hover:!text-primary shrink-0" />
-                                        <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('General Settings')}</span>
-                                    </div>
-                                </NavLink>
-                            </li>
-                            <li className="menu nav-item">
-                                <NavLink to="/widgets" className="group">
-                                    <div className="flex items-center">
-                                        <IconMenuWidgets className="group-hover:!text-primary shrink-0" />
-                                        <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Access Control & Permissions')}</span>
-                                    </div>
-                                </NavLink>
-                            </li>
-
-                            <li className="menu nav-item">
-                                <NavLink to="/widgets" className="group">
-                                    <div className="flex items-center">
-                                        <IconMenuWidgets className="group-hover:!text-primary shrink-0" />
-                                        <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Notification Preferences')}</span>
                                     </div>
                                 </NavLink>
                             </li>
