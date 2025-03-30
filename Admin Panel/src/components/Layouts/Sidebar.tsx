@@ -32,6 +32,9 @@ import IconMenuPages from '../Icon/Menu/IconMenuPages';
 import IconMenuAuthentication from '../Icon/Menu/IconMenuAuthentication';
 import IconMenuDocumentation from '../Icon/Menu/IconMenuDocumentation';
 import IconMenuUserListing from '../Icon/Menu/IconMenuUserListing';
+import IconMenuUserManagement from '../Icon/Menu/IconMenuUserManagement';
+import IconMenuUserRole from '../Icon/Menu/IconMenuUserRole';
+import IconMenuUserReports from '../Icon/Menu/IconMenuUserReports';
 
 const Sidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -117,22 +120,22 @@ const Sidebar = () => {
                                         <NavLink to="/datatables/column-chooser" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuUserListing className="group-hover:!text-primary shrink-0" />
-                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('User Listing')}</span>
+                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Users Listing')}</span>
                                             </div>
                                         </NavLink>
                                     </li>
                                     <li className="nav-item">
                                         <NavLink to="/apps/mailbox" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuMailbox className="group-hover:!text-primary shrink-0" />
-                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('User Details Management')}</span>
+                                                <IconMenuUserManagement className="group-hover:!text-primary shrink-0" />
+                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Users Management')}</span>
                                             </div>
                                         </NavLink>
                                     </li>
                                     <li className="nav-item">
                                         <NavLink to="/apps/todolist" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuTodo className="group-hover:!text-primary shrink-0" />
+                                                <IconMenuUserRole className="group-hover:!text-primary shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Role Management')}</span>
                                             </div>
                                         </NavLink>
@@ -140,7 +143,7 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <NavLink to="/apps/notes" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuNotes className="group-hover:!text-primary shrink-0" />
+                                                <IconMenuUserReports className="group-hover:!text-primary shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('User Reports')}</span>
                                             </div>
                                         </NavLink>
