@@ -1,8 +1,5 @@
 import { lazy } from 'react';
 const Index = lazy(() => import('../pages/Index'));
-const Analytics = lazy(() => import('../pages/Analytics'));
-const Finance = lazy(() => import('../pages/Finance'));
-const Crypto = lazy(() => import('../pages/Crypto'));
 const Todolist = lazy(() => import('../pages/Apps/Todolist'));
 const Mailbox = lazy(() => import('../pages/Apps/Mailbox'));
 const Notes = lazy(() => import('../pages/Apps/Notes'));
@@ -105,25 +102,6 @@ const routes = [
     {
         path: '/',
         element: <Index />,
-    },
-    // {
-    //     path: '/index',
-    //     element: <Index />,
-    // },
-    // analytics page
-    {
-        path: '/analytics',
-        element: <Analytics />,
-    },
-    // finance page
-    {
-        path: '/finance',
-        element: <Finance />,
-    },
-    // crypto page
-    {
-        path: '/crypto',
-        element: <Crypto />,
     },
     {
         path: '/apps/todolist',
