@@ -8,7 +8,7 @@ import api from '../../config/axios';
 const LoginCover = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setPageTitle('Login Cover'));
+        dispatch(setPageTitle('Login'));
     });
     const navigate = useNavigate();
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
