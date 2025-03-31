@@ -5,6 +5,7 @@ const adminUserRoutes = express.Router();
 
 // Routes
 adminUserRoutes.post("/", adminUserController.createAdminUser);
+adminUserRoutes.post("/login", adminUserController.loginAdmin);
 adminUserRoutes.get("/", adminUserController.getAllAdminUsers);
 adminUserRoutes.get("/:id", adminUserController.getAdminUserById);
 adminUserRoutes.put("/:id", adminUserController.updateAdminUser);
