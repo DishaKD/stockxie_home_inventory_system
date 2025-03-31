@@ -97,6 +97,7 @@ const DateRangePicker = lazy(() => import('../pages/Forms/DateRangePicker'));
 const Clipboard = lazy(() => import('../pages/Forms/Clipboard'));
 const UserListing = lazy(() => import('../pages/UserManagement/UserListing'));
 const UserManagement = lazy(() => import('../pages/UserManagement/UsersManagement'));
+const UserRoles = lazy(() => import('../pages/UserManagement/UserRoles'));
 
 const routes = [
     // dashboard
@@ -114,6 +115,11 @@ const routes = [
     {
         path: '/user-management/user-management',
         element: <UserManagement />,
+        protected: true,
+    },
+    {
+        path: '/user-management/role-management',
+        element: <UserRoles />,
         protected: true,
     },
     {
