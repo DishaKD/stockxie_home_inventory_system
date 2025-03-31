@@ -138,7 +138,7 @@ const Sidebar = () => {
                             </h2>
 
                             <li className="menu nav-item">
-                                <NavLink to="/charts" className="group">
+                                <NavLink to="/ticket-management/ticket-management" className="group">
                                     <div className="flex items-center">
                                         <IconMenuSupportTicket className="group-hover:!text-[#04b4bc] shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('In-App Support Tickets')}</span>
