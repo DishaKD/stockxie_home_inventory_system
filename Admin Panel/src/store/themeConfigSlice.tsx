@@ -127,7 +127,7 @@ const themeConfigSlice = createSlice({
         },
 
         setPageTitle(state, { payload }) {
-            document.title = `${payload} | Stoxie - Home Inventory Management System`;
+            document.title = `${payload} | Stoxie | Admin `;
         },
     },
 });
