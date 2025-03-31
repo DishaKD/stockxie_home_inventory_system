@@ -102,35 +102,43 @@ const routes = [
     {
         path: '/',
         element: <Index />,
+        protected: true,
     },
     {
         path: '/apps/todolist',
         element: <Todolist />,
+        protected: true,
     },
     {
         path: '/apps/notes',
         element: <Notes />,
+        protected: true,
     },
     {
         path: '/apps/contacts',
         element: <Contacts />,
+        protected: true,
     },
     {
         path: '/apps/mailbox',
         element: <Mailbox />,
+        protected: true,
     },
     {
         path: '/apps/invoice/list',
         element: <List />,
+        protected: true,
     },
     // Apps page
     {
         path: '/apps/chat',
         element: <Chat />,
+        protected: true,
     },
     {
         path: '/apps/scrumboard',
         element: <Scrumboard />,
+        protected: true,
     },
     {
         path: '/apps/calendar',
@@ -387,6 +395,7 @@ const routes = [
         path: '/pages/coming-soon-cover',
         element: <ComingSoonCover />,
         layout: 'blank',
+        protected: true,
     },
     {
         path: '/pages/error404',
