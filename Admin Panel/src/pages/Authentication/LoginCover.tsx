@@ -12,7 +12,9 @@ import IconInstagram from '../../components/Icon/IconInstagram';
 import IconFacebookCircle from '../../components/Icon/IconFacebookCircle';
 import IconTwitter from '../../components/Icon/IconTwitter';
 import IconGoogle from '../../components/Icon/IconGoogle';
-
+import axios from 'axios';
+import { setUser } from '../../store/authSlice';
+import api from '../../config/axios';
 const LoginCover = () => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -23,8 +25,54 @@ const LoginCover = () => {
 
     const [flag, setFlag] = useState(themeConfig.locale);
 
-    const submitForm = () => {
-        navigate('/');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const submitForm = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        try {
+            // Call your admin login API
+            const response = await api.post('/api/adminusers/login', {
+                email: formData.email,
+                password: formData.password,
+            });
+
+            // Handle successful login
+            const { token, admin } = response.data;
+
+            // Store token (in localStorage or cookies)
+            localStorage.setItem('adminToken', token);
+
+            // Update Redux store with admin data
+            dispatch(
+                setUser({
+                    id: admin.id,
+                    name: admin.name,
+                    email: admin.email,
+                })
+            );
+
+            // Redirect to admin dashboard
+            navigate('/');
+        } catch (err) {
+            setError((err as any).response?.data?.message || 'Login failed. Please try again.');
+            setLoading(false);
+        }
     };
 
     return (
@@ -98,10 +146,20 @@ const LoginCover = () => {
                                 <p className="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
                             </div>
                             <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
+                                {error && <div className="text-red-500 text-center mb-4">{error}</div>}
                                 <div>
                                     <label htmlFor="Email">Email</label>
                                     <div className="relative text-white-dark">
-                                        <input id="Email" type="email" placeholder="Enter Email" className="form-input ps-10 placeholder:text-white-dark" />
+                                        <input
+                                            id="Email"
+                                            name="email"
+                                            type="email"
+                                            placeholder="Enter Email"
+                                            className="form-input ps-10 placeholder:text-white-dark"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required
+                                        />
                                         <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                             <IconMail fill={true} />
                                         </span>
@@ -110,20 +168,24 @@ const LoginCover = () => {
                                 <div>
                                     <label htmlFor="Password">Password</label>
                                     <div className="relative text-white-dark">
-                                        <input id="Password" type="password" placeholder="Enter Password" className="form-input ps-10 placeholder:text-white-dark" />
+                                        <input
+                                            id="Password"
+                                            name="password"
+                                            type="password"
+                                            placeholder="Enter Password"
+                                            className="form-input ps-10 placeholder:text-white-dark"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            required
+                                        />
                                         <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                             <IconLockDots fill={true} />
                                         </span>
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="flex cursor-pointer items-center">
-                                        <input type="checkbox" className="form-checkbox bg-white dark:bg-black" />
-                                        <span className="text-white-dark">Subscribe to weekly newsletter</span>
-                                    </label>
-                                </div>
-                                <button type="submit" className="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
-                                    Sign in
+                                {/* ... rest of your form ... */}
+                                <button type="submit" className="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]" disabled={loading}>
+                                    {loading ? 'Signing in...' : 'Sign in'}
                                 </button>
                             </form>
 
