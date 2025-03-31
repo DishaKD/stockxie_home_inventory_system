@@ -98,6 +98,7 @@ const Clipboard = lazy(() => import('../pages/Forms/Clipboard'));
 const UserListing = lazy(() => import('../pages/UserManagement/UserListing'));
 const UserManagement = lazy(() => import('../pages/UserManagement/UsersManagement'));
 const UserRoles = lazy(() => import('../pages/UserManagement/UserRoles'));
+const UserReports = lazy(() => import('../pages/UserManagement/UserReports'));
 
 const routes = [
     // dashboard
@@ -120,6 +121,11 @@ const routes = [
     {
         path: '/user-management/role-management',
         element: <UserRoles />,
+        protected: true,
+    },
+    {
+        path: '/user-management/user-reports',
+        element: <UserReports />,
         protected: true,
     },
     {
