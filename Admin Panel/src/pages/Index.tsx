@@ -6,41 +6,25 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Dropdown from '../components/Dropdown';
 import { useEffect } from 'react';
 import { setPageTitle } from '../store/themeConfigSlice';
-import IconHorizontalDots from '../components/Icon/IconHorizontalDots';
-import IconTrendingUp from '../components/Icon/IconTrendingUp';
-import IconPlus from '../components/Icon/IconPlus';
-import IconCreditCard from '../components/Icon/IconCreditCard';
-import IconMail from '../components/Icon/IconMail';
-import IconChecks from '../components/Icon/IconChecks';
-import IconFile from '../components/Icon/IconFile';
-import IconServer from '../components/Icon/IconServer';
-import IconChrome from '../components/Icon/IconChrome';
-import IconSafari from '../components/Icon/IconSafari';
-import IconGlobe from '../components/Icon/IconGlobe';
-import IconUsersGroup from '../components/Icon/IconUsersGroup';
-import IconLink from '../components/Icon/IconLink';
-import IconChatDots from '../components/Icon/IconChatDots';
-import IconThumbUp from '../components/Icon/IconThumbUp';
-import IconCaretsDown from '../components/Icon/IconCaretsDown';
-import IconSquareCheck from '../components/Icon/IconSquareCheck';
-import IconClock from '../components/Icon/IconClock';
+
+// Icons
+import { TrendingUp, Plus, Check, Clock, Mail, CreditCard, Users, MessageSquare, HelpCircle, FileText, ExternalLink, BarChart2, Settings, Bell, MoreHorizontal } from 'lucide-react';
 
 const Analytics = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setPageTitle('Analytics Admin'));
+        dispatch(setPageTitle('Dashboard Analytics'));
     });
 
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
-    const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
-    // totalVisitOptions
-    const totalVisit: any = {
-        series: [{ data: [21, 9, 36, 12, 44, 25, 59, 41, 66, 25] }],
+    // User Growth Chart
+    const userGrowth: any = {
+        series: [{ data: [31, 40, 28, 51, 42, 109, 100, 120, 80, 95, 110, 85] }],
         options: {
             chart: {
-                height: 58,
-                type: 'line',
+                height: 90,
+                type: 'area',
                 fontFamily: 'Nunito, sans-serif',
                 sparkline: {
                     enabled: true,
@@ -48,7 +32,7 @@ const Analytics = () => {
                 dropShadow: {
                     enabled: true,
                     blur: 3,
-                    color: '#009688',
+                    color: '#4361ee',
                     opacity: 0.4,
                 },
             },
@@ -56,13 +40,23 @@ const Analytics = () => {
                 curve: 'smooth',
                 width: 2,
             },
-            colors: ['#009688'],
+            colors: ['#4361ee'],
             grid: {
                 padding: {
                     top: 5,
                     bottom: 5,
                     left: 5,
                     right: 5,
+                },
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: isDark ? 'dark' : 'light',
+                    type: 'vertical',
+                    shadeIntensity: 0.5,
+                    opacityFrom: 0.8,
+                    opacityTo: 0.2,
                 },
             },
             tooltip: {
@@ -72,20 +66,21 @@ const Analytics = () => {
                 y: {
                     title: {
                         formatter: () => {
-                            return '';
+                            return 'Users:';
                         },
                     },
                 },
             },
         },
     };
-    // paidVisitOptions
-    const paidVisit: any = {
-        series: [{ data: [22, 19, 30, 47, 32, 44, 34, 55, 41, 69] }],
+
+    // Support Ticket Stats
+    const supportTickets: any = {
+        series: [{ data: [12, 25, 18, 35, 30, 40, 35, 45, 32, 38, 28, 32] }],
         options: {
             chart: {
-                height: 58,
-                type: 'line',
+                height: 90,
+                type: 'area',
                 fontFamily: 'Nunito, sans-serif',
                 sparkline: {
                     enabled: true,
@@ -93,7 +88,7 @@ const Analytics = () => {
                 dropShadow: {
                     enabled: true,
                     blur: 3,
-                    color: '#e2a03f',
+                    color: '#00ab55',
                     opacity: 0.4,
                 },
             },
@@ -101,13 +96,23 @@ const Analytics = () => {
                 curve: 'smooth',
                 width: 2,
             },
-            colors: ['#e2a03f'],
+            colors: ['#00ab55'],
             grid: {
                 padding: {
                     top: 5,
                     bottom: 5,
                     left: 5,
                     right: 5,
+                },
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: isDark ? 'dark' : 'light',
+                    type: 'vertical',
+                    shadeIntensity: 0.5,
+                    opacityFrom: 0.8,
+                    opacityTo: 0.2,
                 },
             },
             tooltip: {
@@ -117,29 +122,34 @@ const Analytics = () => {
                 y: {
                     title: {
                         formatter: () => {
-                            return '';
+                            return 'Tickets:';
                         },
                     },
                 },
             },
         },
     };
-    // uniqueVisitorSeriesOptions
-    const uniqueVisitorSeries: any = {
+
+    // User Acquisition Chart
+    const userAcquisition: any = {
         series: [
             {
-                name: 'Direct',
+                name: 'Organic',
+                data: [91, 76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 95],
+            },
+            {
+                name: 'Referral',
                 data: [58, 44, 55, 57, 56, 61, 58, 63, 60, 66, 56, 63],
             },
             {
-                name: 'Organic',
-                data: [91, 76, 85, 101, 98, 87, 105, 91, 114, 94, 66, 70],
+                name: 'Social',
+                data: [42, 38, 45, 50, 54, 48, 52, 47, 58, 52, 46, 55],
             },
         ],
         options: {
             chart: {
                 height: 360,
-                type: 'bar',
+                type: 'area',
                 fontFamily: 'Nunito, sans-serif',
                 toolbar: {
                     show: false,
@@ -149,31 +159,20 @@ const Analytics = () => {
                 enabled: false,
             },
             stroke: {
+                curve: 'smooth',
                 width: 2,
-                colors: ['transparent'],
             },
-            colors: ['#5c1ac3', '#ffbb44'],
-            dropShadow: {
-                enabled: true,
-                blur: 3,
-                color: '#515365',
-                opacity: 0.4,
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    borderRadius: 8,
-                    borderRadiusApplication: 'end',
-                },
-            },
-            legend: {
-                position: 'bottom',
-                horizontalAlign: 'center',
-                fontSize: '14px',
-                itemMargin: {
-                    horizontal: 8,
-                    vertical: 8,
+            colors: ['#4361ee', '#00ab55', '#805dca'],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: isDark ? 'dark' : 'light',
+                    type: 'vertical',
+                    shadeIntensity: 0.3,
+                    inverseColors: false,
+                    opacityFrom: 0.6,
+                    opacityTo: 0.1,
+                    stops: [0, 100],
                 },
             },
             grid: {
@@ -191,693 +190,420 @@ const Analytics = () => {
             xaxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 axisBorder: {
-                    show: true,
-                    color: isDark ? '#3b3f5c' : '#e0e6ed',
+                    show: false,
                 },
-            },
-            yaxis: {
-                tickAmount: 6,
-                opposite: isRtl ? true : false,
                 labels: {
-                    offsetX: isRtl ? -10 : 0,
-                },
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shade: isDark ? 'dark' : 'light',
-                    type: 'vertical',
-                    shadeIntensity: 0.3,
-                    inverseColors: false,
-                    opacityFrom: 1,
-                    opacityTo: 0.8,
-                    stops: [0, 100],
-                },
-            },
-            tooltip: {
-                marker: {
-                    show: true,
-                },
-            },
-        },
-    };
-    // followersOptions
-    const followers: any = {
-        series: [
-            {
-                data: [38, 60, 38, 52, 36, 40, 28],
-            },
-        ],
-        options: {
-            chart: {
-                height: 160,
-                type: 'area',
-                fontFamily: 'Nunito, sans-serif',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            colors: ['#4361ee'],
-            grid: {
-                padding: {
-                    top: 5,
+                    style: {
+                        colors: isDark ? '#888ea8' : '#506690',
+                    },
                 },
             },
             yaxis: {
-                show: false,
+                labels: {
+                    style: {
+                        colors: isDark ? '#888ea8' : '#506690',
+                    },
+                },
+            },
+            legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
+                offsetY: 8,
+                fontSize: '14px',
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 12,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8,
+                },
             },
             tooltip: {
-                x: {
-                    show: false,
+                theme: isDark ? 'dark' : 'light',
+            },
+        },
+    };
+
+    // Support Ticket Status
+    const ticketStatus: any = {
+        series: [45, 30, 25],
+        options: {
+            chart: {
+                type: 'donut',
+                height: 320,
+                fontFamily: 'Nunito, sans-serif',
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 3,
+                colors: isDark ? ['#0e1726'] : ['#fff'],
+            },
+            colors: ['#4361ee', '#e7515a', '#805dca'],
+            legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
+                fontSize: '14px',
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 6,
                 },
-                y: {
-                    title: {
-                        formatter: () => {
-                            return '';
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8,
+                },
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%',
+                        background: 'transparent',
+                        labels: {
+                            show: true,
+                            name: {
+                                show: true,
+                                fontSize: '16px',
+                                offsetY: -10,
+                            },
+                            value: {
+                                show: true,
+                                fontSize: '20px',
+                                color: isDark ? '#bfc9d4' : undefined,
+                                offsetY: 16,
+                                formatter: (val) => {
+                                    return val + '%';
+                                },
+                            },
+                            total: {
+                                show: true,
+                                label: 'Total',
+                                color: '#888ea8',
+                                fontSize: '16px',
+                                formatter: (w) => {
+                                    return (
+                                        w.globals.seriesTotals.reduce((a, b) => {
+                                            return a + b;
+                                        }, 0) + '%'
+                                    );
+                                },
+                            },
                         },
+                    },
+                },
+            },
+            labels: ['Open', 'Resolved', 'Pending'],
+            states: {
+                hover: {
+                    filter: {
+                        type: 'none',
+                        value: 0,
+                    },
+                },
+                active: {
+                    filter: {
+                        type: 'none',
+                        value: 0,
                     },
                 },
             },
         },
     };
-    // referralOptions
-    const referral: any = {
-        series: [
-            {
-                data: [60, 28, 52, 38, 40, 36, 38],
-            },
-        ],
-        options: {
-            chart: {
-                height: 160,
-                type: 'area',
-                fontFamily: 'Nunito, sans-serif',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            colors: ['#e7515a'],
-            grid: {
-                padding: {
-                    top: 5,
-                },
-            },
-            yaxis: {
-                show: false,
-            },
-            tooltip: {
-                x: {
-                    show: false,
-                },
-                y: {
-                    title: {
-                        formatter: () => {
-                            return '';
-                        },
-                    },
-                },
-            },
-        },
+
+    // Recent Tickets
+    const recentTickets = [
+        { id: '#3682', subject: 'Login issues on mobile app', status: 'Open', priority: 'High', date: '15 min ago', user: 'John Smith', img: '/assets/images/profile-1.jpeg' },
+        { id: '#3681', subject: 'Payment not processing', status: 'Pending', priority: 'Medium', date: '2 hours ago', user: 'Emily Chen', img: '/assets/images/profile-2.jpeg' },
+        { id: '#3680', subject: 'Feature request: Dark mode', status: 'Open', priority: 'Low', date: '4 hours ago', user: 'David Wilson', img: '/assets/images/profile-3.jpeg' },
+        { id: '#3679', subject: 'Data export not working', status: 'Resolved', priority: 'Medium', date: 'Yesterday', user: 'Sarah Adams', img: '/assets/images/profile-4.jpeg' },
+        { id: '#3678', subject: 'Account verification failed', status: 'Open', priority: 'High', date: 'Yesterday', user: 'Mike Johnson', img: '/assets/images/profile-5.jpeg' },
+    ];
+
+    // Status colors
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Open':
+                return 'bg-primary/20 text-primary';
+            case 'Resolved':
+                return 'bg-success/20 text-success';
+            case 'Pending':
+                return 'bg-warning/20 text-warning';
+            default:
+                return 'bg-info/20 text-info';
+        }
     };
-    // engagementOptions
-    const engagement: any = {
-        series: [
-            {
-                name: 'Sales',
-                data: [28, 50, 36, 60, 38, 52, 38],
-            },
-        ],
-        options: {
-            chart: {
-                height: 160,
-                type: 'area',
-                fontFamily: 'Nunito, sans-serif',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            colors: ['#1abc9c'],
-            grid: {
-                padding: {
-                    top: 5,
-                },
-            },
-            yaxis: {
-                show: false,
-            },
-            tooltip: {
-                x: {
-                    show: false,
-                },
-                y: {
-                    title: {
-                        formatter: () => {
-                            return '';
-                        },
-                    },
-                },
-            },
-        },
+
+    // Priority colors
+    const getPriorityColor = (priority) => {
+        switch (priority) {
+            case 'High':
+                return 'bg-danger/20 text-danger';
+            case 'Medium':
+                return 'bg-warning/20 text-warning';
+            case 'Low':
+                return 'bg-success/20 text-success';
+            default:
+                return 'bg-info/20 text-info';
+        }
     };
+
     return (
         <div>
-            <ul className="flex space-x-2 rtl:space-x-reverse">
-                <li>
-                    <Link to="/" className="text-primary hover:underline">
-                        Dashboard
-                    </Link>
-                </li>
-                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                    <span>Analytics</span>
-                </li>
-            </ul>
-            <div className="pt-5">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                    <div className="panel h-full sm:col-span-2 lg:col-span-1">
-                        {/* statistics */}
-                        <div className="flex justify-between dark:text-white-light mb-5">
-                            <h5 className="font-semibold text-lg ">Statistics</h5>
-                            <div className="dropdown">
-                                <Dropdown
-                                    offset={[0, 5]}
-                                    placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                    btnClassName="hover:text-primary"
-                                    button={<IconHorizontalDots className="text-black/70 dark:text-white/70 hover:!text-primary" />}
-                                >
-                                    <ul>
-                                        <li>
-                                            <button type="button">This Week</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Last Week</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">This Month</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Last Month</button>
-                                        </li>
-                                    </ul>
-                                </Dropdown>
-                            </div>
+            {/* Header with Navigation and Logo */}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="flex items-center">
+                    {/* Logo Placeholder */}
+                    <div className="bg-primary/10 rounded-xl w-12 h-12 flex items-center justify-center mr-4">
+                        <span className="text-[#00a2a9] font-bold text-xl">AC</span>
+                    </div>
+                    <div>
+                        <h1 className="text-2xl font-bold dark:text-white-light">Analytics Dashboard</h1>
+                        <p className="text-gray-500 dark:text-gray-400">Monitoring user growth and support management</p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3">
+                    <button type="button" className="btn btn-outline-primary ">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Settings
+                    </button>
+                    <button type="button" className="btn btn-primary ">
+                        <Plus className="w-4 h-4 mr-2" />
+                        New Report
+                    </button>
+                </div>
+            </div>
+
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+                <div className="panel h-full">
+                    <div className="flex items-center mb-5">
+                        <div className="bg-primary/10 rounded-xl w-11 h-11 flex items-center justify-center">
+                            <Users className="w-6 h-6 text-primary" />
                         </div>
-                        <div className="grid sm:grid-cols-2 gap-8 text-sm text-[#515365] font-bold">
-                            <div>
-                                <div>
-                                    <div>Total Visits</div>
-                                    <div className="text-[#f8538d] text-lg">423,964</div>
-                                </div>
-
-                                <ReactApexChart series={totalVisit.series} options={totalVisit.options} type="line" height={58} className="overflow-hidden" />
-                            </div>
-
-                            <div>
-                                <div>
-                                    <div>Paid Visits</div>
-                                    <div className="text-[#f8538d] text-lg">7,929</div>
-                                </div>
-
-                                <ReactApexChart series={paidVisit.series} options={paidVisit.options} type="line" height={58} className="overflow-hidden" />
-                            </div>
+                        <div className="ltr:ml-3 rtl:mr-3">
+                            <h5 className="font-semibold text-lg text-gray-500 dark:text-gray-400">Total Users</h5>
                         </div>
                     </div>
-
-                    <div className="panel h-full">
-                        <div className="flex justify-between dark:text-white-light mb-5">
-                            <h5 className="font-semibold text-lg ">Expenses</h5>
-
-                            <div className="dropdown">
-                                <Dropdown
-                                    offset={[0, 5]}
-                                    placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                    btnClassName="hover:text-primary"
-                                    button={<IconHorizontalDots className="text-black/70 dark:text-white/70 hover:!text-primary" />}
-                                >
-                                    <ul>
-                                        <li>
-                                            <button type="button">This Week</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Last Week</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">This Month</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Last Month</button>
-                                        </li>
-                                    </ul>
-                                </Dropdown>
-                            </div>
-                        </div>
-                        <div className=" text-[#e95f2b] text-3xl font-bold my-10">
-                            <span>$ 45,141 </span>
-                            <span className="text-black text-sm dark:text-white-light ltr:mr-2 rtl:ml-2">this week</span>
-                            <IconTrendingUp className="text-success inline" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="w-full rounded-full h-5 p-1 bg-dark-light overflow-hidden shadow-3xl dark:shadow-none dark:bg-dark-light/10">
-                                <div
-                                    className="bg-gradient-to-r from-[#4361ee] to-[#805dca] w-full h-full rounded-full relative before:absolute before:inset-y-0 ltr:before:right-0.5 rtl:before:left-0.5 before:bg-white before:w-2 before:h-2 before:rounded-full before:m-auto"
-                                    style={{ width: '65%' }}
-                                ></div>
-                            </div>
-                            <span className="ltr:ml-5 rtl:mr-5 dark:text-white-light">57%</span>
-                        </div>
+                    <div className="flex items-center justify-between mb-1">
+                        <h2 className="text-3xl font-bold dark:text-white-light">45,631</h2>
+                        <span className="badge bg-success/20 text-success rounded-full px-3 py-1 text-xs flex items-center">
+                            <TrendingUp className="w-3 h-3 mr-1" />
+                            +25%
+                        </span>
                     </div>
-
-                    <div
-                        className="panel h-full overflow-hidden before:bg-[#1937cc] before:absolute before:-right-44 before:top-0 before:bottom-0 before:m-auto before:rounded-full before:w-96 before:h-96 grid grid-cols-1 content-between"
-                        style={{ background: 'linear-gradient(0deg,#00c6fb -227%,#005bea)' }}
-                    >
-                        <div className="flex items-start justify-between text-white-light mb-16 z-[7]">
-                            <h5 className="font-semibold text-lg">Total Balance</h5>
-
-                            <div className="relative text-xl whitespace-nowrap">
-                                $ 41,741.42
-                                <span className="table text-[#d3d3d3] bg-[#4361ee] rounded p-1 text-xs mt-1 ltr:ml-auto rtl:mr-auto">+ 2453</span>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between z-10">
-                            <div className="flex items-center justify-between">
-                                <button type="button" className="shadow-[0_0_2px_0_#bfc9d4] rounded p-1 text-white-light hover:bg-[#1937cc] place-content-center ltr:mr-2 rtl:ml-2">
-                                    <IconPlus />
-                                </button>
-                                <button type="button" className="shadow-[0_0_2px_0_#bfc9d4] rounded p-1 text-white-light hover:bg-[#1937cc] grid place-content-center">
-                                    <IconCreditCard />
-                                </button>
-                            </div>
-                            <button type="button" className="shadow-[0_0_2px_0_#bfc9d4] rounded p-1 text-white-light hover:bg-[#4361ee] z-10">
-                                Upgrade
-                            </button>
-                        </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Compared to last month (36,894)</p>
+                    <div className="mt-5">
+                        <ReactApexChart series={userGrowth.series} options={userGrowth.options} type="area" height={90} />
                     </div>
                 </div>
 
-                <div className="grid lg:grid-cols-3 gap-6 mb-6">
-                    <div className="panel h-full p-0 lg:col-span-2">
-                        <div className="flex items-start justify-between dark:text-white-light mb-5 p-5 border-b  border-white-light dark:border-[#1b2e4b]">
-                            <h5 className="font-semibold text-lg ">Unique Visitors</h5>
-                            <div className="dropdown">
-                                <Dropdown
-                                    offset={[0, 5]}
-                                    placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                    btnClassName="hover:text-primary"
-                                    button={<IconHorizontalDots className="text-black/70 dark:text-white/70 hover:!text-primary" />}
-                                >
-                                    <ul>
-                                        <li>
-                                            <button type="button">View</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Update</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Delete</button>
-                                        </li>
-                                    </ul>
-                                </Dropdown>
-                            </div>
+                <div className="panel h-full">
+                    <div className="flex items-center mb-5">
+                        <div className="bg-success/10 rounded-xl w-11 h-11 flex items-center justify-center">
+                            <HelpCircle className="w-6 h-6 text-success" />
                         </div>
-
-                        <ReactApexChart options={uniqueVisitorSeries.options} series={uniqueVisitorSeries.series} type="bar" height={360} className="overflow-hidden" />
+                        <div className="ltr:ml-3 rtl:mr-3">
+                            <h5 className="font-semibold text-lg text-gray-500 dark:text-gray-400">Support Tickets</h5>
+                        </div>
                     </div>
-
-                    <div className="panel h-full">
-                        <div className="flex items-start justify-between dark:text-white-light mb-5 -mx-5 p-5 pt-0 border-b  border-white-light dark:border-[#1b2e4b]">
-                            <h5 className="font-semibold text-lg ">Activity Log</h5>
-                            <div className="dropdown">
-                                <Dropdown
-                                    offset={[0, 5]}
-                                    placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                    btnClassName="hover:text-primary"
-                                    button={<IconHorizontalDots className="text-black/70 dark:text-white/70 hover:!text-primary" />}
-                                >
-                                    <ul>
-                                        <li>
-                                            <button type="button">View All</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Mark as Read</button>
-                                        </li>
-                                    </ul>
-                                </Dropdown>
-                            </div>
-                        </div>
-                        <PerfectScrollbar className="perfect-scrollbar relative h-[360px] ltr:pr-3 rtl:pl-3 ltr:-mr-3 rtl:-ml-3">
-                            <div className="space-y-7">
-                                <div className="flex">
-                                    <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                        <div className="bg-secondary shadow shadow-secondary w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                            <IconPlus className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 className="font-semibold dark:text-white-light">
-                                            New project created :{' '}
-                                            <button type="button" className="text-success">
-                                                [VRISTO Admin Template]
-                                            </button>
-                                        </h5>
-                                        <p className="text-white-dark text-xs">27 Feb, 2020</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                        <div className="bg-success shadow-success w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                            <IconMail className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 className="font-semibold dark:text-white-light">
-                                            Mail sent to{' '}
-                                            <button type="button" className="text-white-dark">
-                                                HR
-                                            </button>{' '}
-                                            and{' '}
-                                            <button type="button" className="text-white-dark">
-                                                Admin
-                                            </button>
-                                        </h5>
-                                        <p className="text-white-dark text-xs">28 Feb, 2020</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                        <div className="bg-primary w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                            <IconChecks className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 className="font-semibold dark:text-white-light">Server Logs Updated</h5>
-                                        <p className="text-white-dark text-xs">27 Feb, 2020</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                        <div className="bg-danger w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                            <IconChecks className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 className="font-semibold dark:text-white-light">
-                                            Task Completed :
-                                            <button type="button" className="text-success ml-1">
-                                                [Backup Files EOD]
-                                            </button>
-                                        </h5>
-                                        <p className="text-white-dark text-xs">01 Mar, 2020</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                        <div className="bg-warning w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                            <IconFile className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 className="font-semibold dark:text-white-light">
-                                            Documents Submitted from <button type="button">Sara</button>
-                                        </h5>
-                                        <p className="text-white-dark text-xs">10 Mar, 2020</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="ltr:mr-2 rtl:ml-2">
-                                        <div className="bg-dark w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                            <IconServer className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 className="font-semibold dark:text-white-light">Server rebooted successfully</h5>
-                                        <p className="text-white-dark text-xs">06 Apr, 2020</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </PerfectScrollbar>
+                    <div className="flex items-center justify-between mb-1">
+                        <h2 className="text-3xl font-bold dark:text-white-light">457</h2>
+                        <span className="badge bg-danger/20 text-danger rounded-full px-3 py-1 text-xs flex items-center">
+                            <TrendingUp className="w-3 h-3 mr-1 rotate-180" />
+                            -8%
+                        </span>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">125 tickets pending resolution</p>
+                    <div className="mt-5">
+                        <ReactApexChart series={supportTickets.series} options={supportTickets.options} type="area" height={90} />
                     </div>
                 </div>
 
-                <div className="grid sm:grid-cols-3 xl:grid-cols-5 gap-6 mb-6">
-                    <div className="panel h-full sm:col-span-3 xl:col-span-2">
-                        <div className="flex items-start justify-between mb-5">
-                            <h5 className="font-semibold text-lg dark:text-white-light">Visitors by Browser</h5>
+                <div className="panel h-full">
+                    <div className="flex items-center mb-5">
+                        <div className="bg-warning/10 rounded-xl w-11 h-11 flex items-center justify-center">
+                            <Clock className="w-6 h-6 text-warning" />
                         </div>
-                        <div className="flex flex-col space-y-5">
-                            <div className="flex items-center">
-                                <div className="w-9 h-9">
-                                    <div className="bg-primary/10 text-primary rounded-xl w-9 h-9 flex justify-center items-center dark:bg-primary dark:text-white-light">
-                                        <IconChrome className="w-5 h-5" />
-                                    </div>
-                                </div>
-                                <div className="px-3 flex-initial w-full">
-                                    <div className="w-summary-info flex justify-between font-semibold text-white-dark mb-1">
-                                        <h6>Chrome</h6>
-                                        <p className="ltr:ml-auto rtl:mr-auto text-xs">65%</p>
-                                    </div>
-                                    <div>
-                                        <div className="w-full rounded-full h-5 p-1 bg-dark-light overflow-hidden shadow-3xl dark:bg-dark-light/10 dark:shadow-none">
-                                            <div
-                                                className="bg-gradient-to-r from-[#009ffd] to-[#2a2a72] w-full h-full rounded-full relative before:absolute before:inset-y-0 ltr:before:right-0.5 rtl:before:left-0.5 before:bg-white before:w-2 before:h-2 before:rounded-full before:m-auto"
-                                                style={{ width: '65%' }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="w-9 h-9">
-                                    <div className="bg-danger/10 text-danger rounded-xl w-9 h-9 flex justify-center items-center dark:bg-danger dark:text-white-light">
-                                        <IconSafari className="w-5 h-5" />
-                                    </div>
-                                </div>
-                                <div className="px-3 flex-initial w-full">
-                                    <div className="w-summary-info flex justify-between font-semibold text-white-dark mb-1">
-                                        <h6>Safari</h6>
-                                        <p className="ltr:ml-auto rtl:mr-auto text-xs">40%</p>
-                                    </div>
-                                    <div>
-                                        <div className="w-full rounded-full h-5 p-1 bg-dark-light overflow-hidden shadow-3xl dark:bg-dark-light/10 dark:shadow-none">
-                                            <div
-                                                className="bg-gradient-to-r from-[#a71d31] to-[#3f0d12] w-full h-full rounded-full relative before:absolute before:inset-y-0 ltr:before:right-0.5 rtl:before:left-0.5 before:bg-white before:w-2 before:h-2 before:rounded-full before:m-auto"
-                                                style={{ width: '40%' }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="w-9 h-9">
-                                    <div className="bg-warning/10 text-warning rounded-xl w-9 h-9 flex justify-center items-center dark:bg-warning dark:text-white-light">
-                                        <IconGlobe className="w-5 h-5" />
-                                    </div>
-                                </div>
-                                <div className="px-3 flex-initial w-full">
-                                    <div className="w-summary-info flex justify-between font-semibold text-white-dark mb-1">
-                                        <h6>Others</h6>
-                                        <p className="ltr:ml-auto rtl:mr-auto text-xs">25%</p>
-                                    </div>
-                                    <div>
-                                        <div className="w-full rounded-full h-5 p-1 bg-dark-light overflow-hidden shadow-3xl dark:bg-dark-light/10 dark:shadow-none">
-                                            <div
-                                                className="bg-gradient-to-r from-[#fe5f75] to-[#fc9842] w-full h-full rounded-full relative before:absolute before:inset-y-0 ltr:before:right-0.5 rtl:before:left-0.5 before:bg-white before:w-2 before:h-2 before:rounded-full before:m-auto"
-                                                style={{ width: '25%' }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="ltr:ml-3 rtl:mr-3">
+                            <h5 className="font-semibold text-lg text-gray-500 dark:text-gray-400">Avg. Response Time</h5>
                         </div>
                     </div>
-
-                    <div className="panel h-full p-0">
-                        <div className="flex p-5">
-                            <div className="shrink-0 bg-primary/10 text-primary rounded-xl w-11 h-11 flex justify-center items-center dark:bg-primary dark:text-white-light">
-                                <IconUsersGroup className="w-5 h-5" />
-                            </div>
-                            <div className="ltr:ml-3 rtl:mr-3 font-semibold">
-                                <p className="text-xl dark:text-white-light">31.6K</p>
-                                <h5 className="text-[#506690] text-xs">Followers</h5>
-                            </div>
-                        </div>
-                        <div className="h-40">
-                            <ReactApexChart series={followers.series} options={followers.options} type="area" height={160} className="w-full absolute bottom-0 overflow-hidden" />
-                        </div>
+                    <div className="flex items-center justify-between mb-1">
+                        <h2 className="text-3xl font-bold dark:text-white-light">3.5h</h2>
+                        <span className="badge bg-success/20 text-success rounded-full px-3 py-1 text-xs flex items-center">
+                            <TrendingUp className="w-3 h-3 mr-1" />
+                            +12%
+                        </span>
                     </div>
-
-                    <div className="panel h-full p-0">
-                        <div className="flex p-5">
-                            <div className="shrink-0 bg-danger/10 text-danger rounded-xl w-11 h-11 flex justify-center items-center dark:bg-danger dark:text-white-light">
-                                <IconLink className="w-5 h-5" />
-                            </div>
-                            <div className="ltr:ml-3 rtl:mr-3 font-semibold">
-                                <p className="text-xl dark:text-white-light">1,900</p>
-                                <h5 className="text-[#506690] text-xs">Referral</h5>
-                            </div>
-                        </div>
-                        <div className="h-40">
-                            <ReactApexChart series={referral.series} options={referral.options} type="area" height={160} className="w-full absolute bottom-0 overflow-hidden" />
-                        </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">SLA target: 4 hours</p>
+                    <div className="w-full h-2 bg-dark-light/10 rounded-full mt-5">
+                        <div className="h-full rounded-full bg-warning" style={{ width: '72%' }}></div>
                     </div>
-
-                    <div className="panel h-full p-0">
-                        <div className="flex p-5">
-                            <div className="shrink-0 bg-success/10 text-success rounded-xl w-11 h-11 flex justify-center items-center dark:bg-success dark:text-white-light">
-                                <IconChatDots className="w-5 h-5" />
-                            </div>
-                            <div className="ltr:ml-3 rtl:mr-3 font-semibold">
-                                <p className="text-xl dark:text-white-light">18.2%</p>
-                                <h5 className="text-[#506690] text-xs">Engagement</h5>
-                            </div>
-                        </div>
-                        <div className="h-40">
-                            <ReactApexChart series={engagement.series} options={engagement.options} type="area" height={160} className="w-full absolute bottom-0 overflow-hidden" />
-                        </div>
+                    <div className="flex justify-between mt-2 text-xs">
+                        <span>0h</span>
+                        <span>Target: 4h</span>
+                        <span>8h</span>
                     </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <div className="panel h-full">
-                        <div className="flex items-start border-b  border-white-light dark:border-[#1b2e4b] -m-5 mb-5 p-5">
-                            <div className="shrink-0 ring-2 ring-white-light dark:ring-dark rounded-full ltr:mr-4 rtl:ml-4">
-                                <img src="/assets/images/profile-1.jpeg" alt="profile1" className="w-10 h-10 rounded-full object-cover" />
-                            </div>
-                            <div className="font-semibold">
-                                <h6>Jimmy Turner</h6>
-                                <p className="text-xs text-white-dark mt-1">Monday, Nov 18</p>
-                            </div>
+                <div className="panel h-full">
+                    <div className="flex items-center mb-5">
+                        <div className="bg-info/10 rounded-xl w-11 h-11 flex items-center justify-center">
+                            <BarChart2 className="w-6 h-6 text-info" />
                         </div>
-                        <div>
-                            <div className="text-white-dark pb-8">
-                                "Duis aute irure dolor" in reprehenderit in voluptate velit esse cillum "dolore eu fugiat" nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-                            </div>
-                            <div className="w-full absolute bottom-0 flex items-center justify-between p-5 -mx-5">
-                                <div className="flex items-center">
-                                    <IconThumbUp className="w-5 h-5 text-info inline ltr:mr-1.5 rtl:ml-1.5 relative -top-0.5" />
-                                    <span className="dark:text-info">551 Likes</span>
-                                </div>
-                                <button type="button" className="flex items-center bg-success/30 text-success rounded-md px-1.5 py-1 text-xs hover:shadow-[0_10px_20px_-10px] hover:shadow-success">
-                                    Read More
-                                    <IconCaretsDown className="w-4 h-4 rtl:rotate-90 -rotate-90 ltr:ml-1.5 rtl:mr-1.5" />
-                                </button>
-                            </div>
+                        <div className="ltr:ml-3 rtl:mr-3">
+                            <h5 className="font-semibold text-lg text-gray-500 dark:text-gray-400">User Satisfaction</h5>
                         </div>
                     </div>
+                    <div className="flex items-center justify-between mb-1">
+                        <h2 className="text-3xl font-bold dark:text-white-light">92%</h2>
+                        <span className="badge bg-success/20 text-success rounded-full px-3 py-1 text-xs flex items-center">
+                            <TrendingUp className="w-3 h-3 mr-1" />
+                            +3%
+                        </span>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Based on 2,348 ratings</p>
+                    <div className="flex mt-5 space-x-1">
+                        {[92, 85, 76, 45, 23].map((value, index) => (
+                            <div key={index} className="h-12 flex-1 bg-dark-light/10 rounded-md relative overflow-hidden">
+                                <div className="absolute bottom-0 w-full bg-info transition-all duration-300" style={{ height: `${value}%` }}></div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex justify-between mt-2 text-xs">
+                        <span>5★</span>
+                        <span>4★</span>
+                        <span>3★</span>
+                        <span>2★</span>
+                        <span>1★</span>
+                    </div>
+                </div>
+            </div>
 
-                    <div className="panel h-full">
-                        <div className="flex items-center justify-between border-b  border-white-light dark:border-[#1b2e4b] -m-5 mb-5 p-5">
-                            <div className="flex">
-                                <div className="media-aside align-self-start">
-                                    <div className="shrink-0 ring-2 ring-white-light dark:ring-dark rounded-full ltr:mr-4 rtl:ml-4">
-                                        <img src="/assets/images/g-8.png" alt="profile2" className="w-10 h-10 rounded-full object-cover" />
-                                    </div>
-                                </div>
-                                <div className="font-semibold">
-                                    <h6>Dev Summit - New York</h6>
-                                    <p className="text-xs text-white-dark mt-1">Bronx, NY</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="font-semibold text-center pb-8">
-                            <div className="mb-4 text-primary">4 Members Going</div>
-                            <div className="flex items-center justify-center gap-3 pb-8">
-                                <img className="w-10 h-10 ring-2 ring-white-light dark:ring-dark rounded-lg overflow-hidden object-cover" src="/assets/images/profile-1.jpeg" alt="profile1" />
-                                <img className="w-10 h-10 ring-2 ring-white-light dark:ring-dark rounded-lg overflow-hidden object-cover" src="/assets/images/profile-2.jpeg" alt="profile2" />
-                                <img className="w-10 h-10 ring-2 ring-white-light dark:ring-dark rounded-lg overflow-hidden object-cover" src="/assets/images/profile-3.jpeg" alt="profile3" />
-                                <img className="w-10 h-10 ring-2 ring-white-light dark:ring-dark rounded-lg overflow-hidden object-cover" src="/assets/images/profile-4.jpeg" alt="profile4" />
-                            </div>
-
-                            <div className="w-full absolute bottom-0 flex items-center justify-between p-5 -mx-5">
-                                <button type="button" className="btn btn-secondary btn-lg w-full border-0 bg-gradient-to-r from-[#3d38e1] to-[#1e9afe]">
-                                    View Details
-                                </button>
-                            </div>
+            {/* User Growth and Support Tickets Charts */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+                <div className="panel h-full xl:col-span-2">
+                    <div className="flex items-center justify-between mb-5">
+                        <h5 className="font-semibold text-lg dark:text-white-light">User Acquisition</h5>
+                        <div className="dropdown">
+                            <Dropdown offset={[0, 5]} btnClassName="hover:text-primary" button={<MoreHorizontal className="w-5 h-5 text-black/70 dark:text-white/70 hover:!text-primary" />}>
+                                <ul>
+                                    <li>
+                                        <button type="button">View Report</button>
+                                    </li>
+                                    <li>
+                                        <button type="button">Edit Report</button>
+                                    </li>
+                                    <li>
+                                        <button type="button">Mark as Done</button>
+                                    </li>
+                                </ul>
+                            </Dropdown>
                         </div>
                     </div>
+                    <p className="text-gray-500 dark:text-gray-400 mb-5">Monthly breakdown of new user acquisition by channel</p>
+                    <ReactApexChart series={userAcquisition.series} options={userAcquisition.options} type="area" height={350} />
+                </div>
 
-                    <div className="panel h-full">
-                        <div className="flex items-center justify-between border-b  border-white-light dark:border-[#1b2e4b] -m-5 mb-5 p-5">
-                            <button type="button" className="flex font-semibold">
-                                <div className="shrink-0 bg-secondary w-10 h-10 rounded-md flex items-center justify-center text-white ltr:mr-4 rtl:ml-4">
-                                    <span>FD</span>
-                                </div>
-                                <div style={{ textAlign: 'left' }}>
-                                    <h6>Figma Design</h6>
-                                    <p className="text-xs text-white-dark mt-1">Design Reset</p>
-                                </div>
-                            </button>
+                <div className="panel h-full">
+                    <div className="flex items-center justify-between mb-5">
+                        <h5 className="font-semibold text-lg dark:text-white-light">Support Ticket Status</h5>
+                        <div className="dropdown">
+                            <Dropdown offset={[0, 5]} btnClassName="hover:text-primary" button={<MoreHorizontal className="w-5 h-5 text-black/70 dark:text-white/70 hover:!text-primary" />}>
+                                <ul>
+                                    <li>
+                                        <button type="button">View All</button>
+                                    </li>
+                                    <li>
+                                        <button type="button">Export as PDF</button>
+                                    </li>
+                                </ul>
+                            </Dropdown>
+                        </div>
+                    </div>
+                    <ReactApexChart options={ticketStatus.options} series={ticketStatus.series} type="donut" height={320} />
+                </div>
+            </div>
 
-                            <div className="dropdown">
-                                <Dropdown
-                                    offset={[0, 5]}
-                                    placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                    btnClassName="hover:text-primary"
-                                    button={<IconHorizontalDots className="w-5 h-5 text-black/70 dark:text-white/70 hover:!text-primary" />}
-                                >
-                                    <ul>
-                                        <li>
-                                            <button type="button">View Project</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Edit Project</button>
-                                        </li>
-                                        <li>
-                                            <button type="button">Mark as Done</button>
-                                        </li>
-                                    </ul>
-                                </Dropdown>
-                            </div>
-                        </div>
-                        <div className="group">
-                            <div className="text-white-dark mb-5">Doloribus nisi vel suscipit modi, optio ex repudiandae voluptatibus officiis commodi. Nesciunt quas aut neque incidunt!</div>
-                            <div className="flex items-center justify-between mb-2 font-semibold">
-                                <div className="flex items-center">
-                                    <IconSquareCheck className="w-4 h-4 text-success" />
-                                    <div className="ltr:ml-2 rtl:mr-2 text-xs">5 Tasks</div>
-                                </div>
-                                <p className="text-primary">65%</p>
-                            </div>
-                            <div className="rounded-full h-2.5 p-0.5 bg-dark-light dark:bg-dark-light/10 mb-5">
-                                <div className="bg-gradient-to-r from-[#1e9afe] to-[#60dfcd] h-full rounded-full" style={{ width: '65%' }}></div>
-                            </div>
-                            <div className="flex items-end justify-between">
-                                <div className="flex items-center rounded-full bg-danger/20 px-2 py-1 text-xs text-danger font-semibold">
-                                    <IconClock className="w-3 h-3 ltr:mr-1 rtl:ml-1" />3 Days Left
-                                </div>
-                                <div className="flex items-center justify-center group-hover:-space-x-2 rtl:space-x-reverse rtl:group-hover:space-x-reverse">
-                                    <span className="bg-[#bfc9d4] dark:bg-dark w-9 h-9 rounded-full flex items-center justify-center text-white font-semibold transition-all duration-300 opacity-0 group-hover:opacity-100">
-                                        +6
-                                    </span>
-                                    <img
-                                        className="w-9 h-9 border-2 border-white dark:border-dark rounded-full object-cover transition-all duration-300"
-                                        src="/assets/images/profile-6.jpeg"
-                                        alt="profile6"
-                                    />
-                                    <img
-                                        className="w-9 h-9 border-2 border-white dark:border-dark rounded-full object-cover transition-all duration-300"
-                                        src="/assets/images/profile-7.jpeg"
-                                        alt="profile7"
-                                    />
-                                    <img
-                                        className="w-9 h-9 border-2 border-white dark:border-dark rounded-full object-cover transition-all duration-300"
-                                        src="/assets/images/profile-8.jpeg"
-                                        alt="profile8"
-                                    />
-                                </div>
-                            </div>
-                        </div>
+            {/* Recent Support Tickets */}
+            <div className="panel h-full">
+                <div className="flex items-center justify-between mb-5">
+                    <h5 className="font-semibold text-lg dark:text-white-light">Recent Support Tickets</h5>
+                    <div className="flex items-center">
+                        <button type="button" className="btn btn-outline-primary btn-sm mr-2">
+                            <FileText className="w-4 h-4 mr-2" />
+                            Export
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add New Ticket
+                        </button>
+                    </div>
+                </div>
+                <div className="overflow-x-auto">
+                    <table className="w-full table-auto">
+                        <thead>
+                            <tr>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ticket ID</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Subject</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Priority</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                            {recentTickets.map((ticket, index) => (
+                                <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-900/20 transition-colors duration-150">
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <span className="text-sm font-medium">{ticket.id}</span>
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <span className="text-sm">{ticket.subject}</span>
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <div className="flex items-center">
+                                            <img src={ticket.img} alt={ticket.user} className="w-8 h-8 rounded-full mr-2" />
+                                            <span className="text-sm">{ticket.user}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <span className={`text-xs px-2.5 py-1 rounded-full ${getStatusColor(ticket.status)}`}>{ticket.status}</span>
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <span className={`text-xs px-2.5 py-1 rounded-full ${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <span className="text-sm text-gray-500">{ticket.date}</span>
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap">
+                                        <div className="flex items-center space-x-2">
+                                            <button type="button" className="text-info hover:text-blue-700" title="View">
+                                                <ExternalLink className="w-4 h-4" />
+                                            </button>
+                                            <button type="button" className="text-primary hover:text-primary-dark" title="Reply">
+                                                <MessageSquare className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="flex justify-between mt-5">
+                    <span className="text-sm">Showing 5 of 24 tickets</span>
+                    <div className="flex space-x-2">
+                        <button className="btn btn-sm btn-outline-primary">Previous</button>
+                        <button className="btn btn-sm btn-outline-primary active">1</button>
+                        <button className="btn btn-sm btn-outline-primary">2</button>
+                        <button className="btn btn-sm btn-outline-primary">3</button>
+                        <button className="btn btn-sm btn-outline-primary">Next</button>
                     </div>
                 </div>
             </div>
