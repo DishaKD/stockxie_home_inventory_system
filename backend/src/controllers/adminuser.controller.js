@@ -1,5 +1,6 @@
 const AdminUser = require("../models/adminuser.model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // Create Admin User
 exports.createAdminUser = async (req, res) => {
@@ -84,5 +85,62 @@ exports.deleteAdminUser = async (req, res) => {
     res.status(200).json({ message: "Admin user deleted" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting admin user", error });
+  }
+};
+
+exports.loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // 1. Find admin user by email
+    const admin = await AdminUser.findOne({ where: { email } });
+    if (!admin) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // 2. Check if password matches
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // 3. Generate JWT token with admin-specific claims
+    const token = jwt.sign(
+      {
+        id: admin.id,
+        email: admin.email,
+        role: admin.role, // Include admin role in the token
+        isAdmin: true, // Explicit flag for admin users
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    // 4. Prepare response data (excluding sensitive info)
+    const adminData = {
+      id: admin.id,
+      name: admin.name,
+      email: admin.email,
+      role: admin.role,
+      createdAt: admin.createdAt,
+      updatedAt: admin.updatedAt,
+    };
+
+    // 5. Send response
+    res.json({
+      success: true,
+      message: "Admin login successful",
+      token,
+      admin: adminData,
+    });
+  } catch (error) {
+    console.error("Admin login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
   }
 };
