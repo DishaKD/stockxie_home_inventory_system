@@ -137,7 +137,7 @@ const Sidebar = () => {
                                         </NavLink>
                                     </li>
                                     <li className="nav-item">
-                                        <NavLink to="/apps/todolist" className="group">
+                                        <NavLink to="/user-management/role-management" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuUserRole className="group-hover:!text-[#04b4bc] shrink-0" />
                                                 <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Role Management')}</span>
