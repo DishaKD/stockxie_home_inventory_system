@@ -47,17 +47,6 @@ const Widgets = lazy(() => import('../pages/Widgets'));
 const FontIcons = lazy(() => import('../pages/FontIcons'));
 const DragAndDrop = lazy(() => import('../pages/DragAndDrop'));
 const Tables = lazy(() => import('../pages/Tables'));
-const Basic = lazy(() => import('../pages/DataTables/Basic'));
-const Advanced = lazy(() => import('../pages/DataTables/Advanced'));
-const Skin = lazy(() => import('../pages/DataTables/Skin'));
-const OrderSorting = lazy(() => import('../pages/DataTables/OrderSorting'));
-const MultiColumn = lazy(() => import('../pages/DataTables/MultiColumn'));
-const MultipleTables = lazy(() => import('../pages/DataTables/MultipleTables'));
-const AltPagination = lazy(() => import('../pages/DataTables/AltPagination'));
-const Checkbox = lazy(() => import('../pages/DataTables/Checkbox'));
-const RangeSearch = lazy(() => import('../pages/DataTables/RangeSearch'));
-const Export = lazy(() => import('../pages/DataTables/Export'));
-const ColumnChooser = lazy(() => import('../pages/DataTables/ColumnChooser'));
 const Profile = lazy(() => import('../pages/Users/Profile'));
 const AccountSetting = lazy(() => import('../pages/Users/AccountSetting'));
 const KnowledgeBase = lazy(() => import('../pages/Pages/KnowledgeBase'));
@@ -337,51 +326,7 @@ const routes = [
         path: '/tables',
         element: <Tables />,
     },
-    // Data Tables
-    {
-        path: '/datatables/basic',
-        element: <Basic />,
-    },
-    {
-        path: '/datatables/advanced',
-        element: <Advanced />,
-    },
-    {
-        path: '/datatables/skin',
-        element: <Skin />,
-    },
-    {
-        path: '/datatables/order-sorting',
-        element: <OrderSorting />,
-    },
-    {
-        path: '/datatables/multi-column',
-        element: <MultiColumn />,
-    },
-    {
-        path: '/datatables/multiple-tables',
-        element: <MultipleTables />,
-    },
-    {
-        path: '/datatables/alt-pagination',
-        element: <AltPagination />,
-    },
-    {
-        path: '/datatables/checkbox',
-        element: <Checkbox />,
-    },
-    {
-        path: '/datatables/range-search',
-        element: <RangeSearch />,
-    },
-    {
-        path: '/datatables/export',
-        element: <Export />,
-    },
-    {
-        path: '/datatables/column-chooser',
-        element: <ColumnChooser />,
-    },
+
     // Users page
     {
         path: '/users/profile',
