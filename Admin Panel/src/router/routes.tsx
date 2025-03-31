@@ -89,6 +89,7 @@ const UserManagement = lazy(() => import('../pages/UserManagement/UsersManagemen
 const UserRoles = lazy(() => import('../pages/UserManagement/UserRoles'));
 const UserReports = lazy(() => import('../pages/UserManagement/UserReports'));
 const TicketManagement = lazy(() => import('../pages/SupportManagement/TicketsManagement'));
+const TicketsAssignment = lazy(() => import('../pages/SupportManagement/TicketsAssignment'));
 
 const routes = [
     // dashboard
@@ -122,6 +123,11 @@ const routes = [
     {
         path: '/ticket-management/ticket-management',
         element: <TicketManagement />,
+        protected: true,
+    },
+    {
+        path: '/ticket-management/ticket-assignment',
+        element: <TicketsAssignment />,
         protected: true,
     },
     {
