@@ -514,7 +514,7 @@ const rowData = [
 const UserListing = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setPageTitle('User Management | User Listing'));
+        dispatch(setPageTitle('User Listing'));
     });
 
     // show/hide
