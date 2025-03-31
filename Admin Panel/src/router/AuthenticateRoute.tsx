@@ -12,7 +12,7 @@ const AuthenticateRoute: React.FC<AuthenticateRouteProps> = ({ element }) => {
     const { isAuthenticated } = useSelector((state: IRootState) => state.auth); // Now properly typed
 
     if (!isAuthenticated) {
-        return <Navigate to="/auth/cover-login" state={{ from: location }} replace />;
+        return <Navigate to="/auth/login" state={{ from: location }} replace />;
     }
 
     return element;
