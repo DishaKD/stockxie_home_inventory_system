@@ -5,7 +5,6 @@ const createItem = async (req, res) => {
   try {
     const { name, quantity, expiryDate, userId } = req.body;
 
-    // Validate required fields
     if (!name || !quantity || !expiryDate || !userId) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -24,14 +23,24 @@ const createItem = async (req, res) => {
   }
 };
 
-// Get all items
-const getAllItems = async (req, res) => {
+// Get all items for a specific user
+const getAllItems = async (req) => {
   try {
-    const items = await Item.findAll();
-    res.status(200).json(items);
+    const userId = req.user.id;
+
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
+    const items = await Item.findAll({
+      where: { userId },
+      attributes: ["name", "quantity", "expiryDate"],
+    });
+
+    return items;
   } catch (error) {
     console.error("Error fetching items:", error);
-    res.status(500).json({ message: "Internal server error" });
+    throw error;
   }
 };
 
@@ -109,7 +118,7 @@ const searchItems = async (req, res) => {
     const items = await Item.findAll({
       where: {
         name: {
-          [Op.like]: `%${query}%`, // Case-insensitive search
+          [Op.like]: `%${query}%`,
         },
       },
     });
