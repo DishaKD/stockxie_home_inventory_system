@@ -19,7 +19,7 @@ aiRoutes.get("/recipes", authenticateUser, async (req, res) => {
     const messages = [
       {
         role: "system",
-        content: "You are NutriSense AI, an intelligent food assistant.",
+        content: "I am NutriSense AI, an intelligent food assistant.",
       },
       {
         role: "user",
