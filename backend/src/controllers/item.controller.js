@@ -24,23 +24,23 @@ const createItem = async (req, res) => {
 };
 
 // Get all items for a specific user
-const getAllItems = async (req) => {
+const getAllItems = async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    if (!userId) {
-      throw new Error("User ID is required");
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "Unauthorized: User not found" });
     }
+
+    const userId = req.user.id;
 
     const items = await Item.findAll({
       where: { userId },
       attributes: ["name", "quantity", "expiryDate"],
     });
 
-    return items;
+    return res.json(items);
   } catch (error) {
     console.error("Error fetching items:", error);
-    throw error;
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
