@@ -20,7 +20,7 @@ const TabNavigator: React.FC<Props> = ({ route }): JSX.Element => {
         {currentTabScreen === "Purchase" && <screens.Purchase token={token} />}
         {currentTabScreen === "Notification" && <screens.Notification />}
         {currentTabScreen === "Inventory" && (
-          <screens.Inventory userId={userId} />
+          <screens.Inventory userId={userId} token={token} />
         )}
       </React.Fragment>
     );
