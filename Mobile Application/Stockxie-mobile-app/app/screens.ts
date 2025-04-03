@@ -31,6 +31,7 @@ import Home from "../screens/tabs/Home";
 import Purchase from "../screens/tabs/Purchase";
 import Notification from "../screens/tabs/Notification";
 import Inventory from "../screens/tabs/Inventory";
+import NutriSenseAI from "../screens/tabs/NutriSenseAI";
 
 export const screens = {
   Home,
@@ -61,5 +62,6 @@ export const screens = {
   AddItems,
   EditItems,
   Inventory,
-  CategorizeExpenses
+  CategorizeExpenses,
+  NutriSenseAI
 };
