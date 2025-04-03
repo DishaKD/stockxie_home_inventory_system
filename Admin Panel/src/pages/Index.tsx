@@ -366,11 +366,11 @@ const Analytics = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button type="button" className="btn btn-outline-primary ">
+                    <button type="button" className="btn btn-outline-primary" style={{ borderColor: '#00a2a9', color: '#00a2a9' }}>
                         <Settings className="w-4 h-4 mr-2" />
                         Settings
                     </button>
-                    <button type="button" className="btn btn-primary ">
+                    <button type="button" className="btn btn-primary" style={{ backgroundColor: '#00a2a9', borderColor: '#00a2a9' }}>
                         <Plus className="w-4 h-4 mr-2" />
                         New Report
                     </button>
@@ -534,11 +534,11 @@ const Analytics = () => {
                 <div className="flex items-center justify-between mb-5">
                     <h5 className="font-semibold text-lg dark:text-white-light">Recent Support Tickets</h5>
                     <div className="flex items-center">
-                        <button type="button" className="btn btn-outline-primary btn-sm mr-2">
+                        <button type="button" className="btn btn-outline-primary btn-sm mr-2" style={{ borderColor: '#00a2a9', color: '#00a2a9' }}>
                             <FileText className="w-4 h-4 mr-2" />
                             Export
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm">
+                        <button type="button" className="btn btn-primary btn-sm" style={{ backgroundColor: '#00a2a9', borderColor: '#00a2a9' }}>
                             <Plus className="w-4 h-4 mr-2" />
                             Add New Ticket
                         </button>
