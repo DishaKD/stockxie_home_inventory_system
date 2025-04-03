@@ -22,9 +22,10 @@ import { showToast } from "../../components/ToastProvider";
 
 interface InventoryProps {
   userId?: string;
+  token?: string;
 }
 
-const Inventory: React.FC<InventoryProps> = ({ userId }) => {
+const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
   const navigation = useAppNavigation();
   const [activeSections, setActiveSections] = useState<number[]>([]);
   interface Item {
@@ -44,7 +45,11 @@ const Inventory: React.FC<InventoryProps> = ({ userId }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}${ENDPOINTS.get.items}`);
+        const response = await axios.get(`${BASE_URL}${ENDPOINTS.get.items}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setItems(response.data);
       } catch (error) {
       } finally {
