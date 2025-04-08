@@ -28,11 +28,13 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [itemPrice, setItemPrice] = useState("");
 
   // Error state
   const [fieldErrors, setFieldErrors] = useState({
     name: "",
     quantity: "",
+    itemPrice: "",
     expiryDate: "",
     type: "",
   });
@@ -40,6 +42,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
   // Refs for input fields
   const nameRef = useRef(null);
   const quantityRef = useRef(null);
+  const itemPriceRef = useRef(null);
   const expiryDateRef = useRef(null);
 
   // Form validation
@@ -49,6 +52,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
       name: "",
       quantity: "",
       expiryDate: "",
+      itemPrice: "",
       type: "",
     };
 
@@ -59,6 +63,11 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
 
     if (!quantity || isNaN(Number(quantity))) {
       errors.quantity = "Quantity must be a number";
+      isValid = false;
+    }
+
+    if (!itemPrice || isNaN(Number(itemPrice))) {
+      errors.itemPrice = "Item Price must be a number";
       isValid = false;
     }
 
@@ -77,6 +86,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         const itemData = {
           name,
           quantity: Number(quantity),
+          itemPrice: Number(itemPrice),
           expiryDate,
           userId,
         };
@@ -91,6 +101,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         // Reset form fields
         setName("");
         setQuantity("");
+        setItemPrice("");
         setExpiryDate("");
       } catch (error) {
         // Handle error
@@ -142,6 +153,20 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         {fieldErrors.quantity && (
           <Text style={{ color: "red", fontSize: 12 }}>
             {fieldErrors.quantity}
+          </Text>
+        )}
+
+        <components.InputField
+          type="number"
+          innerRef={itemPriceRef}
+          value={itemPrice}
+          placeholder="Item Price"
+          containerStyle={{ marginBottom: 14 }}
+          onChangeText={(text) => setItemPrice(text)}
+        />
+        {fieldErrors.itemPrice && (
+          <Text style={{ color: "red", fontSize: 12 }}>
+            {fieldErrors.itemPrice}
           </Text>
         )}
 
