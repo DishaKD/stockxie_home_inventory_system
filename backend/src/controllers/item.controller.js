@@ -3,15 +3,16 @@ const Item = require("../models/item.modal");
 // Create a new item
 const createItem = async (req, res) => {
   try {
-    const { name, quantity, expiryDate, userId } = req.body;
+    const { name, quantity, itemPrice, expiryDate, userId } = req.body;
 
-    if (!name || !quantity || !expiryDate || !userId) {
+    if (!name || !quantity || !itemPrice || !expiryDate || !userId) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const newItem = await Item.create({
       name,
       quantity,
+      itemPrice,
       expiryDate,
       userId,
     });
