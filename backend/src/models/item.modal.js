@@ -17,6 +17,10 @@ const Item = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    itemPrice: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
     expiryDate: {
       type: DataTypes.DATE,
       allowNull: false,
