@@ -22,7 +22,9 @@ const TabNavigator: React.FC<Props> = ({ route }): JSX.Element => {
         {currentTabScreen === "Inventory" && (
           <screens.Inventory userId={userId} token={token} />
         )}
-        {currentTabScreen === "NutriSenseAI" && <screens.NutriSenseAI />}
+        {currentTabScreen === "NutriSenseAI" && (
+          <screens.NutriSenseAI token={token} />
+        )}
       </React.Fragment>
     );
   };
