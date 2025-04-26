@@ -14,7 +14,7 @@ authRoutes.post("/register", registerUser);
 
 authRoutes.get("/profile", authMiddleware, getProfile);
 
-authRoutes.get("/users",getAllUsers); // or just authenticate
+authRoutes.get("/users",getAllUsers); 
 
 
 module.exports = authRoutes;
