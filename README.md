@@ -30,3 +30,14 @@
 
 ## 📂 Project Structure
 
+<br/>
+
+## 🛠️ Installation
+
+### Backend Setup
+
+```bash
+cd stoxie-backend
+npm install
+npm run dev
+
