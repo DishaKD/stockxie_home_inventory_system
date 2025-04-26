@@ -41,3 +41,17 @@ cd stoxie-backend
 npm install
 npm run dev
 
+### Backend Setup
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=yourpassword
+DB_NAME=stoxie_db
+JWT_SECRET=yourjwtsecret
+GROQ_API_KEY=yourgroqapikey
+
+
+---
+
+Would you like me to also create a **"README Badges version"** for you? 🚀 (example: React Native badge, License badge, Build Status badge at the top — super cool and professional looking!)  
+I can prepare it if you want! 🎯
