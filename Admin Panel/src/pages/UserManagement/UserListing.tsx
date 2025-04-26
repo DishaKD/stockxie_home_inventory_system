@@ -552,15 +552,8 @@ const UserListing = () => {
 
     const cols = [
         { accessor: 'id', title: 'ID' },
-        { accessor: 'firstName', title: 'First Name' },
-        { accessor: 'lastName', title: 'Last Name' },
+        { accessor: 'Name', title: 'Name' },
         { accessor: 'email', title: 'Email' },
-        { accessor: 'phone', title: 'Phone' },
-        { accessor: 'company', title: 'Company' },
-        { accessor: 'address.street', title: 'Address' },
-        { accessor: 'age', title: 'Age' },
-        { accessor: 'dob', title: 'Birthdate' },
-        { accessor: 'isActive', title: 'Active' },
     ];
 
     useEffect(() => {
@@ -659,51 +652,15 @@ const UserListing = () => {
                         columns={[
                             { accessor: 'id', title: 'ID', sortable: true, hidden: hideCols.includes('id') },
                             {
-                                accessor: 'firstName',
-                                title: 'First Name',
+                                accessor: 'Name',
+                                title: 'Name',
                                 sortable: true,
-                                hidden: hideCols.includes('firstName'),
+                                hidden: hideCols.includes('Name'),
                             },
-                            {
-                                accessor: 'lastName',
-                                title: 'Last Name',
-                                sortable: true,
-                                hidden: hideCols.includes('lastName'),
-                            },
+                           
                             { accessor: 'email', title: 'Email', sortable: true, hidden: hideCols.includes('email') },
-                            { accessor: 'phone', title: 'Phone', sortable: true, hidden: hideCols.includes('phone') },
-                            {
-                                accessor: 'company',
-                                title: 'Company',
-                                sortable: true,
-                                hidden: hideCols.includes('company'),
-                            },
-                            {
-                                accessor: 'address.street',
-                                title: 'Address',
-                                sortable: true,
-                                hidden: hideCols.includes('address.street'),
-                            },
-                            {
-                                accessor: 'age',
-                                title: 'Age',
-                                sortable: true,
-                                hidden: hideCols.includes('age'),
-                            },
-                            {
-                                accessor: 'dob',
-                                title: 'Birthdate',
-                                sortable: true,
-                                hidden: hideCols.includes('dob'),
-                                render: ({ dob }) => <div>{formatDate(dob)}</div>,
-                            },
-                            {
-                                accessor: 'isActive',
-                                title: 'Active',
-                                sortable: true,
-                                hidden: hideCols.includes('isActive'),
-                                render: ({ isActive }) => <div className={`${isActive ? 'text-success' : 'text-danger'} capitalize`}>{isActive.toString()}</div>,
-                            },
+                            
+                           
                         ]}
                         highlightOnHover
                         totalRecords={initialRecords.length}
