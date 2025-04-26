@@ -91,7 +91,7 @@ const getProfile = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ["id", "username", "email", "role", "createdAt"],
+      attributes: ["id", "username", "email", "createdAt"],
       order: [["createdAt", "DESC"]],
     });
 
