@@ -87,5 +87,20 @@ const getProfile = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+// Get All Users (Admin)
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["id", "username", "email", "role", "createdAt"], // customize as needed
+      order: [["createdAt", "DESC"]], // Optional: sorts newest first
+    });
 
-module.exports = { loginUser, registerUser, getProfile };
+    res.json({ users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+module.exports = { loginUser, registerUser, getProfile,  getAllUsers };
