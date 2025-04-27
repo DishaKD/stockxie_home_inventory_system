@@ -98,7 +98,17 @@ const UserListing = () => {
                                 >
                                     <ul className="!min-w-[140px]">
                                         {cols.map((col, i) => (
-                                            <li key={i} className="flex flex-col" onClick={(e) => e.stopPropagation()}>
+                                            <li
+                                                key={i}
+                                                className="flex flex-col"
+                                                onClick={(e) => e.stopPropagation()}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' || e.key === ' ') {
+                                                        e.stopPropagation();
+                                                    }
+                                                }}
+                                                tabIndex={0}
+                                            >
                                                 <div className="flex items-center px-4 py-1">
                                                     <label className="cursor-pointer mb-0">
                                                         <input
@@ -120,13 +130,7 @@ const UserListing = () => {
                             </div>
                         </div>
                         <div className="text-right">
-                            <input
-                                type="text"
-                                className="form-input"
-                                placeholder="Search..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
+                            <input type="text" className="form-input" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                         </div>
                     </div>
                 </div>
