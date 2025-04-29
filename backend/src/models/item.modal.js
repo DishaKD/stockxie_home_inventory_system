@@ -25,6 +25,11 @@ const Item = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      references: { model: "Categories", key: "id" },
+      onDelete: "SET NULL",
+    },
     userId: {
       type: DataTypes.INTEGER,
       references: { model: "Users", key: "id" },
