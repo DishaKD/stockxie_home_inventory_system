@@ -20,6 +20,8 @@ import { homeIndicatorHeight as getHomeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
 import { showToast } from "../../components/ToastProvider";
 
+import { format } from "date-fns";
+
 interface InventoryProps {
   userId?: string;
   token?: string;
@@ -68,13 +70,12 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
     return <Text>Error: {error}</Text>;
   }
 
-  // Function to handle search
   const handleSearch = async (query: string) => {
     try {
       const response = await axios.get(`${BASE_URL}${ENDPOINTS.items.search}`, {
         params: { query },
       });
-      setItems(response.data); // Update the items list with search results
+      setItems(response.data);
     } catch (error) {
       console.error("Error searching items:", error);
       showToast("danger", "Failed to search items. Please try again.");
@@ -149,7 +150,7 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
             value={searchQuery}
             onChangeText={(text) => {
               setSearchQuery(text);
-              handleSearch(text); // Trigger search on text change
+              handleSearch(text);
             }}
           />
         </View>
@@ -275,7 +276,9 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
             }}
           >
             <text.T14>Expiry Date</text.T14>
-            <text.T14>{section.expiryDate}</text.T14>
+            <text.T14>
+              {format(new Date(section.expiryDate), "yyyy-MM-dd")}
+            </text.T14>
           </View>
           <View
             style={{
