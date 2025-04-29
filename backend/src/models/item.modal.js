@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db").sequelize;
+const Category = require("./category.model");
 
 const Item = sequelize.define(
   "Item",
@@ -42,3 +43,4 @@ const Item = sequelize.define(
 );
 
 module.exports = Item;
+Item.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
