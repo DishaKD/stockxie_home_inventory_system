@@ -35,7 +35,7 @@ const getAllItems = async (req, res) => {
 
     const items = await Item.findAll({
       where: { userId },
-      attributes: ["name", "quantity", "expiryDate"],
+      attributes: ["id", "name", "quantity", "expiryDate"],
     });
 
     return res.json(items);
