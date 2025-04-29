@@ -46,7 +46,7 @@ const EditItems: React.FC<Props> = ({ route }): JSX.Element => {
         setQuantity(item.quantity.toString());
         setExpiryDate(item.expiryDate);
       } catch (error) {
-        showToast("danger", "Failed to fetch item details. Please try again.");
+        showToast("danger", "Failed to fetch item details. Please try again later.");
         console.error("Error fetching item details:", error);
       }
     };
