@@ -1,11 +1,20 @@
 const Item = require("../models/item.modal");
+const Category = require("../models/category.model");
 
 // Create a new item
 const createItem = async (req, res) => {
   try {
-    const { name, quantity, itemPrice, expiryDate, userId } = req.body;
+    const { name, quantity, itemPrice, expiryDate, userId, categoryId } =
+      req.body;
 
-    if (!name || !quantity || !itemPrice || !expiryDate || !userId) {
+    if (
+      !name ||
+      !quantity ||
+      !itemPrice ||
+      !expiryDate ||
+      !userId ||
+      !categoryId
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -15,6 +24,7 @@ const createItem = async (req, res) => {
       itemPrice,
       expiryDate,
       userId,
+      categoryId,
     });
 
     res.status(201).json(newItem);
@@ -35,7 +45,14 @@ const getAllItems = async (req, res) => {
 
     const items = await Item.findAll({
       where: { userId },
-      attributes: ["id", "name", "quantity", "expiryDate"],
+      attributes: ["id", "name", "quantity", "expiryDate", "categoryId"],
+      include: [
+        {
+          model: Category,
+          as: "category",
+          attributes: ["name"],
+        },
+      ],
     });
 
     return res.json(items);
@@ -66,7 +83,7 @@ const getItemById = async (req, res) => {
 const updateItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, quantity, expiryDate, userId } = req.body;
+    const { name, quantity, expiryDate, userId, categoryId } = req.body;
 
     const item = await Item.findByPk(id);
 
@@ -79,6 +96,7 @@ const updateItem = async (req, res) => {
     item.quantity = quantity || item.quantity;
     item.expiryDate = expiryDate || item.expiryDate;
     item.userId = userId || item.userId;
+    item.categoryId = categoryId || item.categoryId;
 
     await item.save();
 
@@ -93,7 +111,16 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const item = await Item.findByPk(id);
+
+    const item = await Item.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          as: "category",
+          attributes: ["name"],
+        },
+      ],
+    });
 
     if (!item) {
       return res.status(404).json({ message: "Item not found" });
