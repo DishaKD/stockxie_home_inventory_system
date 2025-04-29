@@ -50,7 +50,7 @@ export type RootStackParamList = {
   ResetPasswordSuccess: undefined;
   HealthQuestions: undefined;
   AddItems: { userId: string };
-  EditItems: undefined;
+  EditItems: { itemId: string };
   CategorizeExpenses: { token: string };
   Purchase: Purchase;
 };
