@@ -164,7 +164,10 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
             alignItems: "center",
           }}
           onPress={() => {
-            navigation.navigate("AddItems", { userId: userId ?? "" });
+            navigation.navigate("AddItems", {
+              userId: userId ?? "",
+              token: token ?? "",
+            });
             console.log("Plus icon pressed");
           }}
         >
@@ -265,7 +268,9 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
             }}
           >
             <text.T14>Category</text.T14>
-            <text.T14>{section.category}</text.T14>
+            <text.T14>
+              {section.category ? section.category.name : "No category"}
+            </text.T14>
           </View>
           <View
             style={{
