@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,8 +7,6 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { text } from "../../text";
-import { theme } from "../../constants";
 import { components } from "../../components";
 import type { RootStackParamList } from "../../types";
 import { useAppNavigation } from "../../hooks";
@@ -16,6 +14,9 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { homeIndicatorHeight } from "../../utils";
 import { createItem } from "../../config/api/itemCreate";
 import { showToast } from "../../components/ToastProvider";
+import axios from "axios";
+import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+import { Picker } from "@react-native-picker/picker";
 
 type Props = NativeStackScreenProps<RootStackParamList, "AddItems">;
 
@@ -23,12 +24,17 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
   const navigation = useAppNavigation();
 
   const { userId } = route.params;
+  const { token } = route.params;
 
   // State for form fields
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [itemPrice, setItemPrice] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null
+  );
 
   // Error state
   const [fieldErrors, setFieldErrors] = useState({
@@ -76,8 +82,34 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
       isValid = false;
     }
 
+    if (!selectedCategoryId) {
+      errors.type = "Category is required";
+      isValid = false;
+    }
+
     setFieldErrors(errors);
     return isValid;
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}${ENDPOINTS.get.categories}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCategories(response.data);
+    } catch (error) {
+      showToast("danger", "Error fetching categories");
+      console.error("Error fetching categories:", error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -88,6 +120,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
           quantity: Number(quantity),
           itemPrice: Number(itemPrice),
           expiryDate,
+          categoryId: selectedCategoryId,
           userId,
         };
 
@@ -183,6 +216,33 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
             {fieldErrors.expiryDate}
           </Text>
         )}
+
+        <View style={{ marginBottom: 14 }}>
+          <Text style={{ marginBottom: 6, fontSize: 16 }}>Select Category</Text>
+          <View
+            style={{
+              borderWidth: 1,
+              borderRadius: 6,
+              paddingHorizontal: 10,
+              backgroundColor: "#fff",
+            }}
+          >
+            <Picker
+              selectedValue={selectedCategoryId}
+              onValueChange={(itemValue) => setSelectedCategoryId(itemValue)}
+            >
+              <Picker.Item label="-- Choose a category --" value="" />
+              {categories.map((cat: any) => (
+                <Picker.Item key={cat.id} label={cat.name} value={cat.id} />
+              ))}
+            </Picker>
+          </View>
+          {fieldErrors.type ? (
+            <Text style={{ color: "red", fontSize: 12 }}>
+              {fieldErrors.type}
+            </Text>
+          ) : null}
+        </View>
       </ScrollView>
     );
   };
