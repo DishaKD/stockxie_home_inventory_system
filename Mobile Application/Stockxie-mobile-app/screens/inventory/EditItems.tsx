@@ -39,14 +39,17 @@ const EditItems: React.FC<Props> = ({ route }): JSX.Element => {
     const fetchItemDetails = async () => {
       try {
         const response = await axios.get(
-          `${BASE_URL}${ENDPOINTS.get.items}/${itemId}`
+          `${BASE_URL}${ENDPOINTS.get.items}${itemId}`
         );
         const item = response.data;
         setName(item.name);
         setQuantity(item.quantity.toString());
         setExpiryDate(item.expiryDate);
       } catch (error) {
-        showToast("danger", "Failed to fetch item details. Please try again later.");
+        showToast(
+          "danger",
+          "Failed to fetch item details. Please try again later."
+        );
         console.error("Error fetching item details:", error);
       }
     };
