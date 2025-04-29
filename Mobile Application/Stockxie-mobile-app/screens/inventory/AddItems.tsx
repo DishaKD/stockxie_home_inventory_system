@@ -105,7 +105,7 @@ const AddItems: React.FC<Props> = ({ route }): JSX.Element => {
         setExpiryDate("");
       } catch (error) {
         // Handle error
-        showToast("danger", "Failed to create item. Please try again.");
+        showToast("danger", "Failed to create item. Please try again later.");
 
         console.error("Error creating item:", error);
       }
