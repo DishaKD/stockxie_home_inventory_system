@@ -49,7 +49,7 @@ export type RootStackParamList = {
   EmailConfirm: { email: string };
   ResetPasswordSuccess: undefined;
   HealthQuestions: undefined;
-  AddItems: { userId: string };
+  AddItems: { userId: string; token: string };
   EditItems: { itemId: string };
   CategorizeExpenses: { token: string };
   Purchase: Purchase;
