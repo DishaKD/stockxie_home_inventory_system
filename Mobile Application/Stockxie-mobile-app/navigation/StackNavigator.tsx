@@ -140,6 +140,11 @@ const StackNavigator = () => {
         component={screens.CategorizeExpenses}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="NutriSenseAIRecipe"
+        component={screens.NutriSenseAIRecipe}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
