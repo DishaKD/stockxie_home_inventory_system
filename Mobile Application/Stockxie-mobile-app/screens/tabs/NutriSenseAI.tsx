@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { components } from "../../components";
 import BottomTabBar from "../../navigation/BottomTabBar";
 import axios from "axios";
+import { useAppNavigation } from "../../hooks";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
 
 interface NutriSenseAIProps {
@@ -12,6 +13,7 @@ interface NutriSenseAIProps {
 const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const navigation = useAppNavigation();
 
   useEffect(() => {
     // Fetch user's profile to get their name
@@ -28,6 +30,12 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
         setIsLoading(false);
       });
   }, []);
+
+  const handleNavigateRecipes = () => {
+    navigation.navigate("NutriSenseAIRecipe", {
+      token: token ?? "",
+    });
+  };
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
@@ -113,15 +121,17 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
           );
         case "recipes":
           return (
-            <View
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 5,
-                borderWidth: 2,
-                borderColor: "#FF9800",
-              }}
-            />
+            <TouchableOpacity onPress={handleNavigateRecipes}>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 5,
+                  borderWidth: 2,
+                  borderColor: "#FF9800",
+                }}
+              />
+            </TouchableOpacity>
           );
         case "health":
           return (
