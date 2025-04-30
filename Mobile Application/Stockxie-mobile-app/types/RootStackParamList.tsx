@@ -53,4 +53,5 @@ export type RootStackParamList = {
   EditItems: { itemId: string };
   CategorizeExpenses: { token: string };
   Purchase: Purchase;
+  NutriSenseAIRecipe: { token: string };
 };
