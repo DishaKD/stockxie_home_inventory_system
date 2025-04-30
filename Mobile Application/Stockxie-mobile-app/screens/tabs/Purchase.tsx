@@ -16,6 +16,7 @@ import { components } from "../../components";
 import BottomTabBar from "../../navigation/BottomTabBar";
 import axios from "axios";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
+import { useAppNavigation } from "../../hooks";
 
 // Mock data for demonstration
 const expenseCategories = [
@@ -33,7 +34,13 @@ const monthlyData = [
   { month: "Apr", income: 5800, expense: 4300 },
 ];
 
-const FinancialScreen: React.FC = (): JSX.Element => {
+interface PurchaseProps {
+  token?: string;
+}
+
+const Purchase: React.FC<PurchaseProps> = ({ token }): JSX.Element => {
+  const navigation = useAppNavigation();
+
   const [totalBudget, setTotalBudget] = useState(5000);
   const [totalSpent, setTotalSpent] = useState(0);
   const [currentMonth, setCurrentMonth] = useState("April");
@@ -136,7 +143,14 @@ const FinancialScreen: React.FC = (): JSX.Element => {
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>Expense Categories</Text>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() =>
+              navigation.navigate("CategorizeExpenses", {
+                token: token ?? "",
+              })
+            }
+          >
             <Text style={styles.editButtonText}>View All</Text>
           </TouchableOpacity>
         </View>
@@ -486,4 +500,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FinancialScreen;
+export default Purchase;
