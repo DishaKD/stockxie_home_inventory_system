@@ -25,6 +25,7 @@ import HealthQuestions from "../screens/HealthQuestions";
 import AddItems from "../screens/inventory/AddItems";
 import EditItems from "../screens/inventory/EditItems";
 import CategorizeExpenses from "../screens/purchase/CategorizeExpenses";
+import NutriSenseAIRecipe from "../screens/nutriSenseAi/NutriSenseAiRecipe";
 
 // Tabs
 import Home from "../screens/tabs/Home";
@@ -63,5 +64,6 @@ export const screens = {
   EditItems,
   Inventory,
   CategorizeExpenses,
-  NutriSenseAI
+  NutriSenseAI,
+  NutriSenseAIRecipe,
 };
