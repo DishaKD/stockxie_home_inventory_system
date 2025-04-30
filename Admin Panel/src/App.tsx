@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRootState, store } from './store';
+import { IRootState } from './store';
+import store from './store';
 import { toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
 
 function App({ children }: PropsWithChildren) {
