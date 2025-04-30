@@ -158,6 +158,28 @@ const searchItems = async (req, res) => {
   }
 };
 
+const getItemsForRecipes = async (req) => {
+  if (!req.user || !req.user.id) {
+    throw new Error("Unauthorized: User not found");
+  }
+
+  const userId = req.user.id;
+
+  const items = await Item.findAll({
+    where: { userId },
+    attributes: ["id", "name", "quantity", "expiryDate", "categoryId"],
+    include: [
+      {
+        model: Category,
+        as: "category",
+        attributes: ["name"],
+      },
+    ],
+  });
+
+  return items;
+};
+
 module.exports = {
   createItem,
   getAllItems,
@@ -165,4 +187,5 @@ module.exports = {
   updateItem,
   deleteItem,
   searchItems,
+  getItemsForRecipes,
 };
