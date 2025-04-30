@@ -6,7 +6,7 @@ const getAIResponse = async (messages) => {
     const response = await axios.post(
       process.env.GROQ_URL,
       {
-        model: "llama-3.3-70b-versatile",
+        model: "compound-beta-mini",
         messages: messages,
       },
       {
@@ -20,4 +20,4 @@ const getAIResponse = async (messages) => {
   }
 };
 
-module.exports = { getAIResponse }; // Named export
+module.exports = { getAIResponse };
