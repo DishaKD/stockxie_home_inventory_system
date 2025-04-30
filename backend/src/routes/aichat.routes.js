@@ -1,40 +1,50 @@
 const express = require("express");
 const aiRoutes = express.Router();
 const { getAIResponse } = require("../services/groqService");
-const { getAllItems } = require("../controllers/item.controller");
+const { getItemsForRecipes } = require("../controllers/item.controller");
 const authenticateUser = require("../middlewares/auth.middleware");
 
 aiRoutes.get("/recipes", authenticateUser, async (req, res) => {
   try {
-    const items = await getAllItems(req);
+    const items = await getItemsForRecipes(req);
 
-    if (!items || items.length === 0) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(404).json({ error: "No items found in inventory." });
     }
 
-    // Convert items to ingredient list
     const ingredients = items.map((item) => item.name).join(", ");
 
-    // Construct AI prompt
     const messages = [
       {
         role: "system",
-        content: "I am NutriSense AI, an intelligent food assistant.",
+        content: `You are NutriSense AI, an intelligent food assistant. Respond with exactly 3 healthy recipe suggestions in valid JSON array format. Each recipe must include:
+    - "id": a unique number,
+    - "title": the recipe name,
+    - "description": a brief explanation,
+    - "imageUrl": a **relevant food-related image** from Pexels urls
+    Do NOT include any extra explanation or markdown—only return pure JSON.`,
       },
       {
         role: "user",
-        content: `Based on my available ingredients: ${ingredients}, suggest healthy recipes.`,
+        content: `Here are my ingredients: ${ingredients}. Suggest 3 recipes.`,
       },
     ];
 
-    // Call AI response function
-    const response = await getAIResponse(messages);
+    const responseText = await getAIResponse(messages);
 
-    // ✅ Send the AI response
-    res.json({ recipes: response });
+    // Parse AI response to JSON
+    let recipeArray;
+    try {
+      recipeArray = JSON.parse(responseText);
+    } catch (err) {
+      console.error("Failed to parse AI JSON:", err);
+      return res.status(500).json({ error: "AI response was not valid JSON." });
+    }
+
+    res.json(recipeArray); // Now response is an array, not an object
   } catch (error) {
     console.error("Error generating recipes:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
