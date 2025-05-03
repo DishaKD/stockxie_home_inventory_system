@@ -1,5 +1,6 @@
 const Item = require("../models/item.modal");
 const Category = require("../models/category.model");
+const { Op } = require("sequelize");
 
 // Create a new item
 const createItem = async (req, res) => {
@@ -134,23 +135,48 @@ const deleteItem = async (req, res) => {
   }
 };
 
-// Search for items by name
 const searchItems = async (req, res) => {
   try {
-    const { query } = req.query;
+    const { query } = req.query; // Get the query from the request
 
     if (!query) {
       return res.status(400).json({ message: "Search query is required" });
     }
 
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "Unauthorized: User not found" });
+    }
+
+    const userId = req.user.id; // Get the user ID from the request (assuming you're handling authentication)
+
+    console.log("Received search query:", query);
+
+    // Search for items in the database that match the query in their name and belong to the current user
     const items = await Item.findAll({
       where: {
         name: {
-          [Op.like]: `%${query}%`,
+          [Op.like]: `%${query.trim()}%`, // Use LIKE for partial matching
         },
+        userId, // Ensure the item belongs to the current user
       },
+      attributes: ["id", "name", "quantity", "expiryDate", "categoryId"], // Specify the attributes to return
+      include: [
+        {
+          model: Category, // Include the associated Category model
+          as: "category", // Alias for the relationship
+          attributes: ["name"], // Only return the category name
+        },
+      ],
     });
 
+    console.log("Found items:", items);
+
+    // If no items were found, return a 404 response
+    if (items.length === 0) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    // Return the found items in the response
     res.status(200).json(items);
   } catch (error) {
     console.error("Error searching items:", error);
