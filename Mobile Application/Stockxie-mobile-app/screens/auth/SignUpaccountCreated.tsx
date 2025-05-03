@@ -58,7 +58,7 @@ const SignUpaccountCreated: React.FC = (): JSX.Element => {
           marginHorizontal: 20,
           marginTop: 20,
         }}
-        onPress={() => navigation.replace("HealthQuestions")}
+        onPress={() => navigation.replace("SignIn")}
       />
     );
   };
