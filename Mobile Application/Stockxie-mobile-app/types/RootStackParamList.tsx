@@ -15,7 +15,7 @@ export type RootStackParamList = {
   Menulist: { category: string };
   MyAddress: undefined;
   Onboarding: undefined;
-  EditProfile: undefined;
+  EditProfile: { token: string };
   OrderFailed: undefined;
   AddANewCard: undefined;
   OrderHistory: undefined;
