@@ -15,6 +15,7 @@ import { homeIndicatorHeight } from "../../utils";
 import { BASE_URL, ENDPOINTS } from "../../config/index";
 import { showToast } from "../../components/ToastProvider";
 import H3 from "@/text/H3";
+import { useEffect } from "react";
 
 interface BudgetTrackerProps {
   route?: any;
@@ -30,6 +31,39 @@ const BudgetTracker: React.FC<BudgetTrackerProps> = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [budgetError, setBudgetError] = useState("");
   const [monthError, setMonthError] = useState("");
+  const [hasExistingBudget, setHasExistingBudget] = useState(false);
+
+  const fetchBudget = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URL}${ENDPOINTS.BUDGET}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.data) {
+        const { totalBudget, month } = res.data;
+        setTotalBudget(totalBudget.toString());
+        setMonth(month);
+        setHasExistingBudget(true);
+      }
+    } catch (error: any) {
+      // If 404, assume no budget set yet
+      if (error.response?.status === 404) {
+        console.log("No budget set yet");
+      } else {
+        console.error("Error fetching budget:", error);
+        showToast("danger", "Failed to load budget");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBudget();
+  }, []);
 
   const validateInputs = () => {
     let valid = true;
@@ -87,6 +121,55 @@ const BudgetTracker: React.FC<BudgetTrackerProps> = ({ route }) => {
     }
   };
 
+  const updateBudget = async () => {
+    if (!validateInputs()) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.put(
+        `${BASE_URL}${ENDPOINTS.BUDGET}/${month}`,
+        {
+          totalBudget: parseFloat(totalBudget),
+          userId: userId,
+          month: month,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      showToast("success", "Budget updated successfully!");
+    } catch (error: any) {
+      console.log(error);
+      showToast("danger", "Error updating budget");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteBudget = async () => {
+    setLoading(true);
+    try {
+      await axios.delete(`${BASE_URL}${ENDPOINTS.BUDGET}/${month}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      showToast("success", "Budget deleted successfully!");
+      setTotalBudget("");
+      setMonth("");
+      setHasExistingBudget(false);
+    } catch (error: any) {
+      console.log(error);
+      showToast("danger", "Error deleting budget");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <components.SmartView>
       <components.StatusBar />
@@ -111,9 +194,6 @@ const BudgetTracker: React.FC<BudgetTrackerProps> = ({ route }) => {
             value={totalBudget}
             onChangeText={setTotalBudget}
           />
-          {budgetError !== "" && (
-            <Text style={{ color: "red", marginBottom: 8 }}>{budgetError}</Text>
-          )}
 
           <components.InputField
             type="text"
@@ -121,19 +201,40 @@ const BudgetTracker: React.FC<BudgetTrackerProps> = ({ route }) => {
             value={month}
             onChangeText={setMonth}
           />
-          {monthError !== "" && (
-            <Text style={{ color: "red", marginBottom: 8 }}>{monthError}</Text>
-          )}
 
-          <components.Button
-            title={loading ? "Submitting..." : "Submit"}
-            containerStyle={{
-              marginTop: 20,
-              marginBottom: homeIndicatorHeight() === 0 ? 20 : 10,
-              marginHorizontal: 10,
-            }}
-            onPress={handleSubmit}
-          />
+          {hasExistingBudget ? (
+            <>
+              <components.Button
+                title={loading ? "Saving..." : "Save Changes"}
+                onPress={updateBudget}
+                transparent={true}
+                containerStyle={{
+                  marginTop: 20,
+                  marginBottom: 10,
+                  marginHorizontal: 10,
+                }}
+              />
+              <components.Button
+                title="Delete Budget"
+                onPress={deleteBudget}
+                containerStyle={{
+                  marginTop: 10,
+                  marginBottom: homeIndicatorHeight() === 0 ? 20 : 10,
+                  marginHorizontal: 10,
+                }}
+              />
+            </>
+          ) : (
+            <components.Button
+              title={loading ? "Submitting..." : "Submit"}
+              onPress={handleSubmit}
+              containerStyle={{
+                marginTop: 20,
+                marginBottom: homeIndicatorHeight() === 0 ? 20 : 10,
+                marginHorizontal: 10,
+              }}
+            />
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
       <components.HomeIndicator />
