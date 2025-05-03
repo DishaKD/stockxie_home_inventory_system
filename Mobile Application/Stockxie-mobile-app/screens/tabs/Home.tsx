@@ -63,6 +63,7 @@ const Home: React.FC<HomeProps> = ({ token }) => {
         user={true}
         userImage={true}
         userName={true}
+        token={token}
       />
     );
   };
