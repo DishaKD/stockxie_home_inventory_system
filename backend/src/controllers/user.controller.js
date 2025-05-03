@@ -106,20 +106,12 @@ const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Find the user
     const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Prevent deleting yourself
-    if (user.id === req.user.id) {
-      return res
-        .status(400)
-        .json({ message: "You cannot delete your own account" });
-    }
-
-    // Delete the user
+    // Just delete without checking req.user
     await user.destroy();
 
     res.json({ message: "User deleted successfully" });
