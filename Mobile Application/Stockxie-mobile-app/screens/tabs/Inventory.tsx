@@ -239,7 +239,7 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
               lineHeight: 12 * 1.5,
             }}
           >
-            Expiry Date: {section.expiryDate}
+            Expiry Date: {format(new Date(section.expiryDate), "yyyy-MM-dd")}
           </Text>
         </View>
       </View>
