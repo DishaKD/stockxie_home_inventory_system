@@ -145,6 +145,11 @@ const StackNavigator = () => {
         component={screens.NutriSenseAIRecipe}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="BudgetTracker"
+        component={screens.BudgetTracker}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
