@@ -1,10 +1,14 @@
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useEffect, useState } from 'react';
-import sortBy from 'lodash/sortBy';
-import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../store';
+import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../store/themeConfigSlice';
-import IconBell from '../../components/Icon/IconBell';
+import sortBy from 'lodash/sortBy';
+import Dropdown from '../../components/Dropdown';
+import IconCaretDown from '../../components/Icon/IconCaretDown';
+import { ActionIcon, Group, Text, Modal, TextInput, Button, Stack, Checkbox } from '@mantine/core';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 const rowData = [
     {
         id: 1,
@@ -507,21 +511,71 @@ const rowData = [
         company: 'PHARMACON',
     },
 ];
-
 const UserManagement = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('User Management'));
-    });
+    }, [dispatch]);
 
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-    const [initialRecords, setInitialRecords] = useState(sortBy(rowData, 'id'));
-    const [recordsData, setRecordsData] = useState(initialRecords);
-
+    const [initialRecords, setInitialRecords] = useState<any[]>([]);
+    const [recordsData, setRecordsData] = useState<any[]>([]);
     const [search, setSearch] = useState('');
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'asc' });
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+        columnAccessor: 'id',
+        direction: 'asc',
+    });
+    const [hideCols, setHideCols] = useState<any>(['dob', 'isActive']);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [editForm, setEditForm] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        isActive: false
+    });
+
+    const cols = [
+        { accessor: 'id', title: 'ID' },
+        { accessor: 'firstName', title: 'First Name' },
+        { accessor: 'lastName', title: 'Last Name' },
+        { accessor: 'email', title: 'Email' },
+        { accessor: 'phone', title: 'Phone' },
+        { accessor: 'isActive', title: 'Active' },
+        { accessor: 'actions', title: 'Actions' },
+    ];
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/auth/users', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const users = response.data.users;
+
+            const mappedUsers = users.map((user: any) => ({
+                id: user.id,
+                firstName: user.firstName || user.username,
+                lastName: user.lastName || '',
+                email: user.email,
+                phone: user.phone || '',
+                isActive: user.isActive || false
+            }));
+
+            setInitialRecords(mappedUsers);
+        } catch (error) {
+            console.error('Failed to fetch users', error);
+            Swal.fire('Error!', 'Failed to fetch users', 'error');
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     useEffect(() => {
         setPage(1);
@@ -534,46 +588,195 @@ const UserManagement = () => {
     }, [page, pageSize, initialRecords]);
 
     useEffect(() => {
-        setInitialRecords(() => {
-            return rowData.filter((item) => {
-                return (
-                    item.id.toString().includes(search.toLowerCase()) ||
-                    item.firstName.toLowerCase().includes(search.toLowerCase()) ||
-                    item.lastName.toLowerCase().includes(search.toLowerCase()) ||
-                    item.email.toLowerCase().includes(search.toLowerCase()) ||
-                    item.phone.toLowerCase().includes(search.toLowerCase())
-                );
-            });
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search]);
-
-    useEffect(() => {
         const data = sortBy(initialRecords, sortStatus.columnAccessor);
         setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
         setPage(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sortStatus]);
+
+    const showHideColumns = (col: any, value: any) => {
+        if (hideCols.includes(col)) {
+            setHideCols((prev: any) => prev.filter((d: any) => d !== col));
+        } else {
+            setHideCols((prev: any) => [...prev, col]);
+        }
+    };
+
+    const handleEditClick = (user: any) => {
+        setCurrentUser(user);
+        setEditForm({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+            isActive: user.isActive
+        });
+        setEditModalOpen(true);
+    };
+
+// Update the error handling in handleUpdateUser and handleDelete
+const handleUpdateUser = async () => {
+    try {
+        await axios.put(`http://localhost:8000/api/auth/users/${currentUser.id}`, editForm, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        Swal.fire('Success!', 'User updated successfully', 'success');
+        setEditModalOpen(false);
+        fetchUsers();
+    } catch (error) {
+        console.error('Failed to update user', error);
+        let errorMessage = 'Failed to update user';
+        if (axios.isAxiosError(error)) {
+            errorMessage = error.response?.data?.message || errorMessage;
+        }
+        Swal.fire('Error!', errorMessage, 'error');
+    }
+};
+
+const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            await axios.delete(`http://localhost:8000/api/auth/users/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            Swal.fire('Deleted!', 'User has been deleted.', 'success');
+            fetchUsers();
+        } catch (error) {
+            console.error('Failed to delete user', error);
+            let errorMessage = 'Failed to delete user';
+            if (axios.isAxiosError(error)) {
+                errorMessage = error.response?.data?.message || errorMessage;
+            }
+            Swal.fire('Error!', errorMessage, 'error');
+        }
+    }
+};
+
     return (
         <div>
             <div className="panel mt-6">
                 <div className="flex md:items-center md:flex-row flex-col mb-5 gap-5">
                     <h5 className="font-semibold text-lg dark:text-white-light">User Management</h5>
-                    <div className="ltr:ml-auto rtl:mr-auto">
-                        <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <div className="flex items-center gap-5 ltr:ml-auto rtl:mr-auto">
+                        <div className="flex md:items-center md:flex-row flex-col gap-5">
+                            <div className="dropdown">
+                                <Dropdown
+                                    btnClassName="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-2 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
+                                    button={
+                                        <>
+                                            <span className="ltr:mr-1 rtl:ml-1">Columns</span>
+                                            <IconCaretDown className="w-5 h-5" />
+                                        </>
+                                    }
+                                >
+                                    <ul className="!min-w-[140px]">
+                                        {cols.map((col, i) => (
+                                            <li
+                                                key={i}
+                                                className="flex flex-col"
+                                                onClick={(e) => e.stopPropagation()}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' || e.key === ' ') {
+                                                        e.stopPropagation();
+                                                    }
+                                                }}
+                                                tabIndex={0}
+                                            >
+                                                <div className="flex items-center px-4 py-1">
+                                                    <label className="cursor-pointer mb-0">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={!hideCols.includes(col.accessor)}
+                                                            className="form-checkbox"
+                                                            defaultValue={col.accessor}
+                                                            onChange={(event: any) => {
+                                                                showHideColumns(col.accessor, event.target.checked);
+                                                            }}
+                                                        />
+                                                        <span className="ltr:ml-2 rtl:mr-2">{col.title}</span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Dropdown>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <input 
+                                type="text" 
+                                className="form-input" 
+                                placeholder="Search..." 
+                                value={search} 
+                                onChange={(e) => setSearch(e.target.value)} 
+                            />
+                        </div>
                     </div>
                 </div>
+
                 <div className="datatables">
                     <DataTable
-                        highlightOnHover
+                        className="whitespace-nowrap table-hover"
                         records={recordsData}
                         columns={[
-                            { accessor: 'id', title: 'ID', sortable: true },
-                            { accessor: 'firstName', title: 'First Name', sortable: true },
-                            { accessor: 'lastName', title: 'Last Name', sortable: true },
-                            { accessor: 'email', sortable: true },
-                            { accessor: 'phone', title: 'Phone No.', sortable: true },
+                            { accessor: 'id', title: 'ID', sortable: true, hidden: hideCols.includes('id') },
+                            { accessor: 'firstName', title: 'First Name', sortable: true, hidden: hideCols.includes('firstName') },
+                            { accessor: 'lastName', title: 'Last Name', sortable: true, hidden: hideCols.includes('lastName') },
+                            { accessor: 'email', title: 'Email', sortable: true, hidden: hideCols.includes('email') },
+                            { accessor: 'phone', title: 'Phone', hidden: hideCols.includes('phone') },
+                            {
+                                accessor: 'isActive',
+                                title: 'Active',
+                                sortable: true,
+                                hidden: hideCols.includes('isActive'),
+                                render: ({ isActive }) => (
+                                    <Text>{isActive ? 'Yes' : 'No'}</Text>
+                                ),
+                            },
+                            {
+                                accessor: 'actions',
+                                title: 'Actions',
+                                hidden: hideCols.includes('actions'),
+                                render: (user) => (
+                                    <Group spacing={4} position="right" noWrap>
+                                        <ActionIcon
+                                            color="blue"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleEditClick(user);
+                                            }}
+                                        >
+                                            <IconEdit size={16} />
+                                        </ActionIcon>
+                                        <ActionIcon
+                                            color="red"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(user.id);
+                                            }}
+                                        >
+                                            <IconTrash size={16} />
+                                        </ActionIcon>
+                                    </Group>
+                                ),
+                            },
                         ]}
+                        highlightOnHover
                         totalRecords={initialRecords.length}
                         recordsPerPage={pageSize}
                         page={page}
@@ -587,6 +790,55 @@ const UserManagement = () => {
                     />
                 </div>
             </div>
+
+            {/* Edit User Modal */}
+            
+<Modal
+    opened={editModalOpen}
+    onClose={() => setEditModalOpen(false)}
+    title="Edit User"
+    size="md"
+>
+    <Stack>
+        {/* Form fields */}
+        <TextInput
+            label="First Name"
+            value={editForm.firstName}
+            onChange={(e) => setEditForm({...editForm, firstName: e.target.value})}
+        />
+        <TextInput
+            label="Last Name"
+            value={editForm.lastName}
+            onChange={(e) => setEditForm({...editForm, lastName: e.target.value})}
+        />
+        <TextInput
+            label="Email"
+            type="email"
+            value={editForm.email}
+            onChange={(e) => setEditForm({...editForm, email: e.target.value})}
+        />
+        <TextInput
+            label="Phone"
+            value={editForm.phone}
+            onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
+        />
+        <Checkbox
+            label="Active"
+            checked={editForm.isActive}
+            onChange={(e) => setEditForm({...editForm, isActive: e.currentTarget.checked})}
+        />
+
+        {/* Add the button group here 👇 */}
+        <Group position="right" mt="md">
+            <Button variant="default" onClick={() => setEditModalOpen(false)}>
+                Cancel
+            </Button>
+            <Button color="blue" onClick={handleUpdateUser}>
+                Save Changes
+            </Button>
+        </Group>
+    </Stack>
+</Modal>
         </div>
     );
 };
