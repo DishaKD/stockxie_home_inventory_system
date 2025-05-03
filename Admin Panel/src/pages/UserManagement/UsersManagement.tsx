@@ -121,11 +121,7 @@ const UserManagement = () => {
                 payload.password = editForm.password;
             }
 
-            await axios.put(`http://localhost:8000/api/auth/users/update/${currentUser.id}`, payload, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
+            await axios.put(`http://localhost:8000/api/auth/users/update/${currentUser.id}`, payload, {});
 
             Swal.fire('Success!', 'User updated successfully', 'success');
             setEditModalOpen(false);
@@ -153,11 +149,7 @@ const UserManagement = () => {
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(`http://localhost:8000/api/auth/users/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                });
+                await axios.delete(`http://localhost:8000/api/auth/users/delete/${id}`, {});
 
                 Swal.fire('Deleted!', 'User has been deleted.', 'success');
                 fetchUsers();
