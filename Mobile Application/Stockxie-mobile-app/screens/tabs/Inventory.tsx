@@ -41,7 +41,7 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // Move useState here
+  const [searchQuery, setSearchQuery] = useState("");
 
   const homeIndicatorHeight = getHomeIndicatorHeight();
   useEffect(() => {
@@ -73,8 +73,13 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
   const handleSearch = async (query: string) => {
     try {
       const response = await axios.get(`${BASE_URL}${ENDPOINTS.items.search}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         params: { query },
       });
+
+      console.log("Search result:", response.data);
       setItems(response.data);
     } catch (error) {
       console.error("Error searching items:", error);
