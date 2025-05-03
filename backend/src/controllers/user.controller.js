@@ -101,5 +101,76 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
 
-module.exports = { loginUser, registerUser, getProfile, getAllUsers };
+  try {
+    // Find the user
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Prevent deleting yourself
+    if (user.id === req.user.id) {
+      return res.status(400).json({ message: "You cannot delete your own account" });
+    }
+
+    // Delete the user
+    await user.destroy();
+
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { username, email, password } = req.body;
+
+  try {
+    // Find the user to update
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if email is being changed to one that already exists
+    if (email && email !== user.email) {
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+    }
+
+    // Prepare update data
+    const updateData = {
+      username: username || user.username,
+      email: email || user.email,
+    };
+
+    // Only update password if provided
+    if (password) {
+      updateData.password = password; // Will be hashed by model hook
+    }
+
+    // Update the user
+    await user.update(updateData);
+
+    // Return updated user data (excluding password)
+    const updatedUser = await User.findByPk(id, {
+      attributes: { exclude: ['password'] }
+    });
+
+    res.json({
+      message: "User updated successfully",
+      user: updatedUser
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { loginUser, registerUser, getProfile, getAllUsers,deleteUser,updateUser };
