@@ -54,4 +54,5 @@ export type RootStackParamList = {
   CategorizeExpenses: { token: string };
   Purchase: Purchase;
   NutriSenseAIRecipe: { token: string };
+  BudgetTracker: { userId: string; token: string };
 };
