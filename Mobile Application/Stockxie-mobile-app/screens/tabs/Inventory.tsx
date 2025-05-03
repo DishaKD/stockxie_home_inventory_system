@@ -102,6 +102,7 @@ const Inventory: React.FC<InventoryProps> = ({ userId, token }) => {
         user={true}
         userImage={true}
         userName={true}
+        token={token}
       />
     );
   };

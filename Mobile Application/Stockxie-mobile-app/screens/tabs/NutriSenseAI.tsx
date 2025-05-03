@@ -42,7 +42,14 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
   };
 
   const renderHeader = () => {
-    return <components.Header basket={true} user={true} userImage={true} />;
+    return (
+      <components.Header
+        basket={true}
+        user={true}
+        userImage={true}
+        token={token}
+      />
+    );
   };
 
   const renderWelcomeMessage = () => {

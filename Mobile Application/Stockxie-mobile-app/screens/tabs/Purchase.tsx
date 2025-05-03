@@ -83,7 +83,12 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
   const renderHeader = () => {
     return (
       <View style={styles.header}>
-        <components.Header basket={true} user={true} userImage={true} />
+        <components.Header
+          basket={true}
+          user={true}
+          userImage={true}
+          token={token}
+        />
 
         <Text style={styles.headerTitle}>Financial Overview</Text>
         <Text style={styles.headerSubtitle}>
@@ -173,7 +178,7 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
               })
             }
           >
-            <Text style={styles.editButtonText}>View All</Text>
+            <Text style={styles.editButtonText}>Manage Categories</Text>
           </TouchableOpacity>
         </View>
 
