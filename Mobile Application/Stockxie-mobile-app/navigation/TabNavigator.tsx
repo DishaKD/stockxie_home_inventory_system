@@ -17,7 +17,9 @@ const TabNavigator: React.FC<Props> = ({ route }): JSX.Element => {
     return (
       <React.Fragment>
         {currentTabScreen === "Home" && <screens.Home token={token} />}
-        {currentTabScreen === "Purchase" && <screens.Purchase token={token} />}
+        {currentTabScreen === "Purchase" && (
+          <screens.Purchase token={token} userId={userId} />
+        )}
         {currentTabScreen === "Notification" && <screens.Notification />}
         {currentTabScreen === "Inventory" && (
           <screens.Inventory userId={userId} token={token} />
