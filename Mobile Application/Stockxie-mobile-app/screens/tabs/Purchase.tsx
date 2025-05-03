@@ -19,13 +19,6 @@ import axios from "axios";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
 import { useAppNavigation } from "../../hooks";
 
-const monthlyData = [
-  { month: "Jan", income: 4200, expense: 3800 },
-  { month: "Feb", income: 4800, expense: 3950 },
-  { month: "Mar", income: 5300, expense: 4100 },
-  { month: "Apr", income: 5800, expense: 4300 },
-];
-
 interface PurchaseProps {
   token?: string;
   userId?: string;
@@ -37,7 +30,7 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
   const [totalBudget, setTotalBudget] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
   const [currentMonth, setCurrentMonth] = useState("");
-  const [totalIncome, setTotalIncome] = useState(5800);
+  const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const [savingsPercentage, setSavingsPercentage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -94,6 +87,25 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
   useEffect(() => {
     fetchCategoryExpenses();
   }, []);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}api/expenses/summary/${userId}`
+        );
+
+        const { totalIncome, totalExpense, savingsPercentage } = response.data;
+        setTotalIncome(totalIncome);
+        setTotalExpense(totalExpense);
+        setSavingsPercentage(savingsPercentage);
+      } catch (error) {
+        console.error("Error fetching financial summary:", error);
+      }
+    };
+
+    fetchSummary();
+  }, [userId]);
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
