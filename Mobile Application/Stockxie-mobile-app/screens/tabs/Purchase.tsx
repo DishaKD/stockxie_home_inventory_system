@@ -117,11 +117,11 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
         <View style={styles.budgetInfo}>
           <View style={styles.budgetInfoItem}>
             <Text style={styles.budgetInfoLabel}>Total Budget</Text>
-            <Text style={styles.budgetInfoValue}>${totalBudget}</Text>
+            <Text style={styles.budgetInfoValue}>LKR {totalBudget}</Text>
           </View>
           <View style={styles.budgetInfoItem}>
             <Text style={styles.budgetInfoLabel}>Spent</Text>
-            <Text style={styles.budgetInfoValue}>${totalSpent}</Text>
+            <Text style={styles.budgetInfoValue}>LKR {totalSpent}</Text>
           </View>
           <View style={styles.budgetInfoItem}>
             <Text style={styles.budgetInfoLabel}>Remaining</Text>
@@ -131,7 +131,7 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
                 { color: remainingBudget < 0 ? "#e74c3c" : "#04b4bc" },
               ]}
             >
-              ${remainingBudget}
+              LKR {remainingBudget}
             </Text>
           </View>
         </View>
