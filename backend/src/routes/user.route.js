@@ -5,7 +5,7 @@ const {
   getProfile,
   getAllUsers,
   deleteUser,
-  updateUser
+  updateUser,
 } = require("../controllers/user.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 
@@ -16,9 +16,8 @@ authRoutes.post("/register", registerUser);
 
 authRoutes.get("/profile", authMiddleware, getProfile);
 
-authRoutes.get("/users",getAllUsers); 
+authRoutes.get("/users", getAllUsers);
 authRoutes.delete("/id", deleteUser);
-authRoutes.put("/:id", authMiddleware, updateUser);
-
+authRoutes.put("/users/update/:id", updateUser);
 
 module.exports = authRoutes;
