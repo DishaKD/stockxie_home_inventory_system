@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import {
   responsiveWidth,
@@ -17,15 +18,6 @@ import BottomTabBar from "../../navigation/BottomTabBar";
 import axios from "axios";
 import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
 import { useAppNavigation } from "../../hooks";
-
-// Mock data for demonstration
-const expenseCategories = [
-  { name: "Food", amount: 450, percentage: 30 },
-  { name: "Transport", amount: 300, percentage: 20 },
-  { name: "Shopping", amount: 225, percentage: 15 },
-  { name: "Bills", amount: 375, percentage: 25 },
-  { name: "Others", amount: 150, percentage: 10 },
-];
 
 const monthlyData = [
   { month: "Jan", income: 4200, expense: 3800 },
@@ -49,6 +41,10 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
   const [totalExpense, setTotalExpense] = useState(0);
   const [savingsPercentage, setSavingsPercentage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [expenseCategories, setExpenseCategories] = useState<
+    { name: string; amount: number; percentage: number }[]
+  >([]);
+  const [loadingExpenses, setLoadingExpenses] = useState(false);
 
   const fetchBudget = async () => {
     try {
@@ -75,6 +71,29 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
       fetchBudget();
     }
   }, [token, userId]);
+
+  const fetchCategoryExpenses = async () => {
+    try {
+      setLoadingExpenses(true);
+      const response = await axios.get(
+        `${BASE_URL}api/expenses/category-expenses/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setExpenseCategories(response.data.categories);
+    } catch (error) {
+      console.error("Error fetching category expenses:", error);
+    } finally {
+      setLoadingExpenses(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoryExpenses();
+  }, []);
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
@@ -182,22 +201,26 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
           </TouchableOpacity>
         </View>
 
-        {expenseCategories.map((category, index) => (
-          <View key={index} style={styles.categoryItem}>
-            <View style={styles.categoryHeader}>
-              <Text style={styles.categoryName}>{category.name}</Text>
-              <Text style={styles.categoryAmount}>${category.amount}</Text>
+        {loadingExpenses ? (
+          <ActivityIndicator size="small" color="#000" />
+        ) : (
+          expenseCategories.map((category, index) => (
+            <View key={index} style={styles.categoryItem}>
+              <View style={styles.categoryHeader}>
+                <Text style={styles.categoryName}>{category.name}</Text>
+                <Text style={styles.categoryAmount}>LKR {category.amount}</Text>
+              </View>
+              <View style={styles.categoryProgressBar}>
+                <View
+                  style={[
+                    styles.categoryProgressFill,
+                    { width: `${category.percentage}%` },
+                  ]}
+                />
+              </View>
             </View>
-            <View style={styles.categoryProgressBar}>
-              <View
-                style={[
-                  styles.categoryProgressFill,
-                  { width: `${category.percentage}%` },
-                ]}
-              />
-            </View>
-          </View>
-        ))}
+          ))
+        )}
       </View>
     );
   };
