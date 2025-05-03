@@ -101,6 +101,7 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const deleteUser = async (req, res) => {
   const { id } = req.params;
 
@@ -113,7 +114,9 @@ const deleteUser = async (req, res) => {
 
     // Prevent deleting yourself
     if (user.id === req.user.id) {
-      return res.status(400).json({ message: "You cannot delete your own account" });
+      return res
+        .status(400)
+        .json({ message: "You cannot delete your own account" });
     }
 
     // Delete the user
@@ -125,52 +128,35 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const { username, email, password } = req.body;
 
+const updateUser = async (req, res) => {
   try {
-    // Find the user to update
+    const id = req.params.id;
+    const { userName, email, password } = req.body;
+
     const user = await User.findByPk(id);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if email is being changed to one that already exists
-    if (email && email !== user.email) {
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
-        return res.status(400).json({ message: "Email already in use" });
-      }
-    }
+    user.userName = userName || user.userName;
+    user.email = email || user.email;
+    user.password = password || user.password;
+    await user.save();
 
-    // Prepare update data
-    const updateData = {
-      username: username || user.username,
-      email: email || user.email,
-    };
-
-    // Only update password if provided
-    if (password) {
-      updateData.password = password; // Will be hashed by model hook
-    }
-
-    // Update the user
-    await user.update(updateData);
-
-    // Return updated user data (excluding password)
-    const updatedUser = await User.findByPk(id, {
-      attributes: { exclude: ['password'] }
-    });
-
-    res.json({
-      message: "User updated successfully",
-      user: updatedUser
-    });
+    res.status(200).json({ message: "User updated successfully", user });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 };
 
-module.exports = { loginUser, registerUser, getProfile, getAllUsers,deleteUser,updateUser };
+module.exports = {
+  loginUser,
+  registerUser,
+  getProfile,
+  getAllUsers,
+  deleteUser,
+  updateUser,
+};
