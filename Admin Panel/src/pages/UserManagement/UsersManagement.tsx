@@ -93,6 +93,19 @@ const UserManagement = () => {
         }
     };
 
+    useEffect(() => {
+        let filteredRecords = [...initialRecords];
+
+        if (search) {
+            const lowerSearch = search.toLowerCase();
+            filteredRecords = filteredRecords.filter((record) => Object.values(record).some((value) => String(value).toLowerCase().includes(lowerSearch)));
+        }
+
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize;
+        setRecordsData(filteredRecords.slice(from, to));
+    }, [page, pageSize, initialRecords, search]);
+
     const handleEditClick = (user: any) => {
         setCurrentUser(user);
         setEditForm({
