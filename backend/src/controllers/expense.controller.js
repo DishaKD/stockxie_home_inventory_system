@@ -1,6 +1,7 @@
 const Category = require("../models/category.model");
 const Item = require("../models/item.modal");
 const Budget = require("../models/budget.model");
+const { Op } = require("sequelize");
 
 const getCategoryExpenses = async (req, res) => {
   const { userId } = req.params;
@@ -67,6 +68,77 @@ const getCategoryExpenses = async (req, res) => {
   }
 };
 
+const getFinancialSummary = async (req, res) => {
+  const { userId } = req.params;
+
+  // Get current month name (e.g., "May")
+  const now = new Date();
+  const currentMonthName = now.toLocaleString("default", { month: "long" });
+
+  try {
+    // Find budget for current month and user
+    const budget = await Budget.findOne({
+      where: {
+        userId,
+        month: currentMonthName,
+      },
+    });
+
+    if (!budget) {
+      return res.status(404).json({ message: "No budget set for this month." });
+    }
+
+    const totalIncome = budget.totalBudget;
+
+    // Get first and last day of the month
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+      23,
+      59,
+      59
+    );
+
+    // Get all items for this user created in current month
+    const itemRecords = await Item.findAll({
+      where: {
+        userId,
+        createdAt: {
+          [Op.gte]: startOfMonth,
+          [Op.lte]: endOfMonth,
+        },
+      },
+    });
+
+    // Calculate total expense from item price × quantity
+
+    const totalExpense = budget.totalSpent;
+
+    const savings = totalIncome - totalExpense;
+    const savingsPercentage =
+      totalIncome > 0 ? ((savings / totalIncome) * 100).toFixed(2) : 0;
+
+    // Update totalSpent in budget
+    budget.totalSpent = totalExpense;
+    await budget.save();
+
+    // Respond with financial summary
+    res.json({
+      month: currentMonthName,
+      totalIncome: parseFloat(totalIncome.toFixed(2)),
+      totalExpense: parseFloat(totalExpense.toFixed(2)),
+      savings: parseFloat(savings.toFixed(2)),
+      savingsPercentage: parseFloat(savingsPercentage),
+    });
+  } catch (error) {
+    console.error("Error in getFinancialSummary:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getCategoryExpenses,
+  getFinancialSummary,
 };
