@@ -6,11 +6,7 @@ const authenticate = require("../middlewares/auth.middleware");
 budgetRoutes.post("/", budgetController.createBudget);
 budgetRoutes.put("/:month", budgetController.updateBudget);
 budgetRoutes.get("/", authenticate, budgetController.getBudget);
-budgetRoutes.delete(
-  "/:month",
-
-  budgetController.deleteBudget
-);
+budgetRoutes.delete("/:month", authenticate, budgetController.deleteBudget);
 budgetRoutes.get("/all", budgetController.getAllBudgets);
 
 module.exports = budgetRoutes;
