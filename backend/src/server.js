@@ -8,6 +8,7 @@ const purchaseRoutes = require("./routes/purchaseHistory.route.js");
 const itemRoutes = require("./routes/item.routes.js");
 const categoryRoutes = require("./routes/category.routes.js");
 const aiRoutes = require("./routes/aichat.routes.js");
+const budgetRoutes = require("./routes/budget.route.js");
 
 dotenv.config(); // Load environment variables
 
@@ -44,6 +45,9 @@ app.use("/api/items", itemRoutes);
 app.use("/api/categories", categoryRoutes);
 
 app.use("/api/ai", aiRoutes);
+
+app.use("/api/budget", budgetRoutes);
+
 // Connect to MySQL Database
 connectDB();
 
