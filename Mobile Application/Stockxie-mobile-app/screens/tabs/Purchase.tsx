@@ -236,33 +236,6 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
     );
   };
 
-  const renderActionButtons = () => {
-    return (
-      <View style={styles.actionButtonsContainer}>
-        <TouchableOpacity style={styles.actionButton}>
-          <View style={styles.actionButtonIcon}>
-            {/* Icon would go here */}
-          </View>
-          <Text style={styles.actionButtonText}>Add Expense</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.actionButton}>
-          <View style={styles.actionButtonIcon}>
-            {/* Icon would go here */}
-          </View>
-          <Text style={styles.actionButtonText}>Set Budget</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.actionButton}>
-          <View style={styles.actionButtonIcon}>
-            {/* Icon would go here */}
-          </View>
-          <Text style={styles.actionButtonText}>Reports</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   const renderBottomTabBar = () => {
     return <BottomTabBar />;
   };
@@ -277,7 +250,6 @@ const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
         {renderBudgetTracker()}
         {renderExpenseTracker()}
         {renderFinancialSummary()}
-        {renderActionButtons()}
         <View style={{ height: 20 }} />
       </ScrollView>
       {renderBottomTabBar()}
