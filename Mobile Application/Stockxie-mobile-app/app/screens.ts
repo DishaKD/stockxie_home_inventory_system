@@ -26,7 +26,7 @@ import AddItems from "../screens/inventory/AddItems";
 import EditItems from "../screens/inventory/EditItems";
 import CategorizeExpenses from "../screens/purchase/CategorizeExpenses";
 import NutriSenseAIRecipe from "../screens/nutriSenseAi/NutriSenseAiRecipe";
-
+import BudgetTracker from "../screens/purchase/BudgetTracker";
 // Tabs
 import Home from "../screens/tabs/Home";
 import Purchase from "../screens/tabs/Purchase";
@@ -66,4 +66,5 @@ export const screens = {
   CategorizeExpenses,
   NutriSenseAI,
   NutriSenseAIRecipe,
+  BudgetTracker,
 };
