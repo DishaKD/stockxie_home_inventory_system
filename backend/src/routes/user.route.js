@@ -17,7 +17,7 @@ authRoutes.post("/register", registerUser);
 authRoutes.get("/profile", authMiddleware, getProfile);
 
 authRoutes.get("/users", getAllUsers);
-authRoutes.delete("/id", deleteUser);
+authRoutes.delete("/users/delete/:id", deleteUser);
 authRoutes.put("/users/update/:id", updateUser);
 
 module.exports = authRoutes;
