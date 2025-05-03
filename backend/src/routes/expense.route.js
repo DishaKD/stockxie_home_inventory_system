@@ -7,4 +7,6 @@ expenseRoutes.get(
   expenseController.getCategoryExpenses
 );
 
+expenseRoutes.get("/summary/:userId", expenseController.getFinancialSummary);
+
 module.exports = expenseRoutes;
