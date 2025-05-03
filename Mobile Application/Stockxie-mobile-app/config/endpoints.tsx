@@ -51,4 +51,5 @@ export const ENDPOINTS = {
     update: "api/purchase-history", // Update a purchase record
     delete: "api/purchase-history", // Delete a purchase record
   },
+  BUDGET: "api/budget",
 };
