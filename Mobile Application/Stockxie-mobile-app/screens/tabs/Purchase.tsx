@@ -36,31 +36,45 @@ const monthlyData = [
 
 interface PurchaseProps {
   token?: string;
+  userId?: string;
 }
 
-const Purchase: React.FC<PurchaseProps> = ({ token }): JSX.Element => {
+const Purchase: React.FC<PurchaseProps> = ({ token, userId }): JSX.Element => {
   const navigation = useAppNavigation();
 
-  const [totalBudget, setTotalBudget] = useState(5000);
+  const [totalBudget, setTotalBudget] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
-  const [currentMonth, setCurrentMonth] = useState("April");
+  const [currentMonth, setCurrentMonth] = useState("");
   const [totalIncome, setTotalIncome] = useState(5800);
   const [totalExpense, setTotalExpense] = useState(0);
   const [savingsPercentage, setSavingsPercentage] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const fetchBudget = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URL}${ENDPOINTS.BUDGET}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { totalBudget, totalSpent, month } = res.data;
+      setTotalBudget(totalBudget);
+      setTotalSpent(totalSpent);
+      setCurrentMonth(month);
+    } catch (error) {
+      console.error("Error fetching budget:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Calculate total spent from expense categories
-    const spent = expenseCategories.reduce(
-      (sum, category) => sum + category.amount,
-      0
-    );
-    setTotalSpent(spent);
-    setTotalExpense(spent);
-
-    // Calculate savings percentage
-    const savings = ((totalIncome - spent) / totalIncome) * 100;
-    setSavingsPercentage(Math.round(savings));
-  }, []);
+    if (token && userId) {
+      fetchBudget();
+    }
+  }, [token, userId]);
 
   const renderStatusBar = () => {
     return <components.StatusBar />;
@@ -87,7 +101,15 @@ const Purchase: React.FC<PurchaseProps> = ({ token }): JSX.Element => {
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>Budget Tracker</Text>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() =>
+              navigation.navigate("BudgetTracker", {
+                token: token ?? "",
+                userId: userId ?? "",
+              })
+            }
+          >
             <Text style={styles.editButtonText}>Edit</Text>
           </TouchableOpacity>
         </View>
