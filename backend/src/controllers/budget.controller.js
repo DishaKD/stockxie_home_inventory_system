@@ -41,7 +41,7 @@ exports.createBudget = async (req, res) => {
 // UPDATE budget (upsert)
 exports.updateBudget = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { userId } = req.body;
     const { totalBudget, totalSpent, month } = req.body;
 
     let budget = await Budget.findOne({ where: { userId, month } });
@@ -60,7 +60,7 @@ exports.updateBudget = async (req, res) => {
 // DELETE budget
 exports.deleteBudget = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { id: userId } = req.user;
     const { month } = req.params;
 
     const budget = await Budget.findOne({ where: { userId, month } });
