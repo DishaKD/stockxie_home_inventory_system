@@ -30,7 +30,12 @@ const mealTypes = ["Vegetarian", "Vegan", "Keto", "Low-Carb", "Balanced"];
 
 type Props = NativeStackScreenProps<RootStackParamList, "HealthQuestions">;
 
-const HealthQuestions: React.FC = (): JSX.Element => {
+const HealthQuestions: React.FC<Props> = ({ route }): JSX.Element => {
+  const { token, userId } = route.params;
+
+  console.log("Token:", token);
+  console.log("User ID:", userId);
+
   const navigation = useAppNavigation();
   // State for form fields
   // State for all fields
@@ -68,7 +73,7 @@ const HealthQuestions: React.FC = (): JSX.Element => {
     }
 
     const healthProfileData = {
-      userId: 1, // replace with real user ID
+      userId: parseInt(userId, 10),
       dietaryPreferences,
       allergies,
       healthGoals,

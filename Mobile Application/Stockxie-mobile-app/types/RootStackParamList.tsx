@@ -48,7 +48,7 @@ export type RootStackParamList = {
   ResetPassword: { email: string };
   EmailConfirm: { email: string };
   ResetPasswordSuccess: undefined;
-  HealthQuestions: undefined;
+  HealthQuestions: { userId: string; token: string };
   AddItems: { userId: string; token: string };
   EditItems: { itemId: string };
   CategorizeExpenses: { token: string };

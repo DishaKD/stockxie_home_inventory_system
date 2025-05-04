@@ -8,9 +8,10 @@ import { BASE_URL, ENDPOINTS, CONFIG } from "../../config/index";
 
 interface NutriSenseAIProps {
   token: string;
+  userId: string;
 }
 
-const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
+const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token, userId }) => {
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useAppNavigation();
@@ -38,7 +39,10 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
   };
 
   const handleNavigateHealthProfile = () => {
-    navigation.navigate("HealthQuestions");
+    navigation.navigate("HealthQuestions", {
+      token: token ?? "",
+      userId: userId ?? "",
+    });
   };
 
   const renderStatusBar = () => {
