@@ -28,7 +28,7 @@ export const ENDPOINTS = {
     categories: "api/categories",
   },
   healthProfile: {
-    create: "/api/healthProfile",
+    create: "api/health-profiles/",
   },
   auth: {
     login: "api/auth/login",
