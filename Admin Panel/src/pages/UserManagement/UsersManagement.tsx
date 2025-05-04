@@ -5,13 +5,23 @@ import { setPageTitle } from '../../store/themeConfigSlice';
 import sortBy from 'lodash/sortBy';
 import Dropdown from '../../components/Dropdown';
 import IconCaretDown from '../../components/Icon/IconCaretDown';
-import { ActionIcon, Group, Text, Modal, TextInput, Button, Stack, Checkbox } from '@mantine/core';
+import {
+    ActionIcon,
+    Group,
+    Modal,
+    TextInput,
+    Button,
+    Stack,
+    Checkbox,
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const UserManagement = () => {
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(setPageTitle('User Management'));
     }, [dispatch]);
@@ -29,11 +39,21 @@ const UserManagement = () => {
     const [hideCols, setHideCols] = useState<any>(['dob']);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState<any>(null);
-    const [editForm, setEditForm] = useState({
-        userName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+
+    const form = useForm({
+        initialValues: {
+            userName: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        validate: {
+            userName: (value) => (value.trim().length === 0 ? 'User Name is required' : null),
+            email: (value) =>
+                /^\S+@\S+\.\S+$/.test(value) ? null : 'Invalid email',
+            confirmPassword: (value, values) =>
+                values.password && value !== values.password ? 'Passwords do not match' : null,
+        },
     });
 
     const cols = [
@@ -50,8 +70,8 @@ const UserManagement = () => {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
-            const users = response.data.users;
 
+            const users = response.data.users;
             const mappedUsers = users.map((user: any) => ({
                 id: user.id,
                 userName: user.userName || user.username,
@@ -85,7 +105,7 @@ const UserManagement = () => {
         setPage(1);
     }, [sortStatus]);
 
-    const showHideColumns = (col: any, value: any) => {
+    const showHideColumns = (col: any) => {
         if (hideCols.includes(col)) {
             setHideCols((prev: any) => prev.filter((d: any) => d !== col));
         } else {
@@ -95,10 +115,13 @@ const UserManagement = () => {
 
     useEffect(() => {
         let filteredRecords = [...initialRecords];
-
         if (search) {
             const lowerSearch = search.toLowerCase();
-            filteredRecords = filteredRecords.filter((record) => Object.values(record).some((value) => String(value).toLowerCase().includes(lowerSearch)));
+            filteredRecords = filteredRecords.filter((record) =>
+                Object.values(record).some((value) =>
+                    String(value).toLowerCase().includes(lowerSearch)
+                )
+            );
         }
 
         const from = (page - 1) * pageSize;
@@ -108,7 +131,7 @@ const UserManagement = () => {
 
     const handleEditClick = (user: any) => {
         setCurrentUser(user);
-        setEditForm({
+        form.setValues({
             userName: user.userName,
             email: user.email,
             password: '',
@@ -117,35 +140,35 @@ const UserManagement = () => {
         setEditModalOpen(true);
     };
 
-    // Update the error handling in handleUpdateUser and handleDelete
     const handleUpdateUser = async () => {
-        if (editForm.password !== editForm.confirmPassword) {
-            Swal.fire('Error!', 'Passwords do not match', 'error');
-            return;
-        }
+        const isValid = form.validate();
+        if (!isValid.hasErrors) {
+            try {
+                const payload: any = {
+                    userName: form.values.userName,
+                    email: form.values.email,
+                };
 
-        try {
-            const payload: any = {
-                userName: editForm.userName,
-                email: editForm.email,
-            };
+                if (form.values.password) {
+                    payload.password = form.values.password;
+                }
 
-            if (editForm.password) {
-                payload.password = editForm.password;
+                await axios.put(
+                    `http://localhost:8000/api/auth/users/update/${currentUser.id}`,
+                    payload
+                );
+
+                Swal.fire('Success!', 'User updated successfully', 'success');
+                setEditModalOpen(false);
+                fetchUsers();
+            } catch (error) {
+                console.error('Failed to update user', error);
+                let errorMessage = 'Failed to update user';
+                if (axios.isAxiosError(error)) {
+                    errorMessage = error.response?.data?.message || errorMessage;
+                }
+                Swal.fire('Error!', errorMessage, 'error');
             }
-
-            await axios.put(`http://localhost:8000/api/auth/users/update/${currentUser.id}`, payload, {});
-
-            Swal.fire('Success!', 'User updated successfully', 'success');
-            setEditModalOpen(false);
-            fetchUsers();
-        } catch (error) {
-            console.error('Failed to update user', error);
-            let errorMessage = 'Failed to update user';
-            if (axios.isAxiosError(error)) {
-                errorMessage = error.response?.data?.message || errorMessage;
-            }
-            Swal.fire('Error!', errorMessage, 'error');
         }
     };
 
@@ -162,8 +185,7 @@ const UserManagement = () => {
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(`http://localhost:8000/api/auth/users/delete/${id}`, {});
-
+                await axios.delete(`http://localhost:8000/api/auth/users/delete/${id}`);
                 Swal.fire('Deleted!', 'User has been deleted.', 'success');
                 fetchUsers();
             } catch (error) {
@@ -183,7 +205,7 @@ const UserManagement = () => {
                 <div className="flex md:items-center md:flex-row flex-col mb-5 gap-5">
                     <h5 className="font-semibold text-lg dark:text-white-light">User Management</h5>
                     <div className="flex items-center gap-5 ltr:ml-auto rtl:mr-auto">
-                        <div className="flex md:items-center md:flex-row flex-col gap-5">
+                        <div className="flex gap-5">
                             <div className="dropdown">
                                 <Dropdown
                                     btnClassName="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-2 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
@@ -196,27 +218,14 @@ const UserManagement = () => {
                                 >
                                     <ul className="!min-w-[140px]">
                                         {cols.map((col, i) => (
-                                            <li
-                                                key={i}
-                                                className="flex flex-col"
-                                                onClick={(e) => e.stopPropagation()}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter' || e.key === ' ') {
-                                                        e.stopPropagation();
-                                                    }
-                                                }}
-                                                tabIndex={0}
-                                            >
+                                            <li key={i} className="flex flex-col">
                                                 <div className="flex items-center px-4 py-1">
                                                     <label className="cursor-pointer mb-0">
                                                         <input
                                                             type="checkbox"
                                                             checked={!hideCols.includes(col.accessor)}
                                                             className="form-checkbox"
-                                                            defaultValue={col.accessor}
-                                                            onChange={(event: any) => {
-                                                                showHideColumns(col.accessor, event.target.checked);
-                                                            }}
+                                                            onChange={() => showHideColumns(col.accessor)}
                                                         />
                                                         <span className="ltr:ml-2 rtl:mr-2">{col.title}</span>
                                                     </label>
@@ -226,9 +235,13 @@ const UserManagement = () => {
                                     </ul>
                                 </Dropdown>
                             </div>
-                        </div>
-                        <div className="text-right">
-                            <input type="text" className="form-input" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                            <input
+                                type="text"
+                                className="form-input"
+                                placeholder="Search..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -241,29 +254,16 @@ const UserManagement = () => {
                             { accessor: 'id', title: 'ID', sortable: true, hidden: hideCols.includes('id') },
                             { accessor: 'userName', title: 'User Name', sortable: true, hidden: hideCols.includes('userName') },
                             { accessor: 'email', title: 'Email', sortable: true, hidden: hideCols.includes('email') },
-
                             {
                                 accessor: 'actions',
                                 title: 'Actions',
                                 hidden: hideCols.includes('actions'),
                                 render: (user) => (
                                     <Group spacing={4} position="right" noWrap>
-                                        <ActionIcon
-                                            color="blue"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleEditClick(user);
-                                            }}
-                                        >
+                                        <ActionIcon color="blue" onClick={() => handleEditClick(user)}>
                                             <IconEdit size={16} />
                                         </ActionIcon>
-                                        <ActionIcon
-                                            color="red"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDelete(user.id);
-                                            }}
-                                        >
+                                        <ActionIcon color="red" onClick={() => handleDelete(user.id)}>
                                             <IconTrash size={16} />
                                         </ActionIcon>
                                     </Group>
@@ -274,35 +274,36 @@ const UserManagement = () => {
                         totalRecords={initialRecords.length}
                         recordsPerPage={pageSize}
                         page={page}
-                        onPageChange={(p) => setPage(p)}
+                        onPageChange={setPage}
                         recordsPerPageOptions={PAGE_SIZES}
                         onRecordsPerPageChange={setPageSize}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
+                        paginationText={({ from, to, totalRecords }) =>
+                            `Showing ${from} to ${to} of ${totalRecords} entries`
+                        }
                     />
                 </div>
             </div>
 
-            {/* Edit User Modal */}
-
             <Modal opened={editModalOpen} onClose={() => setEditModalOpen(false)} title="Edit User" size="md">
-                <Stack>
-                    <TextInput label="First Name" value={editForm.userName} onChange={(e) => setEditForm({ ...editForm, userName: e.target.value })} />
-                    <TextInput label="Email" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} />
-                    <TextInput label="Password" type="password" value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} />
-                    <TextInput label="Confirm Password" type="password" value={editForm.confirmPassword} onChange={(e) => setEditForm({ ...editForm, confirmPassword: e.target.value })} />
-
-                    <Group position="right" mt="md">
-                        <Button variant="default" onClick={() => setEditModalOpen(false)}>
-                            Cancel
-                        </Button>
-                        <Button variant="default" color="blue" onClick={handleUpdateUser}>
-                            Save Changes
-                        </Button>
-                    </Group>
-                </Stack>
+                <form onSubmit={form.onSubmit(handleUpdateUser)}>
+                    <Stack>
+                        <TextInput label="User Name" {...form.getInputProps('userName')} />
+                        <TextInput label="Email" {...form.getInputProps('email')} />
+                        <TextInput label="Password" type="password" {...form.getInputProps('password')} />
+                        <TextInput label="Confirm Password" type="password" {...form.getInputProps('confirmPassword')} />
+                        <Group position="right" mt="md">
+                            <Button variant="default" onClick={() => setEditModalOpen(false)}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" variant="default" color="blue">
+                                Save Changes
+                            </Button>
+                        </Group>
+                    </Stack>
+                </form>
             </Modal>
         </div>
     );
