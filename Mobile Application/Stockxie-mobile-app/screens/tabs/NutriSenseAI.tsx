@@ -37,6 +37,10 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
     });
   };
 
+  const handleNavigateHealthProfile = () => {
+    navigation.navigate("HealthQuestions");
+  };
+
   const renderStatusBar = () => {
     return <components.StatusBar />;
   };
@@ -88,8 +92,8 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
       {
         id: 1,
         icon: "scan",
-        title: "Scan Items",
-        subtitle: "Track your food inventory",
+        title: "Health Profile",
+        subtitle: "Maintain your health profile",
       },
       {
         id: 2,
@@ -116,15 +120,17 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token }) => {
       switch (iconName) {
         case "scan":
           return (
-            <View
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 5,
-                borderWidth: 2,
-                borderColor: "#4CAF50",
-              }}
-            />
+            <TouchableOpacity onPress={handleNavigateHealthProfile}>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 5,
+                  borderWidth: 2,
+                  borderColor: "#4CAF50",
+                }}
+              />
+            </TouchableOpacity>
           );
         case "recipes":
           return (
