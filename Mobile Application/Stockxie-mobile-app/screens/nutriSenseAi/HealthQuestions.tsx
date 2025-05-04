@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -16,7 +16,11 @@ import type { RootStackParamList } from "../../types";
 import { useAppNavigation } from "../../hooks";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { homeIndicatorHeight } from "../../utils";
-import { createHealthProfile } from "../../config/api/healthProfile";
+import {
+  createHealthProfile,
+  getHealthProfileByUserId,
+  updateHealthProfile,
+} from "../../config/api/healthProfile";
 
 const genders = ["Male", "Female", "Other"];
 const activityLevels = [
@@ -52,10 +56,39 @@ const HealthQuestions: React.FC<Props> = ({ route }): JSX.Element => {
   const [sleepHours, setSleepHours] = useState("");
   const [waterIntake, setWaterIntake] = useState("");
 
+  const [isExistingProfile, setIsExistingProfile] = useState(false);
+
   // Refs for input fields (optional, for focus management)
   const dietaryPrefRef = useRef(null);
   const allergiesRef = useRef(null);
   const healthGoalsRef = useRef(null);
+
+  useEffect(() => {
+    const fetchHealthProfile = async () => {
+      try {
+        const response = await getHealthProfileByUserId(parseInt(userId, 10));
+        if (response) {
+          // Populate the form with existing data
+          setDietaryPreferences(response.dietaryPreferences);
+          setAllergies(response.allergies);
+          setHealthGoals(response.healthGoals);
+          setMedicalConditions(response.medicalConditions);
+          setPreferredMealTypes(response.preferredMealTypes);
+          setGender(response.gender);
+          setActivityLevel(response.activityLevel);
+          setAge(response.age.toString());
+          setWeight(response.weight.toString());
+          setHeight(response.height.toString());
+          setSleepHours(response.sleepHours.toString());
+          setWaterIntake(response.waterIntake.toString());
+          setIsExistingProfile(true);
+        }
+      } catch (error) {
+        console.error("Error fetching health profile:", error);
+      }
+    };
+    fetchHealthProfile();
+  }, [userId]);
 
   const handleSubmit = async () => {
     if (
@@ -89,11 +122,18 @@ const HealthQuestions: React.FC<Props> = ({ route }): JSX.Element => {
     };
 
     try {
-      await createHealthProfile(healthProfileData);
-      Alert.alert("Success", "Health profile created!");
+      if (isExistingProfile) {
+        // Update existing profile
+        await updateHealthProfile(parseInt(userId, 10), healthProfileData);
+        Alert.alert("Success", "Health profile updated!");
+      } else {
+        // Create new profile
+        await createHealthProfile(healthProfileData);
+        Alert.alert("Success", "Health profile created!");
+      }
     } catch (error) {
-      console.error("Create Profile Error:", error);
-      Alert.alert("Error", "Could not create profile.");
+      console.error("Profile Error:", error);
+      Alert.alert("Error", "Could not save profile.");
     }
   };
 
@@ -246,21 +286,29 @@ const HealthQuestions: React.FC<Props> = ({ route }): JSX.Element => {
           onChangeText={setMedicalConditions}
           containerStyle={{ marginBottom: 20 }}
         />
-      </ScrollView>
-    );
-  };
 
-  const renderButton = () => {
-    return (
-      <components.Button
-        title="Submit"
-        containerStyle={{
-          marginBottom: homeIndicatorHeight() === 0 ? 20 : 10,
-          marginHorizontal: 20,
-          marginTop: 20,
-        }}
-        onPress={handleSubmit}
-      />
+        {isExistingProfile ? (
+          <components.Button
+            title="Save Changes"
+            onPress={handleSubmit}
+            containerStyle={{
+              marginBottom: 20,
+              marginHorizontal: 20,
+              marginTop: 20,
+            }}
+          />
+        ) : (
+          <components.Button
+            title="Submit"
+            onPress={handleSubmit}
+            containerStyle={{
+              marginBottom: 20,
+              marginHorizontal: 20,
+              marginTop: 20,
+            }}
+          />
+        )}
+      </ScrollView>
     );
   };
 
@@ -273,7 +321,6 @@ const HealthQuestions: React.FC<Props> = ({ route }): JSX.Element => {
       {renderStatusBar()}
       {renderHeader()}
       {renderContent()}
-      {renderButton()}
       {renderHomeIndicator()}
     </components.SmartView>
   );

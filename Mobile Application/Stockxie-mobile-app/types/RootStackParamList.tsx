@@ -55,4 +55,5 @@ export type RootStackParamList = {
   Purchase: Purchase;
   NutriSenseAIRecipe: { token: string };
   BudgetTracker: { userId: string; token: string };
+  NutriSenseAIHealth: { token: string };
 };

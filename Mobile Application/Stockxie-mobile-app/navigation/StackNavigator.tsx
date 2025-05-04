@@ -150,6 +150,11 @@ const StackNavigator = () => {
         component={screens.BudgetTracker}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="NutriSenseAIHealth"
+        component={screens.NutriSenseAIHealth}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

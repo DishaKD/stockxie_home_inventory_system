@@ -38,6 +38,12 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token, userId }) => {
     });
   };
 
+  const handleNavigateHealth = () => {
+    navigation.navigate("NutriSenseAIHealth", {
+      token: token ?? "",
+    });
+  };
+
   const handleNavigateHealthProfile = () => {
     navigation.navigate("HealthQuestions", {
       token: token ?? "",
@@ -152,14 +158,16 @@ const NutriSenseAI: React.FC<NutriSenseAIProps> = ({ token, userId }) => {
           );
         case "health":
           return (
-            <View
-              style={{
-                width: 28,
-                height: 28,
-                borderWidth: 2,
-                borderColor: "#2196F3",
-              }}
-            />
+            <TouchableOpacity onPress={handleNavigateHealth}>
+              <View
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderWidth: 2,
+                  borderColor: "#2196F3",
+                }}
+              />
+            </TouchableOpacity>
           );
         case "shopping":
           return (
