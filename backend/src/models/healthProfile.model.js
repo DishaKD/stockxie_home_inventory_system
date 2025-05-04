@@ -16,16 +16,57 @@ const HealthProfile = sequelize.define(
       allowNull: false,
       onDelete: "CASCADE",
     },
+    age: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    gender: {
+      type: DataTypes.ENUM("Male", "Female", "Other"),
+      allowNull: true,
+    },
+    weight: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    height: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    activityLevel: {
+      type: DataTypes.ENUM(
+        "Sedentary",
+        "Lightly Active",
+        "Moderately Active",
+        "Very Active"
+      ),
+      allowNull: true,
+    },
+    medicalConditions: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    preferredMealTypes: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     dietaryPreferences: {
-      type: DataTypes.STRING, // e.g., "Vegetarian, Low-Carb"
+      type: DataTypes.STRING,
       allowNull: true,
     },
     allergies: {
-      type: DataTypes.STRING, // e.g., "Peanuts, Gluten"
+      type: DataTypes.STRING,
       allowNull: true,
     },
     healthGoals: {
-      type: DataTypes.STRING, // e.g., "Weight Loss, Muscle Gain"
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    sleepHours: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    waterIntake: {
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
   },
