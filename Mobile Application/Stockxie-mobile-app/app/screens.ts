@@ -21,7 +21,7 @@ import ConfirmationCode from "../screens/auth/ConfirmationCode";
 import SignUpaccountCreated from "../screens/auth/SignUpaccountCreated";
 import VerifyYourPhoneNumber from "../screens/auth/VerifyYourPhoneNumber";
 import ForgotPasswordSentEmail from "../screens/auth/ForgotPasswordSentEmail";
-import HealthQuestions from "../screens/HealthQuestions";
+import HealthQuestions from "../screens/nutriSenseAi/HealthQuestions";
 import AddItems from "../screens/inventory/AddItems";
 import EditItems from "../screens/inventory/EditItems";
 import CategorizeExpenses from "../screens/purchase/CategorizeExpenses";
