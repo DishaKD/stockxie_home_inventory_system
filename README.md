@@ -1,11 +1,10 @@
 <h1>
   <div  align="center">
   <a  href="https://github.com/DishaKD/stockxie_home_inventory_system">
-          <img src="https://github.com/DishaKD/stockxie_home_inventory_system/blob/main/Admin%20Panel/public/assets/images/loginbg.png" alt="Stoxie" width="100" height="auto">
+          <img src="https://github.com/DishaKD/stockxie_home_inventory_system/blob/main/Admin%20Panel/public/assets/images/loginbg.png" alt="Stoxie" width="200" height="auto">
   </a>
 </h1>
-# 📦 Stoxie — Home Inventory & Financial Management App
-
+<p align="center">Home Inventory & Financial Management App</p>
 <br>
 
 
