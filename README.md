@@ -1,4 +1,13 @@
+<h1>
+  <div  align="center">
+  <a  href="https://github.com/DishaKD/stockxie_home_inventory_system">
+          <img src="https://github.com/DishaKD/stockxie_home_inventory_system/blob/main/Admin%20Panel/public/assets/images/loginbg.png" alt="Stoxie" width="100" height="auto">
+  </a>
+</h1>
 # 📦 Stoxie — Home Inventory & Financial Management App
+
+<br>
+
 
 **Stoxie** is a smart mobile application built with **React Native** and **Node.js**, designed to help users manage home inventories, track expenses, and receive personalized AI-powered food suggestions and health tips via **NutriSense AI**.
 
